@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "83iscKG+3Dp38nfJ5X+dv9jYjickNgMkOLgkigPKfYisVXyKA0Yvcwtaj5wxNlpO0kZZ/Bx8sewweR678+puew==",
+  "dgSpecHash": "NiUigXeySw12pRxLCY0kzzCXmm7Z4W+B1a1crQtqofW7d24wum4Ne7cVcdDT70bOPnQGT7k+p3lkYdzC3udA4g==",
   "success": true,
-  "projectFilePath": "D:\\2020_2021\\TLCN\\TLCN_17110116_17110214\\Source code\\MainBackEnd\\MovieReviewsAndTickets_API\\MovieReviewsAndTickets_API.csproj",
+  "projectFilePath": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\MainBackEnd\\MovieReviewsAndTickets_API\\MovieReviewsAndTickets_API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.aspnet.identity.core\\2.2.3\\microsoft.aspnet.identity.core.2.2.3.nupkg.sha512",
     "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.8\\microsoft.aspnetcore.cryptography.internal.3.1.8.nupkg.sha512",

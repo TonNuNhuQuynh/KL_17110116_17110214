@@ -10,5 +10,6 @@ namespace MovieReviewsAndTickets_API.Helpers
         public const string SuperAdmin = "Super Admin";
         public const string Admin = "Admin";
         public const string User = "User";
+        public const string Writer = "Writer";
     }
 }

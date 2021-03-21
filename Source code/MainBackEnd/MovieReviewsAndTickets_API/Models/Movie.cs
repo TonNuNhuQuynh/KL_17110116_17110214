@@ -36,5 +36,6 @@ namespace MovieReviewsAndTickets_API.Models
         public ICollection<MovieLike> MovieLikes { get; set; }
         public ICollection<Review> Reviews { get; set; }
         public ICollection<Order> Orders { get; set; }
+        public ICollection<Post> Posts { get; set; }
     }
 }

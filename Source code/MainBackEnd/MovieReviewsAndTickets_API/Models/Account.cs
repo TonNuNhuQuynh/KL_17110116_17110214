@@ -19,5 +19,11 @@ namespace MovieReviewsAndTickets_API.Models
         public ICollection<Review> Reviews { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection<Movie> Movies { get; set; }
+        public ICollection<Post> Posts { get; set; }
+        public ICollection<Task> OwnedTasks { get; set; }
+        public ICollection<Task> AssignedTasks { get; set; }
+        public ICollection<Feedback> Feedbacks { get; set; }
+        public ICollection<Notification> SentNotifications { get; set; }
+        public ICollection<Notification> ReceivedNotifications { get; set; }
     }
 }

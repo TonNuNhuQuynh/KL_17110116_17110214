@@ -30,6 +30,12 @@ namespace MovieReviewsAndTickets_API.Models
         public DbSet<SeatsInOrder> SeatsInOrders { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostType> PostTypes { get; set; }
+        public DbSet<PostTheme> PostThemes { get; set; }
+        public DbSet<Task> Tasks { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -157,6 +163,62 @@ namespace MovieReviewsAndTickets_API.Models
                     UserId = 1  // for super admin role
                 }
             );
+
+            modelBuilder.Entity<Post>(entity =>
+            {
+                entity.Property(e => e.Id).UseIdentityColumn();
+                entity.HasOne(a => a.PostType).WithMany(u => u.Posts).HasForeignKey(a => a.PostTypeId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(a => a.PostTheme).WithMany(u => u.Posts).HasForeignKey(a => a.PostThemeId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(a => a.Account).WithMany(u => u.Posts).HasForeignKey(a => a.AccountId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(a => a.Movie).WithMany(u => u.Posts).HasForeignKey(a => a.MovieId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(a => a.Task).WithOne(u => u.Post).HasForeignKey<Task>(u => u.PostId).OnDelete(DeleteBehavior.SetNull);
+            });
+            modelBuilder.Entity<PostType>(entity =>
+            {
+                entity.Property(e => e.Id).UseIdentityColumn();
+                entity.HasData(
+                    new PostType() { Id = 1, Name = "Tin điện ảnh" },
+                    new PostType() { Id = 2, Name = "Đánh giá" },
+                    new PostType() { Id = 3, Name = "Trailer" }
+                );
+            });
+            modelBuilder.Entity<PostTheme>(entity =>
+            {
+                entity.Property(e => e.Id).UseIdentityColumn();
+                entity.HasData(
+                    new PostTheme() { Id = 1, Name = "Tv Series" },
+                    new PostTheme() { Id = 2, Name = "Siêu anh hùng" },
+                    new PostTheme() { Id = 3, Name = "Phân tích nghệ thuật" }
+                );
+            });
+            modelBuilder.Entity<Task>(entity =>
+            {
+                entity.Property(e => e.Id).UseIdentityColumn();
+                entity.HasOne(a => a.Creator).WithMany(u => u.OwnedTasks).HasForeignKey(a => a.CreatorId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(a => a.Executer).WithMany(u => u.AssignedTasks).HasForeignKey(a => a.ExecuterId).OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Role>().HasData(new List<Role>
+            {
+                new Role
+                {
+                    Id = 4,
+                    Name = RolesHelper.Writer,
+                    NormalizedName = RolesHelper.Writer.ToLower()
+                }
+            });
+
+            modelBuilder.Entity<Feedback>(entity =>
+            {
+                entity.HasKey(e => new { e.PostId, e.AccountId, e.CreatedDate });
+                entity.HasOne(a => a.Post).WithMany(u => u.Feedbacks).HasForeignKey(a => a.PostId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(a => a.Account).WithMany(u => u.Feedbacks).HasForeignKey(a => a.AccountId).OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.Property(e => e.Id).UseIdentityColumn();
+                entity.HasOne(a => a.Sender).WithMany(u => u.SentNotifications).HasForeignKey(a => a.SenderId).OnDelete(DeleteBehavior.Restrict);
+                entity.HasOne(a => a.Receiver).WithMany(u => u.ReceivedNotifications).HasForeignKey(a => a.ReceiverId).OnDelete(DeleteBehavior.Restrict);
+            });
         }
     }
 }
