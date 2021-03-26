@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <h5 class="modal-title text-center text-danger" style="font-weight: bold;">{{name}}</h5>
+    <button type="button" [disabled]="!loaded" class="close" aria-label="Close" (click)="activeModal.close()">
+    <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body" style="overflow-y: auto; max-height: 500px;">
+    <!-- Task của admin nào thì admin đó sẽ đc chỉnh sửa vs đk task đó chưa được giao -->
+    <form class="form-horizontal" name="form" #form="ngForm">
+        <!-- Title -->
+        <div class="form-group">
+            <label>Tên task</label>
+            <textarea maxlength="150" required name="title" #title="ngModel" [(ngModel)]="task.title" class="form-control" type="text" [ngClass]="{'is-invalid': title.invalid && (title.touched || title.dirty)}" [disabled]="notAllowed"></textarea>
+            <div class="text-danger" *ngIf="title.errors?.required && (title.touched || title.dirty)"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
+        </div>
+
+        <!-- Content -->
+        <div class="form-group">
+            <label>Nội dung task</label>
+            <ckeditor [editor]="Editor" [(ngModel)]="task.content" (focus)="onFocus()" (blur)="onFocus()" name="content" [disabled]="notAllowed"></ckeditor>
+            <div class="text-danger" *ngIf="invalidContent"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
+        </div>
+
+        <!-- Deadline -->
+        <div class="form-group">
+            <label>Deadline</label>
+            <!-- Pick date -->
+            <input #date="ngModel" required (ngModelChange)="dateChange($event)" [ngClass]="{'is-invalid': date.invalid && (date.touched || date.dirty)}" class="form-control" [(ngModel)]="deadlineDate" placement="bottom" placeholder="Release date" name="dp" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" (focus)="focus=true" (blur)="focus=false" [disabled]="notAllowed" />
+            <ng-container *ngIf="date.invalid && (date.touched || date.dirty)">
+                <div class="text-danger" *ngIf="date.errors?.required"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
+                <div class="text-danger" *ngIf="invalidDate"><i class="fa fa-exclamation-circle"></i> Giá trị không hợp lệ!</div>
+            </ng-container>
+
+            <!-- Pick time -->
+            <ngb-timepicker name="time" [(ngModel)]="deadlineTime" [seconds]="false" (ngModelChange)="timeChange($event)"></ngb-timepicker>
+            <div class="text-danger" *ngIf="invalidTime"><i class="fa fa-exclamation-circle"></i> Giá trị không hợp lệ!</div>
+        </div>
+
+        <!-- Executer -->
+        <div class="form-group">
+            <label>Giao task cho</label>
+            <ejs-dropdownlist [enabled]="!notAllowed" class="form-control" [dataSource]='writers' [fields]='localFields' [(value)]='task.executerId' [allowFiltering]='true' [showClearButton]="true"></ejs-dropdownlist>
+        </div>
+    </form>
+    <!-- Lỗi -->
+    <div class="container" id="alertDiv">
+        <ngb-alert *ngIf="showAlert" type="danger" [dismissible]="true">
+          <div class="container">
+            <i class="nc-bell-55 nc-icon"></i>{{ alertMessage }}
+            <button type="button" name="button" class="close" (click)="closeAlert()">
+                <i class="nc-icon nc-simple-remove"></i>
+            </button>
+          </div>
+        </ngb-alert>
+    </div>
+    <!-- Actions -->
+    <div class="actions">
+        <button [disabled]="title.invalid || invalidDate || invalidTime || invalidContent || !loaded || notAllowed" type="button" class="btn btn-primary" (click)="saveTask()">Lưu</button>
+        <a *ngIf="task.status >= 3" [routerLink]="['/admin/review-post']" [queryParams]="{ id: task.postId }" class="btn btn-dark">Xem bài viết</a>
+    </div>
+</div>
+
+<!-- <div class="modal-footer">
+    <div class="left-side">
+        <button type="button" class="btn btn-default btn-link" (click)="activeModal.dismiss()">Hủy</button>
+    </div>
+    <div class="divider"></div>
+    <div class="right-side">
+        <button [disabled]="title.invalid || invalidDate || invalidTime || invalidContent || !loaded || notAllowed" type="button" class="btn btn-danger btn-link" (click)="saveTask()">Lưu</button>
+    </div>
+</div> -->

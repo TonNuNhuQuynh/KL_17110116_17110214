@@ -1,0 +1,106 @@
+<nav class="navbar navbar-expand-lg fixed-top navbar-transparent" color-on-scroll="500">
+    <div class="container">
+        <div class="navbar-translate" style="width: auto">
+            <a [routerLink]="['/admin']"><img src="assets/img/logo2.png" height="90%" width="100%" /></a>
+        </div>
+        
+        <div class="collapse navbar-collapse justify-content-start" id="navigation">
+            <ul class="navbar-nav" *ngIf="!isAdmin">
+                <li class="nav-item">
+                    <a href="javascript:void(0)" class="nav-link">Trang quản lý của Admin</a> 
+                </li>
+            </ul>
+
+            <ul *ngIf="isAdmin" class="navbar-nav" >
+                <!-- Thống kê -->
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" [routerLink]="['/admin/statistics']">Thống kê</a>
+                </li>
+
+                <!-- Quản lý phim -->
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" [routerLink]="['/admin/manage-movies']">Phim</a>
+                </li>
+
+                <!-- Quản lý user -->
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" [routerLink]="['/admin/manage-accounts']">Tài khoản</a>
+                </li>
+
+                <!-- Quản lý task -->
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" [routerLink]="['/admin/manage-tasks']">Task</a>
+                </li>
+
+                <!-- Quản lý post -->
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" [routerLink]="['/admin/manage-posts']">Bài viết</a>
+                </li>
+
+                <!-- Quản lý chuỗi rạp -->
+                <li class="nav-item" *ngIf="isSupAdmin" routerLinkActive="active">
+                    <a class="nav-link" [routerLink]="['/admin/manage-chains']">Chuỗi rạp</a>
+                </li>
+
+            </ul>
+        </div>
+
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation" (click)="sidebarToggle()">
+            <span class="navbar-toggler-bar"></span>
+            <span class="navbar-toggler-bar"></span>
+            <span class="navbar-toggler-bar"></span>
+        </button>
+        
+        <div class="navbar-user" *ngIf="auth.currentAccountValue != null">
+            <!-- Notification -->
+            <div *ngIf="notifications != null" class="d-flex mr-2 dropdown" ngbDropdown placement="bottom-left" #notiDropdown="ngbDropdown">
+                <a class="nav-link notification text-light" ngbDropdownToggle id="navbarDropdownMenuLink" >
+                    <i class="fas fa-bell"></i>
+                    <span *ngIf="notifications.length > 0" class="badge badge-danger">{{notifications.length}}</span>
+                </a>
+                <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-xl py-0 dropdown-menu-right" style="overflow-y: auto; max-height: 500px;">
+                    <!-- Header -->
+                    <div class="px-3 py-3">
+                        <p class="text-sm text-muted font-weight-bold m-0">Bạn có <strong class="text-danger">{{notifications.length}}</strong> thông báo chưa đọc</p>
+                    </div>
+                    <!-- List notification -->
+                    <div class="list-group list-group-flush">
+                        <a *ngFor="let notification of notifications" href="{{notification.url}}&view={{notification.id}}" class="list-group-item list-group-item-action">
+                        <div class="row align-items-center">
+                            <!-- Sender avatar -->
+                            <div class="col-auto"><img alt="Image placeholder" class="avatar rounded-circle" [src]="notification.senderImage == null? './assets/img/user-default.png': notification.senderImage"></div>
+                            <!-- Content -->
+                            <div class="col ml-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div><p class="mb-0 text-sm font-weight-bold">{{notification.senderName}}</p></div>
+                                <div class="text-right text-muted"><small>{{calculateDiff(notification.createdDate)}}</small></div>
+                            </div>
+                            <p class="text-sm mb-0 small">{{notification.message}}</p>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    <!-- Mark as read -->
+                    <a *ngIf="notifications.length > 0" class="dropdown-item view-all text-danger text-center font-weight-bold py-3" (click)="viewAll()" href="javascript:void(0)">Đánh dấu đã đọc</a>
+                </div>
+            </div>
+
+            <div class="d-flex">
+                <div ngbDropdown class="d-inline-block dropdown">
+                    <a class="avatar avatar-sm text-light" href="javascript:void(0)" id="dropdownBasic1" ngbDropdownToggle style="vertical-align: middle !important;">
+                        <img [src]="auth.currentAccountValue.user.image == null? './assets/img/user-default.png': auth.currentAccountValue.user.image" class="avatar-img img-circle img-no-padding">
+                    </a>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-danger dropdown-menu-right">
+                        <a [routerLink]="['/admin/profile']" class="dropdown-item">Quản lý Tài khoản</a>
+                        <!-- <a [routerLink]="['/watchlist']" class="dropdown-item">Tủ phim</a> -->
+
+                        <hr class="dropdown-divider">
+                        <a href="javascript:void(0)" (click)="logout()" class="dropdown-item">Đăng xuất</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</nav>
+

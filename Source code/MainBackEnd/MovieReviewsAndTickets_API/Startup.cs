@@ -10,6 +10,7 @@ using MovieReviewsAndTickets_API.Models;
 using MovieReviewsAndTickets_API.Services.Emails;
 using Microsoft.AspNetCore.Identity;
 using System;
+using MovieReviewsAndTickets_API.Services.SignalR;
 
 namespace MovieReviewsAndTickets_API
 {
@@ -62,6 +63,11 @@ namespace MovieReviewsAndTickets_API
 
             services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(12));
 
+            // Broadcast Service
+            services.AddSignalR().AddNewtonsoftJsonProtocol(opt => {
+                opt.PayloadSerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+            services.AddSingleton<IConnectionMapping<int>, ConnectionMapping<int>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
