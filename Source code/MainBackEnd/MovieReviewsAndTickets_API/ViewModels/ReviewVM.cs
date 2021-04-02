@@ -16,6 +16,7 @@ namespace MovieReviewsAndTickets_API.ViewModels
         public int MovieId { get; set; }
         public string Username { get; set; }
         public string Image { get; set; }
+        public string Role { get; set; }
         public int LikeCounts { get; set; }
         public int DislikeCounts { get; set; }
 

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MovieReviewsAndTickets_API.Helpers;
 using MovieReviewsAndTickets_API.Models;
 
 namespace MovieReviewsAndTickets_API.Controllers
@@ -21,6 +24,8 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // GET: api/Roles
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.Admin + "," + RolesHelper.SuperAdmin)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
         {
@@ -42,8 +47,6 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // PUT: api/Roles/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRole(byte id, Role role)
         {
@@ -74,14 +77,11 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // POST: api/Roles
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public async Task<ActionResult<Role>> PostRole(Role role)
         {
             _context.Roles.Add(role);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetRole", new { id = role.Id }, role);
         }
 
@@ -90,14 +90,9 @@ namespace MovieReviewsAndTickets_API.Controllers
         public async Task<ActionResult<Role>> DeleteRole(byte id)
         {
             var role = await _context.Roles.FindAsync(id);
-            if (role == null)
-            {
-                return NotFound();
-            }
-
+            if (role == null) return NotFound();
             _context.Roles.Remove(role);
             await _context.SaveChangesAsync();
-
             return role;
         }
 

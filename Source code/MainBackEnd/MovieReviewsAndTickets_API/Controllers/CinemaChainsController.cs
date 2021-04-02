@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieReviewsAndTickets_API.Helpers;
@@ -25,6 +26,8 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // GET: api/CinemaChains - lấy chuỗi rạp -> manage-cinema-chains
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.SuperAdmin)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CinemaChain>>> GetCinemaChains()
         {
@@ -61,6 +64,8 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // POST: api/CinemaChains - Thêm chuỗi rạp -> manage-cinema-chains
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.SuperAdmin)]
         [HttpPost]
         public async Task<ActionResult<CinemaChain>> PostCinemaChain(CinemaChain cinemaChain)
         {
@@ -74,7 +79,7 @@ namespace MovieReviewsAndTickets_API.Controllers
                     if (cinemasInDB.Contains(cinema.Id)) _context.Entry(cinema).State = EntityState.Modified;
                     else _context.Cinemas.Add(cinema);
                 });
-                
+
             }
             else _context.CinemaChains.Add(cinemaChain);
             await _context.SaveChangesAsync();
@@ -82,6 +87,8 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // DELETE: api/CinemaChains/5 - Xóa chuỗi rạp -> manage-cinema-chains
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.SuperAdmin)]
         [HttpDelete("{id}")]
         public async Task<ActionResult<CinemaChain>> DeleteCinemaChain(int id)
         {

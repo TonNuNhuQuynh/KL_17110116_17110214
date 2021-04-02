@@ -19,6 +19,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { ManageTasksComponent } from './manage-tasks/manage-tasks.component';
 import { LoginComponent } from './login/login.component';
+import { ManagePostsComponent } from './manage-posts/manage-posts.component';
+import { PostReviewComponent } from './manage-posts/post-review/post-review.component';
 
 
 const routes: Routes = [
@@ -81,6 +83,19 @@ const routes: Routes = [
       data: { expectedRoles: [Roles.superAdmin, Roles.admin] }
     },
 
+    { 
+      path: 'admin/manage-posts',
+      component: ManagePostsComponent,
+      canActivate: [RoleGuard], 
+      data: { expectedRoles: [Roles.superAdmin, Roles.admin] }
+    },
+
+    { 
+      path: 'admin/review-post',
+      component: PostReviewComponent,
+      canActivate: [RoleGuard], 
+      data: { expectedRoles: [Roles.superAdmin, Roles.admin] }
+    },
 ];
 
 @NgModule({

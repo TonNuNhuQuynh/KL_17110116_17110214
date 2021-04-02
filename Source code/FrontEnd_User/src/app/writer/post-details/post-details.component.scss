@@ -1,0 +1,42 @@
+@import '../../../assets/sass/paper-dashboard.scss';
+.form-check {
+    position: relative !important;
+    display: block !important;
+    padding-left: 1.25rem;
+}
+.form-check input
+{
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+.form-check .form-check-label {
+    display: inline-block;
+    position: relative;
+    // cursor: pointer;
+    padding-left: 0px;
+    line-height: 20px;
+    margin-bottom: 0;
+}
+.card:not(.card-plain):hover {
+    box-shadow: none;
+    transform: none;
+    -webkit-transform: none;
+    -ms-transform: none;
+    -moz-transform: none;
+  }
+
+:host ::ng-deep strong 
+{
+    font-weight: 600 !important;
+}
+:host ::ng-deep ol li::marker {
+    font-weight: 600 !important;
+}
+:host ::ng-deep ol
+{
+    margin-left: 0px !important;
+}
+:host ::ng-deep p
+{
+    font-weight: 450;
+}

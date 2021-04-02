@@ -1,0 +1,103 @@
+<div class="wrapper">
+    <div class="documentation page-header page-header-small" id="landing-wrapper" [style]="getBackdrop()">
+        <!-- <div class="filter"></div> -->
+        <div class="motto text-center">
+            <h4 class="page-description mb-2" style="font-weight: 550;">
+                {{post.title}}
+                <span *ngIf="post.status == 1 && !post.isDeleted" class="p badge badge-warning">Chờ duyệt</span>
+                <span *ngIf="post.status == 2 && !post.isDeleted" class="p badge badge-success">Đã xuất bản</span>
+                <span *ngIf="post.isDeleted" class="p badge badge-dark">Đã bị gỡ</span>
+            </h4>
+            <p class="text-danger font-weight-bold">{{post.postType.name}} <ng-container *ngIf="post.postTheme != null">· {{post.postTheme.name}} </ng-container>· {{post.account.userName}}</p>
+        </div>
+    </div>
+    <div class="main">
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <!-- Post -->
+                    <div class="col-md-8 col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Summary -->
+                                <p class="text-danger font-weight-bold text-justify">{{post.summary}}</p>
+                                <!-- Spoiler -->
+                                <p *ngIf="post.spoilers" class="text-center spoil-alert mt-2">
+                                    <img src="https://moveek.com/bundles/ornweb/img/spoil-alert.png" class="img-fluid"> 
+                                    <span class="d-block text-muted small">Kéo xuống để xem tiếp <i class="fas fa-chevron-down"></i></span>
+                                    <br>
+                                    <br>
+                                </p>
+                                <!-- Content -->
+                                <div *ngIf="post.content != null" [innerHTML]="safeContent" class="text-justify mb-4"></div>
+                                <!-- Movie -->
+                                <div class="row mb-4" *ngIf="post.movie != null">
+                                    <div class="col">
+                                        <button (click)="openMovie()" class="btn btn-dark btn-block text-truncate">Xem thêm về {{post.movie.title}}</button>
+                                    </div>
+                                </div>
+                                <!-- Keywords -->
+                                <div *ngIf="postTags.length > 0" class="post-tags text-muted">Từ khóa:
+                                    <a *ngFor="let tag of postTags" href="javascript:void(0)" class="badge badge-light mr-1">{{tag}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 col-sm-12">
+                        <!-- Feedbacks -->
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <div class="card-header-title text-muted">Feedback từ admin</div>
+                            </div>
+                            <div class="card-body">
+                                <!-- Có feedback -->
+                                <ng-container *ngIf="post.feedbacks != null && post.feedbacks.length > 0">
+                                    <ng-container *ngFor="let feedback of post.feedbacks; let last=last">
+                                        <div class="row">
+                                            <div class="col-auto">
+                                                <a class="avatar">
+                                                    <img *ngIf="feedback.image != null && feedback.image != ''" class="img-circle img-no-padding img-responsive avatar-img" [src]="feedback.image">
+                                                    <img *ngIf="feedback.image == null || feedback.image == ''" class="img-circle img-no-padding img-responsive avatar-img" src="./assets/img/user-default.png">
+                                                </a>
+                                            </div>
+                                            <div class="col ml-n2">
+                                                <p class="mb-1" style="font-weight: 600;">{{feedback.content}}</p>
+                                                <p class="text-muted mb-0 small">{{feedback.username}} {{feedback.createdDate | date:'dd/MM/yy HH:mm'}}</p>
+                                            </div>
+                                        </div>
+                                        <hr *ngIf="!last">
+                                    </ng-container>
+                                </ng-container>   
+                                <!-- Ko có feedback -->
+                                <div *ngIf="post.feedbacks != null && post.feedbacks.length == 0" class="text-center">
+                                    <p class="mb-0">Không có feedback nào</p>
+                                </div>    
+                                <!-- Chủ task thêm feedback -->
+                                <ng-container *ngIf="post.publishedDate == null && post.task.creatorId == auth.currentAccountValue.id">
+                                    <hr>
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <h6>Tạo feedback</h6> 
+                                                    <textarea required rows="3" class="form-control" name="fb" #fb="ngModel" [(ngModel)]="feedback"></textarea>
+                                                </div>
+                                                <button [disabled]="fb.invalid" class="btn btn-info btn-sm btn-round" (click)="postFeedback()" type="submit">Đăng</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <!-- Publish -->
+                        <div class="actions" *ngIf="post.publishedDate == null && post.task.creatorId == auth.currentAccountValue.id">
+                            <button class="btn btn-block btn-success" (click)="publish()"><i class="fas fa-newspaper"></i> Xuất bản bài viết</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,77 @@
+<div class="wrapper">
+    <div class="documentation page-header page-header-small" id="landing-wrapper" >
+        <div class="filter"></div>
+        <div class="motto">
+            <br>
+            <h4 class="title-uppercase text-center">Quản lý bài viết</h4>
+            <br>
+            <h5 class="page-description text-center">Trang quản lý các bài viết đã được writer gửi cho Admin</h5>
+            <br>
+        </div>
+    </div>
+    <div class="main">
+        <div class="section">
+            <div class="container">
+                <h2>Danh sách các bài viết</h2>
+                <br> 
+                <div class="row tim-row">
+                   <!-- Filters -->
+                    <div class="col-12">
+                        <div class="row align-items-ceter" style="flex: 1;">
+                            <div class="col-auto">
+                                <div ngbDropdown class="d-inline-block btn-block mb-4">
+                                    <button class="btn btn-block form-control" id="dropdownMenu1" ngbDropdownToggle>{{sSelectAll}}</button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                                        <button (click)="filterStatuses(-1, 'Trạng thái')" class="dropdown-item">Tất cả</button>
+                                        <button (click)="filterStatuses(1, 'Chờ duyệt')" class="dropdown-item">Chờ duyệt</button>
+                                        <button (click)="filterStatuses(2, 'Đã xuất bản')" class="dropdown-item">Đã xuất bản</button>
+                                        <button (click)="filterStatuses(3, 'Đã bị gỡ')" class="dropdown-item">Đã bị gỡ</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <!-- Post List -->
+                    <div class="col-12" id="overlap">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="table" class="table table-striped table-hover table-responsive-lg">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-center" scope="col">Ảnh bìa</th>
+                                    <th class="text-center" scope="col">Tựa đề</th>
+                                    <th class="text-center" scope="col">Trạng thái</th>
+                                    <th class="text-center" scope="col">Ngày XB</th>
+                                    <!-- Created date -->
+                                    <th scope="col"></th>
+                                    <!-- Actions -->
+                                    <th *ngIf="isSuperAdmin" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <tr *ngFor='let post of filterPosts'>
+                                    <td class="text-center">
+                                        <a [routerLink]="['/admin/review-post']" [queryParams]="{ id: post.id }">
+                                            <img class="img-rounded img-responsive" [src]="post.cover" style="width:150px;height:150px;">
+                                        </a>
+                                    </td>
+                                    <td><p class="cut-text font-weight-bold text-justify" placement="top" ngbTooltip="Viết bởi {{post.account.userName}}">{{post.title}}</p></td>
+                                    <td class="text-center">
+                                        <span *ngIf="post.status == 1 && !post.isDeleted" class="badge badge-warning">Chờ duyệt</span>
+                                        <span *ngIf="post.status == 2 && !post.isDeleted" class="badge badge-success">Đã xuất bản</span>
+                                        <span *ngIf="post.isDeleted" class="badge badge-dark">Đã bị gỡ</span>
+                                    </td>
+                                    <td class="text-center">{{post.publishedDate | date:'dd/MM/yy HH:mm'}}</td>
+                                    <!-- Hidden -->
+                                    <td class="text-center">{{post.createdDate}}</td>
+                                    <td *ngIf="isSuperAdmin && !post.isDeleted" class="text-center">
+                                        <button (click)="deletePost(post.id)" class="btn btn-sm btn-danger"><i class="fa fa-remove"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>    
+            </div>       
+        </div>
+    </div>
+</div>

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using MovieReviewsAndTickets_API.Helpers;
 using MovieReviewsAndTickets_API.Models;
 
 namespace MovieReviewsAndTickets_API.Controllers
@@ -40,9 +43,11 @@ namespace MovieReviewsAndTickets_API.Controllers
 
             return reviewLike;
         }
-        
+
 
         //Post like hoặc unlike review -> movie-details/review-list
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.Writer + "," + RolesHelper.User)]
         [HttpPost]
         public async Task<ActionResult<ReviewLike>> PostReviewLike(ReviewLike reviewLike)
         {

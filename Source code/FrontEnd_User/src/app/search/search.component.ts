@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'app/api.service';
 import { Location } from '@angular/common';
-import { MovieWithAvgRatings } from 'app/manage-movies/model';
+import { MovieWithAvgRatings } from '../movie-list/model';
 import { AuthenticationService } from 'app/authentication/authentication.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'app/toast/toast.service';

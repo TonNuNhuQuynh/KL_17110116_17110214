@@ -1,0 +1,94 @@
+<!-- Sidebar -->
+<!-- <nav id="mySidenav" class="sidenav">
+    <div class="navbar-translate logo" style="width: auto">
+        <a [routerLink]="['/home']"><img src="assets/img/logo2.png" height="60%" width="70%" /></a>
+    </div>
+
+    <ul class="list-unstyled components">
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/writer/home']"><i class="nc-icon nc-bank"></i>  Trang chủ</a>
+        </li>
+        <li class="nav-item">
+            <a [routerLink]="['/writer/task-list']"><i class="nc-icon nc-bullet-list-67"></i>  Task</a></li>
+        <li class="nav-item">
+            <a [routerLink]="['/writer/post-list']"><i class="nc-icon nc-paper"></i>  Post</a>
+        </li>
+    </ul>
+</nav> -->
+
+<!-- Page Content -->
+<!-- <div id="content" style="background: #eef5f9;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+        <div class="container-fluid">
+            <button type="button"  class="btn btn-sm btn-danger" id="sidebarCollapse">
+                <i class="fa fa-bars" aria-hidden="true"></i> <div class="d-none d-md-inline">Moviefy Editor</div>
+            </button>
+
+            <div class="d-block d-sm-none align-items-center"><h6 style="color: #f5593d;">Moviefy Editor</h6></div>
+
+            <div class="ml-auto mr-2">
+                <a href="javascript:void(0)"><i class="nc-icon nc-bell-55"></i></a>
+            </div>
+
+            <div ngbDropdown class="d-inline-block dropdown" style="padding-right: inherit;">
+                <a class="avatar avatar-sm text-light" href="javascript:void(0)" id="dropdownBasic1" ngbDropdownToggle style="vertical-align: middle !important;">
+                    <img [src]="auth.currentAccountValue.user.image == null? './assets/img/user-default.png': auth.currentAccountValue.user.image" class="avatar-img img-circle img-no-padding">
+                </a>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-danger dropdown-menu-right">
+                    <a [routerLink]="['/writer']" class="dropdown-item">Moviefy Editor</a>
+                    <a [routerLink]="['/profile']" class="dropdown-item">Quản lý Tài khoản</a>
+                    <a [routerLink]="['/watchlist']" class="dropdown-item">Tủ phim</a>                
+                    <hr class="dropdown-divider">
+                    <a href="javascript:void(0)" (click)="logout()" class="dropdown-item">Đăng xuất</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="wrapper">
+        <router-outlet></router-outlet>
+    </div>
+</div>    -->
+
+<div class="wrapper">
+    <!-- Side bar -->
+    <div class="sidebar" data-color="black" data-active-color="danger">
+        <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="http://www.creative-tim.com" class="simple-text logo-mini">
+                  <div class="logo-image-small avatar avatar-sm">
+                    <img [src]="auth.currentAccountValue.user.image == null? './assets/img/user-default.png': auth.currentAccountValue.user.image" class="avatar-img img-circle img-no-padding">
+                  </div>
+                </a>
+                <a href="https://www.creative-tim.com" class="simple-text logo-normal">{{auth.currentAccountValue.username}}</a>
+            </div>
+            <ul class="nav">
+                <li routerLinkActive="active">
+                    <a [routerLink]="['/writer/home']"><i class="nc-icon nc-bank"></i><p style="font-weight: 600 !important;">Dashboard</p></a>
+                </li>
+                <li routerLinkActive="active">
+                    <a [routerLink]="['/writer/task-list']"><i class="nc-icon nc-bullet-list-67"></i><p style="font-weight: 600 !important;">Task</p></a>
+                </li>
+                <li routerLinkActive="active">
+                    <a [routerLink]="['/writer/post-list']"><i class="nc-icon nc-paper"></i><p style="font-weight: 600 !important;">Post</p></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-panel">
+        <!-- Navbar -->
+        <navbar-writer></navbar-writer>
+        <div class="content">
+            <router-outlet></router-outlet>
+        </div>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container-fluid">
+                <div class="pull-left">
+                    <a [routerLink]="['/home']"><img src="assets/img/logo2.png" /></a>
+                </div>
+                <div style="font-size: 1em;" class="pull-right copyright">&copy; 2021, made with <i class="fa fa-heart heart"></i> by Quynh & Duyen</div>      
+            </div>
+        </footer>        
+    </div>
+</div>
+

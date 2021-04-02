@@ -174,7 +174,6 @@ D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviews
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\MovieReviewsAndTickets_API.runtimeconfig.dev.json
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\MovieReviewsAndTickets_API.dll
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\MovieReviewsAndTickets_API.pdb
-D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\Microsoft.AspNet.Identity.Core.dll
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
@@ -336,5 +335,10 @@ D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviews
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson.dll
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\System.IO.Pipelines.dll
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\System.Text.Json.dll
+D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\obj\Debug\netcoreapp3.0\MovieReviewsAndTickets_API.csproj.CoreCompileInputs.cache
 D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\obj\Debug\netcoreapp3.0\MovieReviewsAndTickets_API.MvcApplicationPartsAssemblyInfo.cache
+D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\Google.Apis.dll
+D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\Google.Apis.Auth.PlatformServices.dll
+D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\Google.Apis.Auth.dll
+D:\2020_2021\KLTN\Repo\KL_17110116_17110214\Source code\MainBackEnd\MovieReviewsAndTickets_API\bin\Debug\netcoreapp3.0\Google.Apis.Core.dll

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'app/api.service';
-import { Account } from 'app/manage-accounts/model';
+import { Account } from '../authentication/model';
 import { ToastService } from 'app/toast/toast.service';
 
 @Component({

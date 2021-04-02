@@ -1,0 +1,165 @@
+<div class="row pt-4">
+  <!-- Number of completed tasks -->
+  <div class="col-sm-3 col-6">
+    <div class="card">
+      <div class="content">
+        <div class="row">
+          <div class="col-xs-5"><div class="icon-big icon-success text-center"><i class="fas fa-tasks"></i></div></div>
+          <div class="col-xs-7"><div class="numbers"><p>Finished tasks</p>{{finishTasks}}</div></div>
+        </div>
+        <div class="footer">
+          <hr>
+          <div class="stats"><i class="fas fa-sync-alt"></i> Cập nhật lúc {{now | date:'HH:mm'}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Number of tasks waiting for response -->
+  <div class="col-sm-3 col-6">
+    <div class="card">
+      <div class="content">
+        <div class="row">
+          <div class="col-xs-5"><div class="icon-big icon-danger text-center"><i class="far fa-clock-o" aria-hidden="true"></i></div></div>
+          <div class="col-xs-7"><div class="numbers"><p>Waiting tasks</p>{{waitingTasks}}</div></div>
+        </div>
+        <div class="footer">
+          <hr>
+          <div class="stats text-danger"><i class="fas fa-ellipsis-h"></i> <a class="text-danger" [routerLink]="['/writer/task-list']"> Xem thêm</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Number of published posts -->
+  <div class="col-sm-3 col-6">
+    <div class="card">
+      <div class="content">
+        <div class="row">
+          <div class="col-xs-5"><div class="icon-big icon-warning text-center"><i class="far fa-newspaper"></i></div></div>
+          <div class="col-xs-7"><div class="numbers"><p>Publishes</p>{{published}}</div></div>
+        </div>
+        <div class="footer">
+          <hr>
+          <div class="stats"><i class="fas fa-sync-alt"></i> Cập nhật lúc {{now | date:'HH:mm'}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Number of posts -->
+  <div class="col-sm-3 col-6">
+      <div class="card">
+        <div class="content">
+          <div class="row">
+            <div class="col-xs-5"><div class="icon-big icon-info text-center"><i class="far fa-sticky-note"></i></div></div>
+            <div class="col-xs-7"><div class="numbers"><p>Created posts</p>{{posts}}</div></div>
+          </div>
+          <div class="footer">
+            <hr>
+            <div class="stats text-danger"><i class="fas fa-ellipsis-h"></i> <a class="text-danger" [routerLink]="['/writer/post-list']"> Xem thêm</a></div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Recent notifications -->
+  <div class="col-sm-7 col-12">
+    <div class="card">
+      <div class="header"><h4 class="title">Thông báo gần đây</h4></div>
+      <div class="content">
+        <!-- Has notifications -->
+        <div *ngIf="notifications.length > 0" class="timeline timeline-xs">
+          <a class="timeline-item" *ngFor="let notification of notifications" href="{{notification.url}}&view={{notification.id}}">
+            <div class="timeline-item-marker">
+              <div class="timeline-item-marker-text">{{calculateDiff(notification.createdDate)}}</div>
+              <div class="timeline-item-marker-indicator" [ngClass]="{'bg-primary': notification.isViewed, 'bg-warning': !notification.isViewed}"></div>
+            </div>
+            <div class="timeline-item-content text-justify" style="color: black;"> {{notification.message}}</div>
+          </a>
+        </div>
+        <!-- No notification -->
+        <div *ngIf="notifications.length == 0" class="text-center">
+          <p class="h4 text-danger"><i class="fas fa-exclamation-circle"></i></p>
+          <p class="mb-0 text-danger h6">Chưa có thông báo nào</p>
+        </div>
+        <div class="footer">
+          <div class="stats">
+            <i class="fa fa-circle text-primary"></i> Đã đọc
+            <i class="fa fa-circle text-warning"></i> Chưa đọc
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Online writers -->
+  <div class="col-sm-5 col-12">
+    <div class="card">
+      <div class="header"><h4 class="title">Writers</h4></div>
+      <div class="content">
+        <!-- Has writers -->
+        <ng-container *ngIf="writers.length > 0">
+          <div class="row align-items-center" *ngFor="let r of writers">
+            <!-- Status -->
+            <div class="col-auto">
+              <div class="timeline-item-marker-indicator" style="border-radius: 50%;" [ngClass]="{'bg-success': r.active, 'bg-secondary': !r.active}"></div>
+              <!-- <i *ngIf="r.active" class="fa fa-circle text-success"></i>
+              <i *ngIf="!r.active" class="fa fa-circle text-secondary"></i> -->
+            </div>
+            <!-- Avatar -->
+            <div class="col-auto ml-1">
+              <a class="avatar">
+                <img *ngIf="r.image != null && r.image != ''" class="img-circle img-no-padding img-responsive avatar-img" [src]="r.image">
+                <img *ngIf="r.image == null || r.image == ''" class="img-circle img-no-padding img-responsive avatar-img" src="./assets/img/user-default.png">
+              </a>
+            </div>
+            <div class="col">
+              <div class="p mb-1" style="font-weight: 500;">{{r.username}}</div>
+            </div>
+          </div>
+        </ng-container>
+        <!-- No writer -->
+        <div *ngIf="writers.length == 0" class="text-center">
+          <p class="h4 text-danger"><i class="fas fa-exclamation-circle"></i></p>
+          <p class="mb-0 text-danger h6">Chưa có writer nào</p>
+        </div>
+        <div class="footer">
+          <div class="stats">
+            <i class="fa fa-circle text-success"></i> Online
+            <i class="fa fa-circle text-secondary"></i> Offline
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Task progress -->
+  <div class="col-12">
+    <div class="card">
+      <div class="header"><h4 class="title">Các Task gần đây</h4></div>
+      <!-- Has tasks -->
+      <div class="content" *ngIf="tasks.length > 0 && progress.length > 0">
+        <ng-container *ngFor="let task of tasks; let i=index">
+          <div class="row align-items-center">
+            <div class="col-auto">
+              <p class="small font-weight-bold text-truncate">{{task.title}}</p>
+            </div>
+            <div class="col"><p class="small float-right">{{progress[i].status}}</p></div>
+          </div>
+          <div class="progress mb-4">
+            <div class="progress-bar" [ngClass]="{'bg-secondary': task.status == 1, 'bg-primary': task.status == 2, 'bg-warning': task.status == 3, 'bg-success': task.status == 4, 'bg-danger': task.status == 5, 'bg-dark': task.status == 6}" role="progressbar" [style.width]="progress[i].percent+'%'" [attr.aria-valuenow]="progress[i].percent" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </ng-container>
+      </div>
+      <!-- No task -->
+      <div *ngIf="tasks.length == 0 && progress.length == 0" class="content text-center">
+        <p class="h4 text-danger"><i class="fas fa-exclamation-circle"></i></p>
+        <p class="mb-0 text-danger h6">Chưa có task nào</p>
+      </div>
+    </div>
+  </div>
+</div>

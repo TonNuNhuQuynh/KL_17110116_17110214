@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'app/api.service';
-import { CinemasInCity, CinemaVM } from 'app/manage-chains/model';
+import { CinemasInCity, CinemaVM } from './model';
 import { LocationService } from 'app/location.service';
 
 @Component({

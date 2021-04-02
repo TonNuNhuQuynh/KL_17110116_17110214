@@ -6,15 +6,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { ComponentsComponent } from './components/components.component';
 
 //New import
-import { AddMovieComponent } from './add-movie/add-movie.component';
-import { ManageMoviesComponent } from './manage-movies/manage-movies.component';
-import { ManageAccountsComponent } from './manage-accounts/manage-accounts.component';
-import { ManageCinemaChainsComponent } from './manage-chains/manage-cinema-chains.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { RoleGuardService as RoleGuard } from './authentication/role-guard.service';
-import { RolesService as Roles} from './manage-accounts/roles.service';
+import { RolesService as Roles} from './authentication/roles.service';
 import { MovieListComponent } from './movie-list/movie-list.component';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { ReviewListComponent } from './movie-details/review-list/review-list.component';
@@ -31,7 +27,13 @@ import { SendEmailComponent } from './reset-password/send-email/send-email.compo
 import { CinemaChainComponent } from './cinema-chain/cinema-chain.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { WatchlistComponent } from './watchlist/watchlist.component';
-import { StatisticsComponent } from './statistics/statistics.component';
+import { WriterComponent } from './writer/writer.component';
+import { HomeComponent } from './writer/home/home.component';
+import { PostListComponent } from './writer/post-list/post-list.component';
+import { PostDetailsComponent } from './writer/post-details/post-details.component';
+import { TaskListComponent } from './writer/task-list/task-list.component';
+import { TaskDetailsComponent } from './writer/task-details/task-details.component';
+import { PostReviewComponent } from './writer/post-review/post-review.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -85,40 +87,22 @@ const routes: Routes = [
     //Admin
     { path: 'admin', redirectTo: 'admin/statistics'},
 
-    { 
-      path: 'admin/statistics', 
-      component: StatisticsComponent,
-      canActivate: [RoleGuard], 
-      data: { expectedRoles: [Roles.admin, Roles.superAdmin]}
+    // Writer
+    { path: 'writer', redirectTo: 'writer/home'},
+    { path: 'writer', 
+      canActivate: [RoleGuard],
+      data: { expectedRoles: [Roles.writer] },
+      component: WriterComponent, 
+      children: 
+      [ 
+        { path: 'home', component: HomeComponent }, 
+        { path: 'post-list', component: PostListComponent }, 
+        { path: 'post-details', component: PostDetailsComponent },
+        { path: 'task-list', component: TaskListComponent },
+        { path: 'task-details', component: TaskDetailsComponent },
+      ] 
     },
-
-    { 
-      path: 'admin/add-movie',
-      component: AddMovieComponent,
-      canActivate: [RoleGuard], 
-      data: { expectedRoles: [Roles.admin, Roles.superAdmin]}
-    },
-
-    { 
-      path: 'admin/manage-movies', 
-      component: ManageMoviesComponent,
-      canActivate: [RoleGuard], 
-      data: { expectedRoles: [Roles.admin, Roles.superAdmin] } 
-    },
-
-    { 
-      path: 'admin/manage-accounts',
-      component: ManageAccountsComponent,
-      canActivate: [RoleGuard], 
-      data: { expectedRoles: [Roles.admin, Roles.superAdmin] }
-    },
-
-    { 
-      path: 'admin/manage-chains',
-      component: ManageCinemaChainsComponent,
-      canActivate: [RoleGuard], 
-      data: { expectedRoles: [Roles.superAdmin] }
-    },
+    { path: 'review', component: PostReviewComponent },
 ];
 
 @NgModule({

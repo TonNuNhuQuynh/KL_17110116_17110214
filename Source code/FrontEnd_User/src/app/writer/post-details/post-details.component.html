@@ -1,0 +1,144 @@
+<div class="row">
+    <div class="col-12">
+        <br>
+        <br>
+        <div class="card card-user">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">{{name}}</h5>
+                    <div>
+                        <h6 *ngIf="post.id != 0 && post.status == 0" class="badge badge-primary">Đang viết</h6>
+                        <h6 *ngIf="post.status == 1" class="badge badge-warning">Đã gửi</h6>
+                        <h6 *ngIf="post.status == 2" class="badge badge-success">Đã xuất bản</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Post info -->
+            <div class="card-body" *ngIf="!isError">
+                <form>
+                    <!-- Title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Tên bài viết (*)</label>
+                                <textarea (ngModelChange)="titleCount($event)" type="text" class="form-control" name="title" #title="ngModel" required [(ngModel)]="post.title" rows="1" [ngClass]="{'is-invalid': (title.invalid || invalidTitle)  && (title.touched || title.dirty)}" [readonly]="post.status == 2"></textarea>
+                                <ng-container *ngIf="(title.invalid || invalidTitle)  && (title.touched || title.dirty)">
+                                    <div class="text-danger" *ngIf="title.invalid && !invalidTitle"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
+                                    <div class="text-danger" *ngIf="invalidTitle"><i class="fa fa-exclamation-circle"></i> Tựa bài viết trong khoảng từ 5 - 60 từ</div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Summary -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Lời mở đầu bài viết (*)</label>
+                                <textarea (ngModelChange)="summaryCount($event)" rows="2" type="text" class="form-control" name="summary" #summary="ngModel" required [(ngModel)]="post.summary" [ngClass]="{'is-invalid': (summary.invalid || invalidSummary) && (summary.touched || summary.dirty)}" [readonly]="post.status == 2"></textarea>
+                                <ng-container *ngIf="(summary.invalid || invalidSummary) && (summary.touched || summary.dirty)">
+                                    <div class="text-danger" *ngIf="summary.invalid"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
+                                    <div class="text-danger" *ngIf="invalidSummary"><i class="fa fa-exclamation-circle"></i> Lời mở đầu trong khoảng từ 5 - 70 từ</div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Nội dung bài viết (*)</label>
+                                <ckeditor id="editor" [editor]="Editor" [(ngModel)]="post.content" (focus)="onFocus()" (blur)="onFocus()" name="content" [disabled]="post.status == 2"></ckeditor>
+                                <div class="text-danger" *ngIf="invalidContent"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <!-- Post type vs Post theme -->
+                        <div class="col-md-6 col-sm-12 pr-1">
+                            <div class="form-group">
+                                <label>Loại bài viết (*)</label>
+                                <select name="type" #type="ngModel" required [ngClass]="{'is-invalid': post.postTypeId == 0 && type.touched}" [(ngModel)]="post.postTypeId" class="form-control" [disabled]="post.status == 2">
+                                    <option *ngFor="let t of types" [ngValue]="t.id">{{t.name}}</option>
+                                </select>
+                                <div class="text-danger" *ngIf="post.postTypeId == 0 && type.touched"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
+                            </div>
+                            <div class="form-group">
+                                <label>Chuyên đề bài viết</label>
+                                <select name="theme" #theme="ngModel" [(ngModel)]="post.postThemeId" class="form-control" [disabled]="post.status == 2">
+                                    <option [ngValue]="null"></option>
+                                    <option *ngFor="let t of themes" [ngValue]="t.id">{{t.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Post cover vs spoiler -->
+                        <div class="col-md-6 col-sm-12 pl-1">
+                            <div class="form-group">
+                                <label>Ảnh bìa (*)</label>
+                                <div class="custom-file mb-3">
+                                    <input type="file" required #cover="ngModel" ngModel class="custom-file-input" id="customFile" name="cover" [readonly]="post.status == 2">
+                                    <label class="custom-file-label text-truncate" style="font-size: 14px;" for="customFile">Choose file</label>
+                                </div>
+                                <ng-container *ngIf="(invalidFile || cover.invalid) && (cover.touched || cover.dirty)">
+                                    <div class="text-danger" *ngIf="cover.invalid && post.id == 0"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
+                                    <div class="text-danger" *ngIf="invalidFile"><i class="fa fa-exclamation-circle"></i> Upload file với định dạng .jpg, .png, .jpeg</div>
+                                </ng-container>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" [(ngModel)]="post.spoilers" name="checkbox" [readonly]="post.status == 2">
+                                    <label class="form-check-label" for="movie_rating_spoiled"> Bài viết có chứa spoiler?</label>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!-- Keywords & Movie -->
+                    <div class="row">
+                        <!-- Keywords -->
+                        <div class="col-md-6 col-sm-12 pr-1">
+                            <div class="form-group">
+                                <label>Các từ khóa (viết cách nhau bởi dấu '/')</label>
+                                <input type="text" class="form-control" name="keywords" #keywords="ngModel" [(ngModel)]="post.keywords" [readonly]="post.status == 2"/>
+                            </div>
+                        </div>
+                        <!-- Movie -->
+                        <div class="col-md-6 col-sm-12 pl-1">
+                            <div class="form-group">
+                                <label>Liên quan đến phim</label>
+                                <input [readonly]="post.status == 2" id="typeahead-prevent-manual-entry" name="movie" type="text" class="form-control"
+                                       [(ngModel)]="relatedMovie"
+                                       [ngbTypeahead]="search"
+                                       [inputFormatter]="formatter"
+                                       [resultFormatter]="formatter"
+                                       [editable]='false' #instance="ngbTypeahead"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Task -->
+                    <div *ngIf="post.task != null" class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label>Bài viết nộp cho task</label>
+                                <input type="text" class="form-control" readonly name="task" [value]="post.task.title">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Actions -->
+                    <div class="row">
+                        <div class="update ml-auto mr-auto">
+                            <button class="btn btn-success" *ngIf="post.id != 0 && post.status < 1" [disabled]="!isLoaded" (click)="sendPost()">Gửi bài</button>
+                            <button class="btn btn-info"  *ngIf="post.status != 2" [disabled]="title.invalid || invalidTitle || summary.invalid || invalidSummary || invalidContent || post.postTypeId == 0 || (cover.invalid && post.id == 0) || invalidFile || !isLoaded" (click)="savePost()">Lưu</button>
+                            <button class="btn btn-light" *ngIf="post.id != 0" [disabled]="!isLoaded" (click)="reviewPost()">Xem trước</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Post bị super admin gỡ  -->
+            <div *ngIf="isError" class="card-body text-center text-muted">
+                <p class="h2 text-danger"><i class="fas fa-exclamation-circle"></i></p>
+                <p class="mb-0 text-danger h6">Không tìm thấy post. Có thể post đã bị gỡ xuống</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
-import { Account } from 'app/manage-accounts/model';
+import { Account } from '../../authentication/model';
 
 @Component({
   selector: 'app-login-modal',

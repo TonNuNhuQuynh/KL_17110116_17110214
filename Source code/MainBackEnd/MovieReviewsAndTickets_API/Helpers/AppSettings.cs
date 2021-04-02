@@ -10,6 +10,6 @@ namespace MovieReviewsAndTickets_API.Helpers
         // Sendgrind
         public string SendGridKey { get; set; }
         public string SendGridUser { get; set; }
-
+        public string SecretKey { get; set; }
     }
 }

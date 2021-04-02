@@ -1,0 +1,15 @@
+@import '../../../assets/sass/paper-dashboard.scss';
+
+.card:not(.card-plain):hover 
+{
+    box-shadow: none;
+    transform: none;
+    -webkit-transform: none;
+    -ms-transform: none;
+    -moz-transform: none;
+}
+
+.table > thead > tr > th 
+{
+    text-transform: none;
+}

@@ -52,6 +52,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { LoginComponent } from './login/login.component';
 
 import { JwtModule } from '@auth0/angular-jwt';
+import { ManagePostsComponent } from './manage-posts/manage-posts.component';
+import { PostReviewComponent } from './manage-posts/post-review/post-review.component';
 
 export function tokenGetter() {
   return sessionStorage.getItem(StorageService.token)? sessionStorage.getItem(StorageService.token): localStorage.getItem(StorageService.token);
@@ -81,6 +83,8 @@ export function tokenGetter() {
     ManageTasksComponent,
     TaskModalComponent,
     LoginComponent,
+    ManagePostsComponent,
+    PostReviewComponent
   ],
   imports: [
     BrowserModule,

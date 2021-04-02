@@ -1,0 +1,69 @@
+@import '../../assets/sass/paper-dashboard.scss';
+.avatar-sm {
+	width: 2.5rem !important;
+	height: 2.5rem !important;
+	font-size: .83333rem;
+}
+.avatar {
+	position: relative;
+	display: inline-block;
+	width: 3rem;
+	height: 3rem;
+	font-size: 1rem;
+}
+.avatar-img {
+	width: 100%;
+	height: 100%;
+	-o-object-fit: cover;
+	object-fit: cover;
+}
+.footer
+{
+    padding: 0px 0px;
+}
+a.logo-mini
+{
+    width: auto !important;
+}
+.footer
+{
+    border-top: 1px solid #ddd;
+    background-color: #f4f3ef;
+}
+@media screen and (max-width: 991px)
+{
+	.nav-open :host ::ng-deep .sidebar {
+		-webkit-transform: translate3d(0,0,0);
+		transform: translate3d(0,0,0);
+	}
+}
+@media screen and (max-width: 991px)
+{
+	.nav-open :host ::ng-deep .main-panel {
+		right: 0;
+		-webkit-transform: translate3d(260px,0,0);
+		transform: translate3d(260px,0,0);
+	}
+}
+@media screen and (max-width: 991px)
+{
+	.nav-open :host ::ng-deep .wrapper {
+		transform: none;
+	}
+}
+@media screen and (max-width: 991px)
+{
+    .fixed-top .navbar-collapse {
+        background-color: white;
+        float: none;
+    }
+}
+@media screen and (max-width: 991px)
+{
+    .wrapper .navbar-collapse {
+        display: block;
+    }
+}
+
+
+

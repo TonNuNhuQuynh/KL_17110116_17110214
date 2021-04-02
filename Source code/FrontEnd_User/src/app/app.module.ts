@@ -14,13 +14,11 @@ import { DatePipe } from '@angular/common';
 
 //Components
 import { AddMovieComponent } from './add-movie/add-movie.component';
-import { ManageMoviesComponent } from './manage-movies/manage-movies.component';
 
 //Services
 import { ApiService } from './api.service';
-import { RolesService } from './manage-accounts/roles.service';
+import { RolesService } from './authentication/roles.service';
 import { AuthenticationService } from './authentication/authentication.service';
-import { MovieModalComponent } from './shared/movie-modal/movie-modal.component';
 import { ToastService } from './toast/toast.service';
 import { RoleGuardService as RoleGuard } from './authentication/role-guard.service';
 // import { LocationService } from './location.service';
@@ -31,13 +29,8 @@ import { BookingGuardService as BookingGuard } from './book-tickets/booking-guar
 import { MultiSelectAllModule } from '@syncfusion/ej2-angular-dropdowns';
 import { DropDownListModule } from '@syncfusion/ej2-angular-dropdowns';
 import { DataTablesModule } from 'angular-datatables';
-import { MovieCastModalComponent } from './manage-movies/movie-cast-modal/movie-cast-modal.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ManageAccountsComponent } from './manage-accounts/manage-accounts.component';
-import { AddAdminModalComponent } from './manage-accounts/add-admin-modal/add-admin-modal.component';
-import { ManageCinemaChainsComponent } from './manage-chains/manage-cinema-chains.component';
-import { EditCinemaModalComponent } from './manage-chains/edit-cinema-modal/edit-cinema-modal.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
@@ -64,27 +57,28 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { SendEmailComponent } from './reset-password/send-email/send-email.component';
 import { CinemaChainComponent } from './cinema-chain/cinema-chain.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { UpdatesComponent } from './manage-chains/updates/updates.component';
-import { WaitingComponent } from './manage-chains/waiting/waiting.component';
-import { WatchlistComponent } from './watchlist/watchlist.component';
-import { StatisticsComponent } from './statistics/statistics.component'; 
+
 // Firebase
 import { AngularFireModule } from "@angular/fire";
 import { AngularFireStorageModule, AngularFireStorage } from "@angular/fire/storage";
 import { environment } from "../environments/environment";
+import { WatchlistComponent } from './watchlist/watchlist.component';
+import { WriterComponent } from './writer/writer.component';
+import { HomeComponent } from './writer/home/home.component';
+import { NavbarWriterComponent } from './writer/navbar-writer/navbar-writer.component';
+import { PickTaskComponent } from './writer/pick-task/pick-task.component';
+import { PostDetailsComponent } from './writer/post-details/post-details.component';
+import { PostListComponent } from './writer/post-list/post-list.component';
+import { PostReviewComponent } from './writer/post-review/post-review.component';
+import { TaskDetailsComponent } from './writer/task-details/task-details.component';
+import { TaskListComponent } from './writer/task-list/task-list.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     FooterComponent,
     AddMovieComponent,
-    ManageMoviesComponent,
-    MovieModalComponent,
-    MovieCastModalComponent,
-    ManageAccountsComponent,
-    AddAdminModalComponent,
-    ManageCinemaChainsComponent,
-    EditCinemaModalComponent,
     ProfileComponent,
     RegisterComponent,
     VerifyEmailComponent,
@@ -109,10 +103,16 @@ import { environment } from "../environments/environment";
     SendEmailComponent,
     CinemaChainComponent,
     NotFoundComponent,
-    UpdatesComponent,
-    WaitingComponent,
     WatchlistComponent,
-    StatisticsComponent,
+    WriterComponent,
+    TaskListComponent,
+    PostListComponent,
+    TaskDetailsComponent,
+    PostDetailsComponent,
+    HomeComponent,
+    PostReviewComponent,
+    NavbarWriterComponent,
+    PickTaskComponent
   ],
   imports: [
     BrowserModule,

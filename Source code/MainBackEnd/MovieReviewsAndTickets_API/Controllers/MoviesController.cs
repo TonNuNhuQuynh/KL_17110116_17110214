@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using MovieReviewsAndTickets_API.Helpers;
 using MovieReviewsAndTickets_API.Models;
 using MovieReviewsAndTickets_API.ViewModels;
 
@@ -23,6 +26,8 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // GET: api/Movies - Lấy list movie -> manage-movies
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.SuperAdmin + "," + RolesHelper.Admin)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MovieVM>>> GetMovies()
         {
@@ -74,14 +79,12 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // PUT: api/Movies/5 - Sửa chi tiết movie -> movie-modal
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.SuperAdmin + "," + RolesHelper.Admin)]
         [HttpPut("{id}")]
         public async Task<ActionResult<Movie>> PutMovie(int id, Movie movie)
         {
-            if (id != movie.Id)
-            {
-                return BadRequest();
-            }
-
+            if (id != movie.Id) return BadRequest();
             _context.Entry(movie).State = EntityState.Modified;
 
             try
@@ -90,20 +93,16 @@ namespace MovieReviewsAndTickets_API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MovieExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                if (!MovieExists(id)) return NotFound();
+                else throw;
             }
-
+            movie.Language = await _context.Languages.FindAsync(movie.LanguageId);
             return movie;
         }
 
         // POST: api/Movies - thêm movie -> add-movie
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.SuperAdmin + "," + RolesHelper.Admin)]
         [HttpPost]
         public async Task<ActionResult<Movie>> PostMovie(Movie movie)
         {
@@ -116,6 +115,8 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // DELETE: api/Movies/5 - Xóa phim -> manage-movies
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.SuperAdmin + "," + RolesHelper.Admin)]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Movie>> DeleteMovie(int id)
         {
@@ -150,18 +151,12 @@ namespace MovieReviewsAndTickets_API.Controllers
         {
             var reviews = await _context.Reviews.ToListAsync();
             var movies = await _context.Movies.ToListAsync();
-            List<Movie> top4Movies = movies.Where(m => m.IsDeleted == false)
-                                           .OrderByDescending(m => AvgRatingsAsync(reviews.Where(r => r.MovieId == m.Id && r.IsDeleted == false).ToList()))
-                                           .ThenByDescending(m => reviews.Where(r => r.MovieId == m.Id && r.IsDeleted == false).ToList().Count)
-                                           .Take(4).ToList();
-            
-            List<MovieVM> lstMovies = new List<MovieVM>();
-            foreach (var m in top4Movies)
-            {
-                float avgRatings = AvgRatingsAsync(reviews.Where(r => r.MovieId == m.Id && r.IsDeleted == false).ToList());
-                lstMovies.Add(new MovieVM() { Movie = m, Ratings = avgRatings });
-            }
-            return lstMovies;
+            List<MovieVM> top4Movies = movies.Where(m => m.IsDeleted == false)
+                                            .Select(m => new MovieVM() { Movie = m, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == m.Id && r.IsDeleted == false).ToList()) })
+                                            .OrderByDescending(m => m.Ratings)
+                                            .ThenByDescending(m => reviews.Where(r => r.MovieId == m.Movie.Id && r.IsDeleted == false).ToList().Count)
+                                            .Take(4).ToList();
+            return top4Movies;
         }
 
         // GET: api/Movies/Weekly - Lấy <= 30 phim yêu thích trong tuần -> home
@@ -185,26 +180,9 @@ namespace MovieReviewsAndTickets_API.Controllers
             return weeklyFavMovies;
         }
 
-        // GET: api/Movies/Search - Seach phim theo tên, diễn viên, đạo diễn hoặc nsx -> search
-        [HttpGet("Search")]
-        public async Task<ActionResult<IEnumerable<MovieVM>>> GetSearchMovies([FromQuery(Name = "name")] string name, [FromQuery(Name = "actor")] string actor, [FromQuery(Name = "director")] string director, [FromQuery(Name = "producer")] string producer)
-        {
-            List<Movie> searchMovies;
-            if (name != null) searchMovies = await _context.Movies.Where(m => m.Title.ToLower()
-                                                                  .Contains(name.ToLower()) || m.OriginalTitle.ToLower().Contains(name.ToLower()) && m.IsDeleted == false)
-                                                                  .ToListAsync();
-            else if (director != null) searchMovies = await _context.Movies.Where(m => m.Directors.ToLower().Contains(director.ToLower()) && m.IsDeleted == false).ToListAsync();
-            else if (producer != null) searchMovies = await _context.Movies.Where(m => m.Producers.ToLower().Contains(director.ToLower()) && m.IsDeleted == false).ToListAsync();
-            else
-            {
-                var lstMovieIds = await _context.Casts.Where(c => c.Name.ToLower().Contains(actor.ToLower())).Select(m => m.MovieId).ToListAsync();
-                searchMovies = await _context.Movies.Where(m => lstMovieIds.Contains(m.Id) && m.IsDeleted == false).ToListAsync();
-            }
-            var reviews = await _context.Reviews.ToListAsync();
-            return searchMovies.Select(m => new MovieVM() { Movie = m, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == m.Id && r.IsDeleted == false).ToList()) }).ToList();
-        }
-
         // GET: api/Movies/Watchlist - lấy tủ phim của user
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.Writer + "," + RolesHelper.User)]
         [HttpGet("Watchlist/{accountId}")]
         public async Task<ActionResult<IEnumerable<object>>> GetWatchlist(int accountId)
         {
@@ -226,8 +204,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         public async Task<ActionResult<IEnumerable<object>>> GetLatestTrailers()
         {
             var latest = await _context.Movies.Where(m => !m.IsDeleted && (m.Trailer != null && m.Trailer != ""))
-                                                 .OrderByDescending(m => m.ReleaseDate)
-                                                 .Take(5)
+                                                 .OrderByDescending(m => m.ReleaseDate).Take(5)
                                                  .Select(r => new { Id = r.Id, Title = r.Title, Backdrop = r.Backdrop, ReleaseDate = r.ReleaseDate, Trailer = r.Trailer })
                                                  .ToListAsync();
             return latest;

@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-12">
+        <br>
+        <br>
+        <div class="card">
+            <div class="card-header"><h4 class="card-title">Danh sách các task được giao</h4></div>
+            <div class="card-body">
+                <!-- Filters -->
+                <div class="col-12">
+                    <div class="row align-items-ceter" style="flex: 1;">
+                        <div class="col-auto">
+                            <div ngbDropdown class="d-inline-block btn-block mb-4">
+                                <button class="btn btn-block form-control" id="dropdownMenu1" ngbDropdownToggle>{{sSelectAll}}</button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                                    <button (click)="filterStatuses(-1, 'Trạng thái')" class="dropdown-item"><i class="fa fa-circle text-white" aria-hidden="true"></i> Tất cả</button>
+                                    <button (click)="filterStatuses(1, 'Chờ phản hồi')" class="dropdown-item"><i class="fa fa-circle text-secondary" aria-hidden="true"></i> Chờ phản hồi</button>
+                                    <button (click)="filterStatuses(2, 'Đang thực hiện')" class="dropdown-item"><i class="fa fa-circle text-primary" aria-hidden="true"></i> Đang thực hiện</button>
+                                    <button (click)="filterStatuses(3, 'Cần duyệt')" class="dropdown-item"><i class="fa fa-circle text-warning" aria-hidden="true"></i> Cần duyệt</button>
+                                    <button (click)="filterStatuses(4, 'Đã duyệt')" class="dropdown-item"><i class="fa fa-circle text-success" aria-hidden="true"></i> Đã duyệt</button>
+                                    <button (click)="filterStatuses(5, 'Sắp hết hạn')" class="dropdown-item"><i class="fa fa-circle text-danger" aria-hidden="true"></i> Sắp hết hạn</button>
+                                    <button (click)="filterStatuses(6, 'Hết hạn')" class="dropdown-item"><i class="fa fa-circle text-dark" aria-hidden="true"></i> Hết hạn</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Task List -->
+                <div class="col-12" id="overlap">
+                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="table" class="table table-striped table-hover table-responsive-lg">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="text-center" scope="col">Trạng thái</th>
+                                <th class="text-center" scope="col">Tựa đề</th>
+                                <th class="text-center" scope="col">Deadline</th>
+                                <th class="text-center" scope="col">Người giao</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody >
+                            <tr *ngFor='let task of filterTasks'>
+                                <td class="text-center" [ngClass]="{'text-secondary': task.status == 1, 'text-primary': task.status == 2, 'text-warning': task.status == 3, 'text-success': task.status == 4, 'text-danger': task.status == 5, 'text-dark': task.status == 6}">
+                                    <i *ngIf="task.status != 0" class="fa fa-circle" aria-hidden="true"></i>
+                                </td>
+                                <td><p class="cut-text text-justify mb-3">{{task.title}}</p></td>
+                                <td class="text-center">{{task.deadline | date:'dd/MM/yy HH:mm'}}</td>
+                                <td class="text-center text-justify">{{task.creator.userName}}</td>
+                                <td class="text-center">{{task.createdDate}}</td>
+                                <td>
+                                    <!-- View task  -->
+                                    <a type="button" class="btn btn-info btn-sm" [routerLink]="['/writer/task-details']" [queryParams]="{ id: task.id }"><i class="far fa-eye"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

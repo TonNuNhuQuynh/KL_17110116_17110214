@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'app/api.service';
-import { CinemaVM } from 'app/manage-chains/model';
+import { CinemaVM } from '../../cinema-details/model';
 
 @Component({
   selector: 'app-cinemas-modal',

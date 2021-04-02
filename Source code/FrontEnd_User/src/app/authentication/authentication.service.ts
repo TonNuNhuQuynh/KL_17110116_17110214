@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Account } from 'app/manage-accounts/model'
+import { Account } from './model'
 import { ActivityStorage, ReviewLike } from './model';
 import { StorageService } from 'app/storage.service';
 import * as CryptoJS from 'crypto-js';

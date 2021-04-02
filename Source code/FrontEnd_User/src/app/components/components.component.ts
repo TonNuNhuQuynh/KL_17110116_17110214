@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbCarousel, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
-import { MovieWithAvgRatings } from 'app/manage-movies/model';
+import { MovieWithAvgRatings } from '../movie-list/model';
 import { LoginModalComponent } from 'app/shared/login-modal/login-modal.component';
 import { Movie } from 'app/shared/movie-modal/model';
 import { RateModalComponent } from 'app/shared/rate-modal/rate-modal.component';
