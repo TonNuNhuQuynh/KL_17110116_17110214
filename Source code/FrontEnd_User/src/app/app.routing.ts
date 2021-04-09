@@ -34,6 +34,7 @@ import { PostDetailsComponent } from './writer/post-details/post-details.compone
 import { TaskListComponent } from './writer/task-list/task-list.component';
 import { TaskDetailsComponent } from './writer/task-details/task-details.component';
 import { PostReviewComponent } from './writer/post-review/post-review.component';
+import { NewsListComponent } from './news-list/news-list.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -84,9 +85,7 @@ const routes: Routes = [
       data: { expectedRoles: [Roles.admin, Roles.superAdmin, Roles.user]}
     },
 
-    //Admin
-    { path: 'admin', redirectTo: 'admin/statistics'},
-
+  
     // Writer
     { path: 'writer', redirectTo: 'writer/home'},
     { path: 'writer', 
@@ -103,6 +102,9 @@ const routes: Routes = [
       ] 
     },
     { path: 'review', component: PostReviewComponent },
+    { path: 'news/type/:type', component: NewsListComponent },
+    { path: 'news/theme/:theme', component: NewsListComponent },
+    { path: 'news/tag/:tag', component: NewsListComponent },
 ];
 
 @NgModule({

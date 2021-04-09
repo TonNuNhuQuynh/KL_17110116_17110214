@@ -129,8 +129,8 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // GET: api/Posts/Settings - Lấy danh mục: phim, chủ đề và phân loại cho bài viết -> post-details
-        [HttpGet("Settings/{userId}")]
-        public async Task<ActionResult<object>> GetPostSettings(int userId)
+        [HttpGet("Settings")]
+        public async Task<ActionResult<object>> GetPostSettings()
         {
             var types = await _context.PostTypes.ToListAsync();
             var themes = await _context.PostThemes.ToListAsync();

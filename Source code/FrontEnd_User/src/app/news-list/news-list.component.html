@@ -1,0 +1,118 @@
+<div class="wrapper">
+    <div class="documentation page-header page-header-small" id="landing-wrapper" >
+        <div class="filter"></div>
+        <div class="motto">
+            <br>
+            <ng-container *ngIf="type != 0 || theme != 0">
+                <h4 class="title-uppercase text-center">{{title.name}}</h4>
+                <br>
+                <h5 class="text-center">{{title.description}}</h5>
+            </ng-container>
+            <ng-container *ngIf="tag != null">
+                <h4 class="title-uppercase text-center">{{tag}}</h4>
+                <br>
+                <h5 class="text-center">Tổng hợp bài viết liên quan đến {{tag}}</h5>
+            </ng-container>
+            <br>
+        </div>
+    </div>
+    <div class="main">
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <!-- News list -->
+                    <div class="col-sm-8 col-12">
+                        <div class="card">
+                            <div class="card-header bg-light"><div class="card-header-title text-muted">Bài viết mới nhất</div></div>
+                            <!-- Loading -->
+                            <div *ngIf="!isLoaded" class="card-body text-center">
+                                <div class="spinner-border text-danger" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </div>
+                            <!-- No news -->
+                            <div *ngIf="isLoaded && posts.length == 0" class="card-body text-center text-muted">
+                                <p class="h2 summary-rating-percentage"><i class="fa fa-ban"></i></p>
+                                <p class="mb-0">Chưa có bài viết cho chủ đề <strong class="text-danger font-weight-bold">{{title.name}}</strong>.</p>
+                            </div>
+                            <!-- Has news -->
+                            <div *ngIf="isLoaded && posts.length > 0" class="card-body">
+                                <ng-container *ngFor="let post of posts; let first=first">
+                                    <hr *ngIf="!first">
+                                    <div class="row">
+                                        <div class="col-sm-4 col-12">
+                                            <a [routerLink]="['/post', post.id]">
+                                                <img class="img-rounded img-no-padding img-responsive avatar-img" [src]="post.cover">
+                                            </a>
+                                        </div>
+                                        <div class="col ml-2">
+                                            <p class="mb-1 text-justify" style="font-weight: 600;">{{post.title}}</p>
+                                            <p class="mb-0 small">
+                                                <a class="text-danger" style="font-weight: 510;" *ngIf="post.postType.id != type" [routerLink]="['/news/type', post.postTypeId]">{{post.postType.name}} ·</a>
+                                                <a class="text-danger" style="font-weight: 510;" *ngIf="post.postTheme != null && post.postTheme.id != theme" [routerLink]="['/news/theme', post.postThemeId]"> {{post.postTheme.name}} ·</a>
+                                                <a class="text-danger" style="font-weight: 510;"> {{post.account.userName}} ·</a>
+                                                <a class="text-muted"> {{post.publishedDate | date:'dd/MM/yyyy'}}</a>
+                                            </p>
+                                            <p class="text-muted mt-2 mb-0 d-none d-sm-block text-justify" style="font-size: 14px !important;">{{post.summary}}</p>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <!-- Load more -->
+                                <button *ngIf="posts.length < total" (click)="loadMore()" class="btn btn-light btn-block mb-3">Xem thêm</button>
+                                <div *ngIf="isLoadedMore" class="col-12 text-center">
+                                    <div class="spinner-border text-danger" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- References -->
+                    <div class="col-sm-4 col-12">
+                        <!-- Post types -->
+                        <div *ngIf="type != 0" class="card">
+                            <div class="card-header bg-light"><div class="card-header-title text-muted">Chuyên mục</div></div>
+                            <div class="card-body">
+                                <div *ngFor="let type of types; let last=last" [ngClass]="{'border-bottom': !last}">
+                                    <div class="row align-items-center pl-2 pr-2 pb-2 pt-2">
+                                        <div class="col">
+                                            <a class="p text-danger mb-1" style="font-weight: 510;" [routerLink]="['/news/type', type.id]">{{type.name}}</a>
+                                            <p class="small text-muted mb-0 text-justify">{{type.description}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Reviews of theme -->
+                        <div *ngIf="theme != 0 && reviews.length > 0" class="card">
+                            <div class="card-header bg-light"><div class="card-header-title text-muted">Bài đánh giá</div></div>
+                            <div class="card-body">
+                                <ng-container *ngFor="let post of reviews; let first=first">
+                                    <hr *ngIf="!first">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <a [routerLink]="['/post', post.id]" class="avatar avatar-lg avatar-4by3">
+                                                <img class="img-rounded img-no-padding img-responsive avatar-img" [src]="post.cover">
+                                            </a>
+                                        </div>
+                                        <div class="col ml-2">
+                                            <p class="mb-1 text-justify" style="font-weight: 600;">{{post.title}}</p>
+                                            <p class="mb-0 small">
+                                                <a class="text-danger" style="font-weight: 510;">{{post.account.userName}} </a>
+                                                <a class="text-muted">· {{post.publishedDate | date:'dd/MM/yyyy'}}</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>       
+        </div>
+    </div>
+    <br>
+    <br>
+</div>

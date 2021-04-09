@@ -8,6 +8,7 @@ export class ApiService {
     // public cinemaChainHost: string = "https://tlcn-cinemachain.somee.com";
     public backendHost: string = "https://localhost:44320"
     public cinemaChainHost: string = "https://localhost:44302";
+    public frontEndHost_User: string = "http://localhost:5000/#"
     constructor() {}
 
 }

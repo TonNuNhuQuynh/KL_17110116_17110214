@@ -125,7 +125,7 @@ export class PostDetailsComponent implements OnInit,  AfterViewInit {
   }
   async getSettings()
   {
-    let url = this.apiService.backendHost + `/api/Posts/Settings/${this.auth.currentAccountValue.id}`;
+    let url = this.apiService.backendHost + `/api/Posts/Settings`;
     let result = await this.http.get<any>(url).toPromise();
     this.types = result.types
     this.themes = result.themes

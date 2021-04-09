@@ -72,6 +72,7 @@ import { PostListComponent } from './writer/post-list/post-list.component';
 import { PostReviewComponent } from './writer/post-review/post-review.component';
 import { TaskDetailsComponent } from './writer/task-details/task-details.component';
 import { TaskListComponent } from './writer/task-list/task-list.component';
+import { NewsListComponent } from './news-list/news-list.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +113,8 @@ import { TaskListComponent } from './writer/task-list/task-list.component';
     HomeComponent,
     PostReviewComponent,
     NavbarWriterComponent,
-    PickTaskComponent
+    PickTaskComponent,
+    NewsListComponent
   ],
   imports: [
     BrowserModule,
