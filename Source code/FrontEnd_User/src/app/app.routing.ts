@@ -35,6 +35,7 @@ import { TaskListComponent } from './writer/task-list/task-list.component';
 import { TaskDetailsComponent } from './writer/task-details/task-details.component';
 import { PostReviewComponent } from './writer/post-review/post-review.component';
 import { NewsListComponent } from './news-list/news-list.component';
+import { ViewPostComponent } from './view-post/view-post.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -105,6 +106,7 @@ const routes: Routes = [
     { path: 'news/type/:type', component: NewsListComponent },
     { path: 'news/theme/:theme', component: NewsListComponent },
     { path: 'news/tag/:tag', component: NewsListComponent },
+    { path: 'post/:id', component: ViewPostComponent } 
 ];
 
 @NgModule({

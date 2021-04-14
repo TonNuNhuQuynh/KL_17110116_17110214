@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using MovieReviewsAndTickets_API.Services;
+using Microsoft.Extensions.ML;
+using MovieReviewsAndTickets_API.MLModels;
 
 namespace MovieReviewsAndTickets_API
 {
@@ -95,6 +97,9 @@ namespace MovieReviewsAndTickets_API
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
             services.Configure<DataProtectionTokenProviderOptions>(options => options.TokenLifespan = TimeSpan.FromHours(12));
+
+            services.AddPredictionEnginePool<MovieRating, MovieRatingPrediction>()
+                .FromFile(filePath: Configuration.GetSection("MLModelPath").Value, watchForChanges: true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

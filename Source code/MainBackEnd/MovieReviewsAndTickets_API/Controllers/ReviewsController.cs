@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
+using Microsoft.Extensions.Configuration;
+using Microsoft.ML;
+using Microsoft.ML.Trainers;
 using MovieReviewsAndTickets_API.Helpers;
+using MovieReviewsAndTickets_API.MLModels;
 using MovieReviewsAndTickets_API.Models;
 using MovieReviewsAndTickets_API.ViewModels;
 
@@ -20,13 +22,17 @@ namespace MovieReviewsAndTickets_API.Controllers
     public class ReviewsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private MLContext _mlContext;
+        public static IConfiguration Configuration;
+        private readonly UserManager<Account> _userManager;
 
         private static readonly int Threshold = 10;
-        private readonly UserManager<Account> _userManager;
-        public ReviewsController(ApplicationDbContext context, UserManager<Account> userManager)
+        public ReviewsController(ApplicationDbContext context, IConfiguration configuration, UserManager<Account> userManager)
         {
             _context = context;
             _userManager = userManager;
+            _mlContext = new MLContext();
+            Configuration = configuration;
         }
 
         // GET: api/Reviews
@@ -112,6 +118,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             reviewInDB.Content = review.Content;
             await _context.SaveChangesAsync();
             var reviews = await _context.Reviews.Where(r => !r.IsDeleted).ToListAsync();
+            if (rate != reviewInDB.Ratings) RetrainModel(_mlContext, reviews.Select(r => new MovieRating() { userId = r.AccountId, movieId = r.MovieId, Label = r.Ratings }).ToList());
             var movie = await _context.Movies.Where(m => m.Id == review.MovieId).FirstOrDefaultAsync();
             return new MovieVM() { Movie = movie, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == review.MovieId).ToList()) };
         }
@@ -136,6 +143,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             await _context.SaveChangesAsync();
 
             var reviews = await _context.Reviews.Where(r => !r.IsDeleted).ToListAsync();
+            RetrainModel(_mlContext, reviews.Select(r => new MovieRating() { userId = r.AccountId, movieId = r.MovieId, Label = r.Ratings }).ToList());
             var movie = await _context.Movies.Where(m => m.Id == review.MovieId).FirstOrDefaultAsync();
             return new MovieVM() { Movie = movie, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == review.MovieId).ToList()) };
         }
@@ -169,7 +177,31 @@ namespace MovieReviewsAndTickets_API.Controllers
                 if (r.Ratings >= 7) counts++;
             return reviews.Count > 0 ? (counts * 100) / reviews.Count : 0;
         }
-        
+        public static System.Threading.Tasks.Task RetrainModel(MLContext mlContext, List<MovieRating> data)
+        {
+            //Load Data
+            IDataView trainingDataView = mlContext.Data.LoadFromEnumerable(data);
+
+            // Tạo pipeline
+            IEstimator<ITransformer> estimator = mlContext.Transforms.Conversion.MapValueToKey(outputColumnName: "userIdEncoded", inputColumnName: "userId")
+            .Append(mlContext.Transforms.Conversion.MapValueToKey(outputColumnName: "movieIdEncoded", inputColumnName: "movieId"));
+
+            var options = new MatrixFactorizationTrainer.Options
+            {
+                MatrixColumnIndexColumnName = "userIdEncoded",
+                MatrixRowIndexColumnName = "movieIdEncoded",
+                LabelColumnName = "Label",
+                NumberOfIterations = 20,
+                ApproximationRank = 100
+            };
+            var trainerEstimator = estimator.Append(mlContext.Recommendation().Trainers.MatrixFactorization(options));
+            // Chạy Cross Validation
+            var cvResults = mlContext.Regression.CrossValidate(trainingDataView, trainerEstimator, numberOfFolds: 5);
+            // Lấy model tốt nhất
+            var bestModel = cvResults.OrderByDescending(fold => fold.Metrics.RSquared).Select(fold => fold.Model).FirstOrDefault();
+            mlContext.Model.Save(bestModel, trainingDataView.Schema, Configuration.GetSection("MLModelPath").Value);
+            return System.Threading.Tasks.Task.CompletedTask;
+        }
         private float AvgRatingsAsync(List<Review> reviews)
         {
             float totalRatings = 0;

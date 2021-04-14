@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.ML;
 using MovieReviewsAndTickets_API.Helpers;
+using MovieReviewsAndTickets_API.MLModels;
 using MovieReviewsAndTickets_API.Models;
 using MovieReviewsAndTickets_API.ViewModels;
 
@@ -19,10 +19,11 @@ namespace MovieReviewsAndTickets_API.Controllers
     public class MoviesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
-        public MoviesController(ApplicationDbContext context)
+        private readonly PredictionEnginePool<MovieRating, MovieRatingPrediction> _model;
+        public MoviesController(ApplicationDbContext context, PredictionEnginePool<MovieRating, MovieRatingPrediction> model)
         {
             _context = context;
+            _model = model;
         }
 
         // GET: api/Movies - Lấy list movie -> manage-movies
@@ -208,6 +209,38 @@ namespace MovieReviewsAndTickets_API.Controllers
                                                  .Select(r => new { Id = r.Id, Title = r.Title, Backdrop = r.Backdrop, ReleaseDate = r.ReleaseDate, Trailer = r.Trailer })
                                                  .ToListAsync();
             return latest;
+        }
+
+        [HttpGet("Recommend/{userId}")]
+        public async Task<ActionResult<IEnumerable<MovieVM>>> RecommendMovies(int userId)
+        {
+            var reviews = await _context.Reviews.ToListAsync();
+            var movies = await _context.Movies.ToListAsync();
+            // Lấy id của những phim mà user đã đánh giá
+            var ratedIds = reviews.Where(r => r.AccountId == userId).Select(r => r.MovieId).ToList();
+            // Sử dụng model để dự đoán rating của userId lên một số phim
+            var recommendedMovies = new List<Movie>();
+            MovieRatingPrediction prediction = null;
+            foreach (var movie in movies)
+            {
+                movie.Reviews = null;
+                if (ratedIds.Contains(movie.Id)) continue;
+                prediction = _model.Predict(new MovieRating
+                {
+                    userId = userId,
+                    movieId = movie.Id
+                });
+                if (prediction.Score >= 7) recommendedMovies.Add(movie);
+                // Chỉ recommend 6 phim
+                if (recommendedMovies.Count == 6) break;
+            }
+            // Nếu số lượng recommend ít hơn 4 thì lấy 6 phim có rate cao và đc review nhiều nhất
+            if (recommendedMovies.Count > 3) return recommendedMovies.Select(m => new MovieVM() { Movie = m, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == m.Id).ToList()) }).ToList();
+            return movies.Where(m => m.IsDeleted == false && !ratedIds.Contains(m.Id))
+                         .Select(m => new MovieVM() { Movie = m, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == m.Id && r.IsDeleted == false).ToList()) })
+                         .OrderByDescending(m => m.Ratings)
+                         .ThenByDescending(m => reviews.Where(r => r.MovieId == m.Movie.Id && r.IsDeleted == false).ToList().Count)
+                         .Take(6).ToList();
         }
 
     }

@@ -1,0 +1,80 @@
+<div class="wrapper">
+    <div class="documentation page-header page-header-small" id="landing-wrapper" [style]="getBackdrop()">
+        <!-- <div class="filter"></div> -->
+        <div class="motto text-center">
+            <h4 class="page-description" style="font-weight: 550;">{{post.title}}</h4>
+            <p class="text-danger font-weight-bold">
+                <a class="text-danger font-weight-bold" [routerLink]="['/news/type', post.postType.id]">{{post.postType.name}} </a> 
+                <a class="text-danger font-weight-bold" [routerLink]="['/news/theme', post.postTheme.id]" *ngIf="post.postTheme != null">· {{post.postTheme.name}} </a>· {{post.account.userName}}
+            </p>
+        </div>
+    </div>
+    <div class="main">
+        <div class="section">
+            <div class="container">
+                <!-- Content -->
+                <div class="row">
+                    <div class="col-md-8 col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Summary -->
+                                <p class="text-danger font-weight-bold text-justify">{{post.summary}}</p>
+                                <!-- Spoiler -->
+                                <p *ngIf="post.spoilers" class="text-center spoil-alert mt-2">
+                                    <img src="https://moveek.com/bundles/ornweb/img/spoil-alert.png" class="img-fluid"> 
+                                    <span class="d-block text-muted small">Kéo xuống để xem tiếp <i class="fas fa-chevron-down"></i></span>
+                                    <br>
+                                    <br>
+                                </p>
+                                
+                                <!-- Content -->
+                                <div *ngIf="post.content != null" [innerHTML]="safeContent" class="mt-4 text-justify mb-4"></div>
+                                <!-- Movie -->
+                                <div class="row mb-4" *ngIf="post.movie != null">
+                                    <div class="col">
+                                        <a [routerLink]="['/movie-details']" [queryParams]="{ movieId: post.movie.id }" class="btn btn-dark btn-block text-truncate">Xem thêm về {{post.movie.title}}</a>
+                                    </div>
+                                </div>
+                                <!-- Keywords -->
+                                <div *ngIf="postTags.length > 0" class="post-tags text-muted mb-2">Từ khóa:
+                                    <a *ngFor="let tag of postTags" [routerLink]="['/news/tag', tag]" class="badge badge-light mr-1">{{tag}}</a>
+                                </div>
+
+                                <!-- Share to fb -->
+                                <div class="fb-share-button" attr.data-href="{{shareUrl}}" data-layout="button_count" data-size="small">
+                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{shareUrl}}" class="fb-xfbml-parse-ignore">Chia sẻ</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Similar posts -->
+                    <div class="col-md-4 col-sm-12" *ngIf="similarPosts.length > 0">
+                        <div class="card">
+                            <div class="card-header bg-light"><div class="card-header-title text-muted">Bài viết liên quan</div></div>
+                            <div class="card-body">
+                                <ng-container *ngFor="let post of similarPosts; let first=first">
+                                    <hr *ngIf="!first">
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <a [routerLink]="['/post', post.id]" class="avatar avatar-lg avatar-4by3">
+                                                <img class="img-rounded img-no-padding img-responsive avatar-img" [src]="post.cover">
+                                            </a>
+                                        </div>
+                                        <div class="col ml-2">
+                                            <p class="mb-1 text-justify" style="font-weight: 600;">{{post.title}}</p>
+                                            <p class="mb-0 small">
+                                                <a class="text-danger" style="font-weight: 510;">{{post.account.userName}} </a>
+                                                <a class="text-muted">· {{post.publishedDate | date:'dd/MM/yyyy'}}</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+    </div>
+</div>

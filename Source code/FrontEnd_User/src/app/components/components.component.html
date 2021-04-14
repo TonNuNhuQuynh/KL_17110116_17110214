@@ -11,8 +11,7 @@
     
     <ng-container *ngIf="isLoaded">
         <!-- Page header -->
-        <div class="page-header section-dark" id="background" (swipeleft)="swipe($event.type)" (swiperight)="swipe($event.type)">
-            <!-- Large Carousel -->
+        <div class="page-header section-dark" id="background">
             <ngb-carousel [showNavigationArrows]="false" [wrap]="true" #largeCarousel="ngbCarousel">
                 <ng-template *ngFor="let m of top4Movies" ngbSlide id="lg-slide-{{m.movie.id}}">
                     <div class="bg-img-hero d-flex align-items-center min-vh-100" style="background-image: url('{{m.movie.backdrop}}');">
@@ -35,7 +34,7 @@
                     </div>
                 </ng-template>
             </ngb-carousel>
-            <!-- Top 4 rated -->
+    
             <div class="d-none d-xl-flex position-xl-absolute col-xl-6 mr-3 right-0 bottom-0 mb-xl-12 slider-m-0 flex-column">          
                 <h4 class="text-white"><strong>#Top rated</strong></h4>
                 <div class="slick-list draggable">
@@ -78,6 +77,48 @@
             </div>
             <hr>
 
+            <!-- Tin mới nhất -->
+            <div class="container w3l-main-slider">
+                <div class="pt-2 pb-4">
+                    <h3 class="text-danger"><strong>Tin mới nhất</strong></h3>
+                    <p class="text-muted h6 mb-2">Các tin điện ảnh mới nhất</p>
+                    <div class="row" *ngIf="!isLoaded5">
+                        <div class="col-12 text-center"><div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div></div> 
+                    </div>
+                    <div class="row" *ngIf="isLoaded5">
+                        <div class="col-md-8 col-sm-12" id="horizontal-gallery">
+                            <owl-carousel-o [options]="customOptions4" (change)="changeSlide($event)">
+                                <ng-template carouselSlide *ngFor="let p of latestPosts; let i=index" id="{{p.id}}">
+                                    <div class="slider-info banner-view bg bg2" style="background: url({{p.cover}}) no-repeat center; background-size: cover;">
+                                        <div class="banner-info">
+                                            <h5 class="text-white text-justify"><a [routerLink]="['/post', p.id]" class="title">{{p.title}}</a></h5>
+                                            <p class="text-danger small mb-2">{{calculateDiff(p.publishedDate)}}</p>
+                                            <p class="text-light d-md-block text-justify">{{p.summary}}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </owl-carousel-o>
+                        </div>
+                        <div class="col-md-4 d-none d-md-block" id="vertical-thumb">
+                            <div *ngFor="let p of thumbnails; let first=first" [id]="p.id">
+                                <hr *ngIf="!first">
+                                <div class="row mt-2">                            
+                                    <div class="col">
+                                        <p class="mb-1 text-justify" style="font-weight: 600;">{{p.title}}</p>
+                                        <p class="mb-0 small">
+                                            <a class="text-danger" style="font-weight: 510;" [routerLink]="['/news/type', p.postTypeId]">{{p.postType.name}} </a>
+                                            <a class="text-danger" style="font-weight: 510;">· {{p.account.userName}} </a>
+                                            <a class="text-muted">· {{calculateDiff(p.publishedDate)}}</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+
             <!-- Trailer phim mới nhất -->
             <div class="container w3l-main-slider">
                 <div class="pt-2 pb-4">
@@ -91,7 +132,7 @@
                         <ng-template carouselSlide *ngFor="let m of latestMovies">
                             <div class="slider-info banner-view bg bg2" style="background: url({{m.backdrop}}) no-repeat center; background-size: cover;">
                                 <div class="banner-info">
-                                    <h3 class="text-white"><a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.id }" class="title">{{m.title}}</a></h3>
+                                    <h3 class="text-white text-justify"><a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.id }" class="title">{{m.title}}</a></h3>
                                     <p class="text-light mb-2">{{m.releaseDate | date:'dd/MM/yyyy'}}</p>
                                     <a href="javascript:void(0)" class="popup-with-zoom-anim play-view1">
                                         <span (click)="openTrailerModal(m.trailer)" class="video-play-icon"><span class="fa fa-play"></span></span>
@@ -106,22 +147,70 @@
             <hr>
 
             <!-- Phim đang chiếu rạp -->
-            <div class="container">
-                <div class="pt-2 pb-4 now-playing">
-                    <h3 class="text-danger mb-2"><a [routerLink]="['/movie/now']" class="mr-4">Đang chiếu</a> | <a [routerLink]="['/movie/upcomings']" title="Sắp chiếu" class="text-muted ml-4">Sắp chiếu</a></h3>
-                    <div class="row" *ngIf="!isLoaded3">
+            <div class="container now-playing">
+                <h3 class="text-danger mb-2"><a [routerLink]="['/movie/now']" class="mr-4">Đang chiếu</a> | <a [routerLink]="['/movie/upcomings']" title="Sắp chiếu" class="text-muted ml-4">Sắp chiếu</a></h3>
+                <div class="row" *ngIf="!isLoaded3">
+                    <div class="col-12 text-center"><div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div></div> 
+                </div>
+                <owl-carousel-o *ngIf="isLoaded3" [options]="customOptions2">
+                    <ng-template carouselSlide *ngFor="let m of nowMovies">
+                        <div class="card card-xs">
+                            <div class="btn-group btn-actions">
+                                <a (click)="likeMovie($event, m.movie.id)" [ngClass]="{'liked': auth.activityStorage.movieLikeIds.indexOf(m.movie.id) > -1}" class="btn btn-light btn-do-movie-like"><i class="fa fa-heart"></i></a>
+                                <a (click)="rateMovie($event, m.movie.id)" class="btn btn-light btn-do-movie-rate" [ngClass]="{'rated': auth.activityStorage.rateIds.indexOf(m.movie.id) > -1}"><i class="fa fa-star"></i></a>
+                            </div>
+                            <a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.movie.id }">
+                                <img *ngIf="m.movie.poster != null" class="img-fluid card-img-top embed-responsive-item" [src]="m.movie.poster" alt="Card image cap">
+                                <img *ngIf="!m.movie.poster" class="img-fluid card-img-top embed-responsive-item" src="./assets/img/no-poster.jpg" alt="Card image cap">
+                            </a>
+                            <div class="card-body border-top">
+                                <h3 class="text-truncate h4 mb-1" placement="top" ngbTooltip="{{m.movie.title}}" container="body"><a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.movie.id }"> {{m.movie.title}}</a></h3>
+                                <div class="row no-gutters small">
+                                    <div class="col text-muted">{{m.movie.releaseDate | date : 'dd/MM/yyyy'}}</div>
+                                    <div *ngIf="m.ratings > 0" class="col text-right ratings">
+                                        <a class="text-muted" [ngClass]="{'text-success': m.ratings >= 7.5, 'text-danger': m.ratings <= 5}"><i class="fa fa-star"></i> {{m.ratings | number:'1.1-1'}}/10</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </owl-carousel-o>
+            </div>
+
+            <!-- Gợi ý phim -->
+            <hr>
+            <div class="container now-playing">
+                <h3 class="text-danger"><strong style="font-weight: 500;">Gợi ý cho bạn</strong></h3>
+                <p *ngIf="(auth.currentAccountValue != null && auth.activityStorage.rateIds.length > 0) || auth.currentAccountValue == null" class="text-muted h6 mb-2">Gợi ý dựa trên các phim bạn đã đánh giá</p>
+                <p *ngIf="auth.currentAccountValue != null && auth.activityStorage.rateIds.length == 0" class="text-muted h6 mb-2">Các phim được đánh giá cao nhất trên web</p>
+
+                <!-- Khi chưa login -->
+                <div *ngIf="auth.currentAccountValue == null" style="display:block" class="empty text-center page-loader">
+                    <a ><img src="assets/img/logo2.png" /></a>
+                    <p class="mt-2 h5 text-danger"><strong>Đăng nhập để truy cập tủ phim</strong></p>
+                    <p class="h6 text-muted">Hãy đánh giá phim để chúng tôi có thể gợi ý cho bạn</p>
+                    <br>
+                    <button (click)="openLoginModal()" class="btn btn-outline-danger btn-round">Đăng nhập</button>
+                    <br>
+                </div>
+                
+                <!-- Khi đã login -->
+                <ng-container *ngIf="auth.currentAccountValue != null">
+                    <div class="row" *ngIf="!isLoaded4">
+                        <br>
                         <div class="col-12 text-center"><div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div></div> 
                     </div>
-                    <owl-carousel-o *ngIf="isLoaded3" [options]="customOptions2">
-                        <ng-template carouselSlide *ngFor="let m of nowMovies">
+    
+                    <owl-carousel-o *ngIf="isLoaded4" [options]="customOptions2">
+                        <ng-template carouselSlide *ngFor="let m of recommends">
                             <div class="card card-xs">
                                 <div class="btn-group btn-actions">
                                     <a (click)="likeMovie($event, m.movie.id)" [ngClass]="{'liked': auth.activityStorage.movieLikeIds.indexOf(m.movie.id) > -1}" class="btn btn-light btn-do-movie-like"><i class="fa fa-heart"></i></a>
                                     <a (click)="rateMovie($event, m.movie.id)" class="btn btn-light btn-do-movie-rate" [ngClass]="{'rated': auth.activityStorage.rateIds.indexOf(m.movie.id) > -1}"><i class="fa fa-star"></i></a>
                                 </div>
                                 <a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.movie.id }">
-                                    <img *ngIf="m.movie.poster != null" class="img-fluid card-img-top embed-responsive-item" [src]="m.movie.poster" alt="Card image cap">
-                                    <img *ngIf="!m.movie.poster" class="img-fluid card-img-top embed-responsive-item" src="./assets/img/no-poster.jpg" alt="Card image cap">
+                                    <img *ngIf="m.movie.poster != null" class="card-img-top embed-responsive-item" [src]="m.movie.poster" alt="Card image cap">
+                                    <img *ngIf="!m.movie.poster" class="card-img-top embed-responsive-item" src="./assets/img/no-poster.jpg" alt="Card image cap">
                                 </a>
                                 <div class="card-body border-top">
                                     <h3 class="text-truncate h4 mb-1" placement="top" ngbTooltip="{{m.movie.title}}" container="body"><a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.movie.id }"> {{m.movie.title}}</a></h3>
@@ -135,10 +224,9 @@
                             </div>
                         </ng-template>
                     </owl-carousel-o>
-                </div>
+                </ng-container>      
             </div>
-            <!-- <hr> -->
-
+            
             <br>
             <br>
         </div>

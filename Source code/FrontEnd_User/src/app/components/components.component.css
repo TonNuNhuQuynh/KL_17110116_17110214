@@ -3,37 +3,13 @@ ngb-progressbar {
 }
 @media (min-width: 576px)
 {
-    .modal-dialog {
-        max-width: 350px;
-    }
+  .modal-dialog {
+    max-width: 350px;
+  }
 }
-/* #background
-{
-    background: linear-gradient(rgb(0, 0, 0, 0), rgb(0, 0, 0, 0.90)), url('/assets/img/banners/img2.jpg');
-    color: #5A5252;
-    background-repeat: no-repeat; 
-    background-size: cover; 
-    width: 100%;
-    min-height: 100vh;
-} */
-/* #background {
-    background: url('/assets/img/banners/home-banner.png') no-repeat;
-    background-position: center;
-    text-align: center;
-    background-size: cover;
-    position: relative;
-    padding-top: 100px;
-    padding-bottom: 50px;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
 .carousel
 {
-    width: 100%;
+  width: 100%;
 }
 /* :host ::ng-deep .carousel-item.active, :host ::ng-deep .carousel-item {
     height: 100%;
@@ -478,4 +454,34 @@ hr
   {
     max-width: 200px !important;
   }
+}
+
+.now-playing ::ng-deep .owl-stage{
+  margin: 0 auto;
+}
+
+.now-playing ::ng-deep .owl-carousel .owl-stage { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+
+/* Latest post */
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+/* .news :host ::ng-deep .owl-carousel ::ng-deep .owl-item {
+  height: 100% !important;
+} */
+#vertical-thumb :host ::ng-deep .owl-carousel{
+  transform: rotate(90deg);
+  width: 100%; 
+} 
+#vertical-thumb :host ::ng-deep .owl-carousel ::ng-deep .owl-item {
+  transform: rotate(-90deg);
+  float: left;
+  clear: both;
 }

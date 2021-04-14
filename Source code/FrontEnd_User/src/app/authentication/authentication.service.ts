@@ -12,7 +12,7 @@ import { environment } from 'environments/environment.prod';
 
 export class AuthenticationService 
 {
-   private currentAccountSubject: BehaviorSubject<Account>;
+   public currentAccountSubject: BehaviorSubject<Account>;
    public remember: boolean = false;
    //private currentAccount: Observable<Account>;
    public activityStorage: ActivityStorage;
