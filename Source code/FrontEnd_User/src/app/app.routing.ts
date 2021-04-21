@@ -36,6 +36,7 @@ import { TaskDetailsComponent } from './writer/task-details/task-details.compone
 import { PostReviewComponent } from './writer/post-review/post-review.component';
 import { NewsListComponent } from './news-list/news-list.component';
 import { ViewPostComponent } from './view-post/view-post.component';
+import { NewsComponent } from './movie-details/news/news.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -54,11 +55,13 @@ const routes: Routes = [
     { path: 'movie/now', component: MovieListComponent, data: {status: 1}},
     { path: 'movie/upcomings', component: MovieListComponent, data: {status: 2}},
 
-    { path: 'movie-details', redirectTo: 'movie-details/reviews'},
+    { path: 'movie-details', redirectTo: 'movie-details/news'},
     { path: 'movie-details', 
       component: MovieDetailsComponent, 
       children: [ 
-        { path: 'reviews', component: ReviewListComponent }, { path: 'showtimes', component: ShowtimesComponent } 
+        { path: 'reviews', component: ReviewListComponent }, 
+        { path: 'showtimes', component: ShowtimesComponent },
+        { path: 'news', component: NewsComponent }
       ] 
     },
     { path: 'cinema', component: CinemaDetailsComponent},

@@ -54,6 +54,7 @@ import { LoginComponent } from './login/login.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ManagePostsComponent } from './manage-posts/manage-posts.component';
 import { PostReviewComponent } from './manage-posts/post-review/post-review.component';
+import { ManageCategoryComponent } from './manage-category/manage-category.component';
 
 export function tokenGetter() {
   return sessionStorage.getItem(StorageService.token)? sessionStorage.getItem(StorageService.token): localStorage.getItem(StorageService.token);
@@ -84,7 +85,8 @@ export function tokenGetter() {
     TaskModalComponent,
     LoginComponent,
     ManagePostsComponent,
-    PostReviewComponent
+    PostReviewComponent,
+    ManageCategoryComponent
   ],
   imports: [
     BrowserModule,

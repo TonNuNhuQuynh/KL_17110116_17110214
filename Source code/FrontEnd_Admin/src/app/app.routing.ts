@@ -21,6 +21,7 @@ import { ManageTasksComponent } from './manage-tasks/manage-tasks.component';
 import { LoginComponent } from './login/login.component';
 import { ManagePostsComponent } from './manage-posts/manage-posts.component';
 import { PostReviewComponent } from './manage-posts/post-review/post-review.component';
+import { ManageCategoryComponent } from './manage-category/manage-category.component';
 
 
 const routes: Routes = [
@@ -96,6 +97,13 @@ const routes: Routes = [
       canActivate: [RoleGuard], 
       data: { expectedRoles: [Roles.superAdmin, Roles.admin] }
     },
+
+    { 
+      path: 'admin/manage-category',
+      component: ManageCategoryComponent,
+      canActivate: [RoleGuard], 
+      data: { expectedRoles: [Roles.superAdmin] }
+    }
 ];
 
 @NgModule({

@@ -1,0 +1,95 @@
+<div class="wrapper">
+    <div class="documentation page-header page-header-small" id="landing-wrapper">
+        <div class="filter"></div>
+        <div class="motto">
+            <br>
+            <h4 class="title-uppercase text-center">Quản lý danh mục</h4>
+            <br>
+            <h5 class="page-description text-center">Trang quản lý các danh mục phim và bài viết cho Super Admin</h5>
+            <br>
+        </div>
+    </div>
+    <div class="main">
+        <div class="section">
+            <div class="container">
+                <h2>Danh sách danh mục</h2>
+                <br> 
+                <div class="row tim-row">
+                    <!-- Mode vs form -->
+                    <div class="col-md-4 col-sm-12">
+                        <!-- Pick mode -->
+                        <!-- <div ngbDropdown class="d-inline-block btn-block mb-3">
+                            <button class="btn btn-block form-control dropdown-text" style="width: fit-content" id="dropdownMenu1" ngbDropdownToggle>{{modeText}}</button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
+                                <button *ngFor="let m of modes" (click)="chooseMode(m.id, m.name)" class="dropdown-item">{{m.name}}</button>
+                            </div>
+                        </div> -->
+                        <!-- Form -->
+                        <div class="card">
+                            <div class="card-header bg-light"><div class="card-header-title text-muted">Chi tiết</div></div>
+                            <div class="card-body">
+                                <form #form="ngForm">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- Select mode -->
+                                            <div class="form-group">
+                                                <label>Loại danh mục</label>
+                                                <select [(ngModel)]="modeId" class="form-control" (change)="chooseMode()" name="mode" [disabled]="loading">
+                                                    <option *ngFor="let t of modes" [ngValue]="t.id">{{t.name}}</option>
+                                                </select>
+                                            </div>
+                                            <!-- Name -->
+                                            <div class="form-group">
+                                                <label>Tên (*)</label>
+                                                <input type="text" required class="form-control" name="title" #title="ngModel" [(ngModel)]="name" [ngClass]="{'is-invalid': title.invalid && (title.touched || title.dirty)}"/>
+                                                <div class="text-danger" *ngIf="title.invalid && (title.touched || title.dirty)"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
+                                            </div>
+                                            <!-- Description -->
+                                            <div *ngIf="modeId == 3 || modeId == 4" class="form-group">
+                                                <label>Mô tả (*)</label>
+                                                <textarea type="text" class="form-control" name="des" #des="ngModel" required [(ngModel)]="description" rows="1" [ngClass]="{'is-invalid': des.invalid  && (des.touched || des.dirty)}"></textarea>
+                                                <div class="text-danger" *ngIf="des.invalid  && (des.touched || des.dirty)"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="ml-auto mr-auto">
+                                            <button style="text-transform: none; font-weight: normal" class="btn btn-success" *ngIf="isAdded" [disabled]="title.invalid || ( description == '' && (modeId == 3 || modeId == 4) ) || loading" (click)="add()"><span class="fa fa-plus-circle"></span> Thêm</button>
+                                            <button style="text-transform: none; font-weight: normal" class="btn btn-info" *ngIf="!isAdded" [disabled]="title.invalid || ( description == '' && (modeId == 3 || modeId == 4) ) || loading" (click)="save()">Lưu</button>
+                                            <button style="text-transform: none; font-weight: normal" class="btn btn-link" *ngIf="!isAdded" [disabled]="loading" (click)="cancel()"><i class="fa fa-remove"></i> Hủy</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>  
+                    
+                    <!-- Category List -->
+                    <div class="col-md-8 col-sm-12 mt-2" id="overlap">
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="table" class="table table-striped table-hover table-responsive-lg">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-center" scope="col">Tên danh mục</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                                <tr *ngFor='let a of category'>
+                                    <td>
+                                        <p class="text-center cut-text">{{a.name}}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <!-- View  -->
+                                        <button type="button" class="btn btn-info btn-sm btn-round" (click)="view(a.id)"><i class="far fa-eye"></i></button>
+                                        <!-- Delete -->
+                                        <button type="button" class="btn btn-danger btn-sm btn-round" (click)="delete(a.id, a.name)"><i class="fa fa-remove"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>    
+            </div>       
+        </div>
+    </div>
+</div>

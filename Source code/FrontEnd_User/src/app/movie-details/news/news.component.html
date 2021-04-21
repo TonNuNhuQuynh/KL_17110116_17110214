@@ -1,0 +1,76 @@
+<div class="container mt-4">
+    <div class="row">
+        <!-- News list -->
+        <div class="col-sm-8 col-12">
+            <div class="card">
+                <div class="card-header bg-light"><div class="card-header-title text-muted">Bài viết liên quan</div></div>
+                <!-- Loading -->
+                <div *ngIf="!isLoaded" class="card-body text-center">
+                    <div class="spinner-border text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <!-- No news -->
+                <div *ngIf="isLoaded && posts.length == 0" class="card-body text-center text-muted">
+                    <p class="h2 summary-rating-percentage"><i class="fa fa-ban"></i></p>
+                    <p class="mb-0">Chưa có bài viết cho phim <strong class="text-danger font-weight-bold">{{title}}</strong>.</p>
+                </div>
+                <!-- Has news -->
+                <div *ngIf="isLoaded && posts.length > 0" class="card-body">
+                    <ng-container *ngFor="let post of posts; let first=first">
+                        <hr *ngIf="!first">
+                        <div class="row">
+                            <div class="col-sm-4 col-12">
+                                <a [routerLink]="['/post', post.id]">
+                                    <img class="img-rounded img-no-padding img-responsive avatar-img" [src]="post.cover">
+                                </a>
+                            </div>
+                            <div class="col ml-2">
+                                <a [routerLink]="['/post', post.id]" class="mb-1 text-justify" style="font-weight: 600; color: #333333; line-height: 1.5em; font-size: 15px;">{{post.title}}</a>
+                                <p class="mb-0 small">
+                                    <a class="text-danger" style="font-weight: 510;" [routerLink]="['/news/type', post.postTypeId]">{{post.postType.name}} </a>
+                                    <a class="text-danger" style="font-weight: 510;" *ngIf="post.postTheme != null" [routerLink]="['/news/theme', post.postThemeId]">· {{post.postTheme.name}} </a>
+                                    <a class="text-danger" style="font-weight: 510;">· {{post.account.userName}} </a>
+                                    <a class="text-muted">· {{post.publishedDate | date:'dd/MM/yyyy'}}</a>
+                                </p>
+                                <p class="text-muted mt-2 mb-0 d-none d-sm-block text-justify" style="font-size: 14px !important;">{{post.summary}}</p>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Load more -->
+                    <button *ngIf="posts.length < total" (click)="loadMore()" class="btn btn-light btn-block mb-3">Xem thêm</button>
+                    <div *ngIf="isLoadedMore" class="col-12 text-center">
+                        <div class="spinner-border text-danger" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reviews -->
+        <div class="col-sm-4 col-12" *ngIf="reviews.length > 0">
+            <div class="card-header bg-light"><div class="card-header-title text-muted">Bài đánh giá</div></div>
+            <div class="card-body">
+                <ng-container *ngFor="let post of reviews; let first=first">
+                    <hr *ngIf="!first">
+                    <div class="row">
+                        <div class="col-auto">
+                            <a [routerLink]="['/post', post.id]" class="avatar avatar-lg avatar-4by3">
+                                <img class="img-rounded img-no-padding img-responsive avatar-img" [src]="post.cover">
+                            </a>
+                        </div>
+                        <div class="col ml-2">
+                            <a [routerLink]="['/post', post.id]" class="mb-1 text-justify" style="font-weight: 600; color: #333333; line-height: 1.5em; font-size: 15px;">{{post.title}}</a>
+                            <p class="mb-0 small">
+                                <a class="text-danger" style="font-weight: 510;">{{post.account.userName}} </a>
+                                <a class="text-muted">· {{post.publishedDate | date:'dd/MM/yyyy'}}</a>
+                            </p>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

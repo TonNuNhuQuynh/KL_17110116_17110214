@@ -73,6 +73,7 @@ import { PostReviewComponent } from './writer/post-review/post-review.component'
 import { TaskDetailsComponent } from './writer/task-details/task-details.component';
 import { TaskListComponent } from './writer/task-list/task-list.component';
 import { NewsListComponent } from './news-list/news-list.component';
+import { NewsComponent } from './movie-details/news/news.component';
 import { ViewPostComponent } from './view-post/view-post.component';
 
 @NgModule({
@@ -116,6 +117,7 @@ import { ViewPostComponent } from './view-post/view-post.component';
     NavbarWriterComponent,
     PickTaskComponent,
     NewsListComponent,
+    NewsComponent,
     ViewPostComponent
   ],
   imports: [

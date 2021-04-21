@@ -13,32 +13,81 @@
     <div class="main">
         <div class="section">
             <div class="container">
-                <div class="row tim-row justify-content-center">
-                    <div *ngIf="!isLoaded"  class="col-12 text-center">
-                        <div class="spinner-border text-danger" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>     
+                <div class="row">
+                    <!-- Load movies -->
+                    <div class="col-12 text-center" *ngIf="!isLoaded">
+                        <div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>
+                    </div>
 
-                    <div *ngIf="isLoaded && movies.length > 0" class="col-12">
-                        <div class="row justify-content-center">
-                            <div class="col-sm-2 col-6 mb-4" *ngFor="let m of movies">
+                    <!-- Has movies -->
+                    <div class="col-12 now-playing" *ngIf="isLoaded && movies.length > 0">
+                        <h3 class="text-danger text-center mb-2 mt-0" ><strong style="font-weight: 500;">Phim</strong></h3>
+                        <owl-carousel-o [options]="customOptions">
+                            <ng-template carouselSlide *ngFor="let m of movies">
                                 <div class="card card-xs">
                                     <div class="btn-group btn-actions">
-                                        <a #like (click)="likeMovie($event, m.movie.id)" [ngClass]="{'liked': auth.activityStorage.movieLikeIds.indexOf(m.movie.id) > -1}" class="btn btn-light btn-do-movie-like"><i class="fa fa-heart"></i></a>
+                                        <a (click)="likeMovie($event, m.movie.id)" [ngClass]="{'liked': auth.activityStorage.movieLikeIds.indexOf(m.movie.id) > -1}" class="btn btn-light btn-do-movie-like"><i class="fa fa-heart"></i></a>
                                         <a (click)="rateMovie($event, m.movie.id)" class="btn btn-light btn-do-movie-rate" [ngClass]="{'rated': auth.activityStorage.rateIds.indexOf(m.movie.id) > -1}"><i class="fa fa-star"></i></a>
                                     </div>
                                     <a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.movie.id }">
-                                        <img *ngIf="m.movie.poster != null" class="card-img-top embed-responsive-item" [src]="m.movie.poster" alt="Card image cap">
-                                        <img *ngIf="!m.movie.poster" class="card-img-top embed-responsive-item" src="./assets/img/no-poster.jpg" alt="Card image cap">
+                                        <img *ngIf="m.movie.poster != null" class="img-fluid card-img-top embed-responsive-item" [src]="m.movie.poster" alt="Card image cap">
+                                        <img *ngIf="!m.movie.poster" class="img-fluid card-img-top embed-responsive-item" src="./assets/img/no-poster.jpg" alt="Card image cap">
                                     </a>
                                     <div class="card-body border-top">
-                                        <h3 class="text-truncate h4 mb-1" placement="right" ngbTooltip="{{m.movie.title}}" container="body"><a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.movie.id }"> {{m.movie.title}}</a></h3>
+                                        <h3 class="text-truncate h4 mb-1" placement="top" ngbTooltip="{{m.movie.title}}" container="body"><a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.movie.id }"> {{m.movie.title}}</a></h3>
                                         <div class="row no-gutters small">
                                             <div class="col text-muted">{{m.movie.releaseDate | date : 'dd/MM/yyyy'}}</div>
-                                            <div *ngIf="m.ratings > 0" class="col text-right">
-                                                <a href="#" class="text-muted" [ngClass]="{'text-success': m.ratings >= 7.5, 'text-danger': m.ratings <= 5}"><i class="fa fa-star"></i> {{m.ratings | number:'1.1-1'}}/10</a>
+                                            <div *ngIf="m.ratings > 0" class="col text-right ratings">
+                                                <a class="text-muted" [ngClass]="{'text-success': m.ratings >= 7.5, 'text-danger': m.ratings <= 5}"><i class="fa fa-star"></i> {{m.ratings | number:'1.1-1'}}/10</a>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </owl-carousel-o>
+                        <br>
+                    </div>
+
+                    <!-- Load movies -->
+                    <div class="col-12 text-center" *ngIf="!isLoaded2">
+                        <div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div>
+                    </div>
+
+                    <!-- News -->
+                    <div class="col-12" *ngIf="isLoaded2 && news.length > 0">
+                        <hr>
+                        <h3 class="text-danger text-center mb-2"><strong style="font-weight: 500;">Bài viết</strong></h3>
+                        <div class="col-sm-8 col-12">
+                            <div class="card news">
+                                <div class="card-header bg-light"><div class="card-header-title text-muted">Bài viết liên quan</div></div>                        
+                                <div class="card-body">
+                                    <ng-container *ngFor="let post of news; let first=first">
+                                        <hr *ngIf="!first">
+                                        <div class="row">
+                                            <div class="col-sm-4 col-12">
+                                                <a [routerLink]="['/post', post.id]">
+                                                    <img class="img-rounded img-no-padding img-responsive avatar-img" [src]="post.cover">
+                                                </a>
+                                            </div>
+                                            <div class="col ml-2">
+                                                <a [routerLink]="['/post', post.id]" class="mb-1 text-justify" style="font-weight: 600; color: #333333; line-height: 1.5em; font-size: 15px;">{{post.title}}</a>
+                                                <p class="mb-0 small">
+                                                    <a class="text-danger" style="font-weight: 510;" [routerLink]="['/news/type', post.postTypeId]">{{post.postType.name}} </a>
+                                                    <a class="text-danger" style="font-weight: 510;" *ngIf="post.postTheme != null" [routerLink]="['/news/theme', post.postThemeId]">· {{post.postTheme.name}} </a>
+                                                    <a class="text-danger" style="font-weight: 510;">· {{post.account.userName}} </a>
+                                                    <a class="text-muted">· {{post.publishedDate | date:'dd/MM/yyyy'}}</a>
+                                                </p>
+                                                <p class="text-muted mt-2 mb-0 d-none d-sm-block text-justify" style="font-size: 14px !important;">{{post.summary}}</p>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+        
+                                    <!-- Load more -->
+                                    <button *ngIf="news.length < total" (click)="loadMore()" class="btn btn-light btn-block mb-3">Xem thêm</button>
+                                    <div *ngIf="isLoadedMore" class="col-12 text-center">
+                                        <br>
+                                        <div class="spinner-border text-danger" role="status">
+                                            <span class="sr-only">Loading...</span>
                                         </div>
                                     </div>
                                 </div>
@@ -46,16 +95,16 @@
                         </div>
                     </div>
 
-                    <div *ngIf="isLoaded && movies.length == 0" class="col-md-12">
+                    <!-- Nothing mactched -->
+                    <div class="col-12" *ngIf="isLoaded && isLoaded2 && movies.length == 0 && news.length == 0">
                         <div class="card">
                             <div class="card-body text-center text-muted">
                                 <p class="h2 summary-rating-percentage"><i class="fa fa-ban"></i></p>
-                                <p class="mb-0">Không có kết quả tìm kiếm cho <strong class="title">'{{query}}'.</strong></p>
+                                <p class="mb-0">Không có kết quả tìm kiếm cho từ khóa <strong class="title">'{{query}}'.</strong></p>
                             </div>
                         </div>
                     </div>
-                </div>    
-                <br>
+                </div>
             </div>       
         </div>
     </div>

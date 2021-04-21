@@ -94,8 +94,9 @@
       <div class="bg-white border-bottom sticky-movie-bars">
         <div class="container">
           <ul class="nav nav-tabs border-bottom-0">
-            <li class="nav-item"><a [routerLink]="['/movie-details/reviews']" [queryParams]="{ movieId: movieId }" [ngClass]="{'active': selectedTab == 1}" class="nav-link text-center">Đánh giá phim</a></li>
-            <li class="nav-item"><a [routerLink]="['/movie-details/showtimes']" [queryParams]="{ movieId: movieId }" [ngClass]="{'active': selectedTab == 2}" class="nav-link text-center">Lịch chiếu</a></li>
+            <li class="nav-item"><a [routerLink]="['/movie-details/news']" [queryParams]="{ movieId: movieId }" [ngClass]="{'active': selectedTab == 1}" class="nav-link text-center">Tin tức</a></li>
+            <li class="nav-item"><a [routerLink]="['/movie-details/reviews']" [queryParams]="{ movieId: movieId }" [ngClass]="{'active': selectedTab == 2}" class="nav-link text-center">Đánh giá phim</a></li>
+            <li class="nav-item"><a [routerLink]="['/movie-details/showtimes']" [queryParams]="{ movieId: movieId }" [ngClass]="{'active': selectedTab == 3}" class="nav-link text-center">Lịch chiếu</a></li>
           </ul>
         </div>
       </div>
