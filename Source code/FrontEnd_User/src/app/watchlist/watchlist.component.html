@@ -23,6 +23,7 @@
 
                         <ngb-tab title="Tủ phim">
                             <ng-template ngbTabContent >
+                                <!-- watchlist -->
                                 <div class="container mt-4">
                                     <br>
                                     <div class="row tim-row justify-content-center">
@@ -55,6 +56,43 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- recommends -->
+                                <hr>
+                                <div class="container now-playing">
+                                    <h3 class="text-danger"><strong style="font-weight: 500;">Gợi ý cho bạn</strong></h3>
+                                    <p *ngIf="(auth.currentAccountValue != null && auth.activityStorage.rateIds.length > 0) || auth.currentAccountValue == null" class="text-muted h6 mb-2">Gợi ý dựa trên các phim bạn đã đánh giá</p>
+                                    <p *ngIf="auth.currentAccountValue != null && auth.activityStorage.rateIds.length == 0" class="text-muted h6 mb-2">Các phim được đánh giá cao nhất trên web</p>
+                                    
+                                    <div class="row" *ngIf="!isLoaded3">
+                                        <br>
+                                        <div class="col-12 text-center"><div class="spinner-border text-danger" role="status"><span class="sr-only">Loading...</span></div></div> 
+                                    </div>
+                    
+                                    <owl-carousel-o *ngIf="isLoaded3" [options]="customOptions">
+                                        <ng-template carouselSlide *ngFor="let m of recommends">
+                                            <div class="card card-xs">
+                                                <div class="btn-group btn-actions">
+                                                    <a (click)="likeMovie($event, m.movie.id)" [ngClass]="{'liked': auth.activityStorage.movieLikeIds.indexOf(m.movie.id) > -1}" class="btn btn-light btn-do-movie-like"><i class="fa fa-heart"></i></a>
+                                                    <a (click)="rateMovie($event, m.movie.id)" class="btn btn-light btn-do-movie-rate" [ngClass]="{'rated': auth.activityStorage.rateIds.indexOf(m.movie.id) > -1}"><i class="fa fa-star"></i></a>
+                                                </div>
+                                                <a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.movie.id }">
+                                                    <img *ngIf="m.movie.poster != null" class="card-img-top embed-responsive-item" [src]="m.movie.poster" alt="Card image cap">
+                                                    <img *ngIf="!m.movie.poster" class="card-img-top embed-responsive-item" src="./assets/img/no-poster.jpg" alt="Card image cap">
+                                                </a>
+                                                <div class="card-body border-top">
+                                                    <h3 class="text-truncate h4 mb-1" placement="right" ngbTooltip="{{m.movie.title}}" container="body"><a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.movie.id }"> {{m.movie.title}}</a></h3>
+                                                    <div class="row no-gutters small">
+                                                        <div class="col text-muted text-left">{{m.movie.releaseDate | date : 'dd/MM/yyyy'}}</div>
+                                                        <div *ngIf="m.ratings > 0" class="col text-right ratings">
+                                                            <a class="text-muted" [ngClass]="{'text-success': m.ratings >= 7.5, 'text-danger': m.ratings <= 5}"><i class="fa fa-star"></i> {{m.ratings | number:'1.1-1'}}/10</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </owl-carousel-o>
+                                </div>
+
                             </ng-template>
                         </ngb-tab>
 
@@ -94,11 +132,11 @@
                                                                     <span *ngIf="i == o.seats.length - 1" class="font-weight-bold ticketing-seats">{{seat}}</span>
                                                                 </ng-container>
                                                             </p>
-                                                            <p class="text-danger mb-0 mt-2 price"><strong>Thành tiền: {{o.total}} VNĐ</strong></p>
+                                                            <p class="text-danger mb-0 mt-2 price"><strong>Thành tiền: {{o.total | number:'1.0-0'}} VNĐ</strong></p>
                                                         </div>
                                                       </div>
                                                     </div>
-                                                    <div class="right"><div class="barcode"></div></div>
+                                                    <!-- <div class="right"><div class="barcode"></div></div> -->
                                                 </div>                                                       
                                             </div>
                                         </ng-container>

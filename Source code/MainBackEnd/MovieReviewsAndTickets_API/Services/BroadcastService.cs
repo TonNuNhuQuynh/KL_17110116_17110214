@@ -1,16 +1,15 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using MovieReviewsAndTickets_API.Services.SignalR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using MovieReviewsAndTickets_API.Services.SignalR;
 using System.Threading.Tasks;
 
 namespace MovieReviewsAndTickets_API.Services
 {
-    public class BroadcastService : Hub
+    public class BroadcastService: Hub
     {
+        //private readonly static ConnectionMapping<int> _connections = new ConnectionMapping<int>();
         private readonly IConnectionMapping<int> _connections;
-       
+        //private readonly ApplicationDbContext _context;
         public BroadcastService(IConnectionMapping<int> connectionMapping)
         {
             _connections = connectionMapping;

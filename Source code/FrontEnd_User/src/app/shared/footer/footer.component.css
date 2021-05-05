@@ -19,3 +19,6 @@ hr {
   margin-top: 0.3em;
   margin-bottom: 0.3em;
 }
+#writer-overlap.overlap {
+	margin-left: 250px;
+  }

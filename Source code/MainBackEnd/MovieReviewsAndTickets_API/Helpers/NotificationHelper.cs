@@ -1,13 +1,14 @@
-﻿using System;
+﻿using MovieReviewsAndTickets_API.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MovieReviewsAndTickets_API.Helpers
+namespace MovieReviewsAndTickets_API.Services
 {
     public class NotificationHelper
     {
-        public static (string, string) AssignTaskNoti(string admin, int taskId)
+        public static (string, string) AssignTaskNoti (string admin, int taskId)
         {
             return ($"{admin} giao cho bạn task mới", $"{ApiHelper.FrontEndHost_User}/writer/task-details?id={taskId}");
         }
@@ -15,7 +16,7 @@ namespace MovieReviewsAndTickets_API.Helpers
         {
             return ($"{admin} đã cập nhật task '{task}'", $"{ApiHelper.FrontEndHost_User}/writer/task-details?id={taskId}");
         }
-        public static (string, string) DenyTaskNoti(string writer, int taskId)
+        public static (string, string) DenyTaskNoti (string writer, int taskId)
         {
             return ($"{writer} từ chối task mà bạn đã giao", $"{ApiHelper.FrontEndHost_Admin}/admin/manage-tasks?id={taskId}");
         }

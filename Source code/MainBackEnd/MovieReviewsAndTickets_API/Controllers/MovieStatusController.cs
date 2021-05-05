@@ -32,26 +32,15 @@ namespace MovieReviewsAndTickets_API.Controllers
         public async Task<ActionResult<MovieStatus>> GetMovieStatus(byte id)
         {
             var movieStatus = await _context.MovieStatuses.FindAsync(id);
-
-            if (movieStatus == null)
-            {
-                return NotFound();
-            }
-
+            if (movieStatus == null) return NotFound();
             return movieStatus;
         }
 
         // PUT: api/MovieStatus/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMovieStatus(byte id, MovieStatus movieStatus)
         {
-            if (id != movieStatus.Id)
-            {
-                return BadRequest();
-            }
-
+            if (id != movieStatus.Id) return BadRequest();
             _context.Entry(movieStatus).State = EntityState.Modified;
 
             try
@@ -60,28 +49,19 @@ namespace MovieReviewsAndTickets_API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MovieStatusExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                if (!MovieStatusExists(id)) return NotFound();
+                else throw;
             }
 
             return NoContent();
         }
 
         // POST: api/MovieStatus
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public async Task<ActionResult<MovieStatus>> PostMovieStatus(MovieStatus movieStatus)
         {
             _context.MovieStatuses.Add(movieStatus);
             await _context.SaveChangesAsync();
-
             return CreatedAtAction("GetMovieStatus", new { id = movieStatus.Id }, movieStatus);
         }
 
@@ -94,10 +74,8 @@ namespace MovieReviewsAndTickets_API.Controllers
             {
                 return NotFound();
             }
-
             _context.MovieStatuses.Remove(movieStatus);
             await _context.SaveChangesAsync();
-
             return movieStatus;
         }
 

@@ -51,7 +51,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             var labels = movies.Select(m => m.Title).ToList();
             var series = movies.Select(m => m.Reviews.Count).ToList();
             var lastReview = await _context.Reviews.Where(r => !r.IsDeleted).OrderByDescending(r => r.CreatedDate).FirstOrDefaultAsync();
-            return new { Labels = labels, Series = series, LastReview = lastReview.CreatedDate };
+            return new { Labels = labels, Series = series, LastReview = lastReview.CreatedDate};  
         }
 
         // GET: api/Statistics/Languages - Lấy phim group theo ngôn ngữ -> statistics
@@ -110,7 +110,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         //    var accountsInDB = await _context.Accounts.Where(a => !a.IsDeleted).ToListAsync();
         //    var recentAccounts = new List<object>();
         //    var admins = new List<object>();
-
+         
         //    accountsInDB.OrderByDescending(a => a.CreatedDate).ToList().ForEach(a => {
 
         //        string role = _userManager.GetRolesAsync(a).Result.ToList()[0];

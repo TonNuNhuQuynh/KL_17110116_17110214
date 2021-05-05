@@ -20,8 +20,9 @@ namespace MovieReviewsAndTickets_API.Models
         public int? ExecuterId { get; set; }
         public byte Status { get; set; }         // Trạng thái task, 0: chưa giao, 1: chờ phản hồi, 2: đang thực hiện, 3: hoàn thành chưa duyệt, 4: hoàn thành đã duyệt
         public Post Post { get; set; }           // Id của post ứng vs task mà người được giao đã viết
-        public int? PostId { get; set; }
+        public int? PostId { get; set; }          
         public bool IsDeleted { get; set; }       // Task có bị xóa
         public DateTime? AssignTime { get; set; } // Thời gian mà task đc assign cho user, vì sau 2 tiếng task user ko response, admin có quyền edit task cho user khác
+
     }
 }

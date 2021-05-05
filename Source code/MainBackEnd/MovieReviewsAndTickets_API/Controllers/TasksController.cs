@@ -77,12 +77,12 @@ namespace MovieReviewsAndTickets_API.Controllers
             // Assign task cho user mới
             if (task.ExecuterId != null)
             {
-                taskInDB.Status = task.ExecuterId != taskInDB.ExecuterId ? TaskHelper.WaitingT : taskInDB.Status;
-                taskInDB.AssignTime = task.ExecuterId != taskInDB.ExecuterId ? DateTime.Now : taskInDB.AssignTime;
+                taskInDB.Status = task.ExecuterId != taskInDB.ExecuterId? TaskHelper.WaitingT: taskInDB.Status;
+                taskInDB.AssignTime = task.ExecuterId != taskInDB.ExecuterId ? DateTime.Now: taskInDB.AssignTime;
                 // Tạo notification mới gửi đến user đc assign
                 admin = await _context.Accounts.Where(a => !a.IsDeleted && a.Id == task.CreatorId).Include(a => a.User).FirstOrDefaultAsync();
                 notification = new Notification() { ReceiverId = (int)task.ExecuterId, CreatedDate = DateTime.Now, SenderId = task.CreatorId };
-                (notification.Message, notification.Url) = task.ExecuterId != taskInDB.ExecuterId ? NotificationHelper.AssignTaskNoti(admin.UserName, id) : NotificationHelper.UpdateTaskNoti(admin.UserName, task.Title, id);
+                (notification.Message, notification.Url) = task.ExecuterId != taskInDB.ExecuterId? NotificationHelper.AssignTaskNoti(admin.UserName, id): NotificationHelper.UpdateTaskNoti(admin.UserName, task.Title, id);
                 _context.Notifications.Add(notification);
                 taskInDB.ExecuterId = task.ExecuterId;
             }
@@ -109,7 +109,7 @@ namespace MovieReviewsAndTickets_API.Controllers
                 //            $"<br>Từ chối hoặc chấp nhận task <a href=\"{link}\">tại đây</a>");
                 //}    
                 SendMessage(new NotificationVM() { Id = notification.Id, Url = notification.Url, CreatedDate = notification.CreatedDate, Message = notification.Message, SenderImage = admin.User.Image, SenderName = admin.UserName }, notification.ReceiverId);
-            }
+            }    
             return NoContent();
         }
 
@@ -133,7 +133,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             }
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
-
+            
             if (task.ExecuterId != 0 && task.ExecuterId != null)  // Nếu đc assign cho user thì gán lại status là chờ phản hồi và assignTime
             {
                 // Tạo notification mới gửi đến user đc assign

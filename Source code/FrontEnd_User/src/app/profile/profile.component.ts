@@ -5,10 +5,10 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
-import { Account } from '../authentication/model';
-import { City } from '../cinema-chain/model';
+import { Account} from 'app/authentication/model';
+import { City } from 'app/cinema-chain/model';
 import { ToastService } from 'app/toast/toast.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 import { finalize } from 'rxjs/operators';
 
 
@@ -104,6 +104,7 @@ export class ProfileComponent implements OnInit{
       this.toast.toastSuccess("Cập nhật thông tin tài khoản thành công!");
       this.account = r;
       this.auth.updateProfilePic(r.user.image);
+      this.isLoaded = true;
     }
   }
 
@@ -139,8 +140,9 @@ export class ProfileComponent implements OnInit{
     {
       console.log(e);
       this.toast.toastError("Cập nhật thông tin tài khoản không thành công!")
+      this.isLoaded = true;
     }
-    this.isLoaded = true;
+    
   }
   
   tabChange()

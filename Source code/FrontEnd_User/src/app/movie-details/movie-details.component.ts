@@ -11,6 +11,7 @@ import { RateModalComponent } from 'app/shared/rate-modal/rate-modal.component';
 import { TrailerModalComponent } from 'app/movie-details/trailer-modal/trailer-modal.component';
 import { ReviewListComponent } from './review-list/review-list.component';
 import { ShowtimesComponent } from './showtimes/showtimes.component';
+import { NewsComponent } from './news/news.component';
 
 @Component({
   selector: 'app-movie-details',
@@ -28,8 +29,9 @@ export class MovieDetailsComponent implements OnInit {
   { 
     router.events.filter(event => event instanceof NavigationEnd).subscribe((val: any) => 
     {
-      if (val.url.includes('reviews') ) this.selectedTab = 1;
-      else if (val.url.includes('showtimes')) this.selectedTab = 2;
+      if (val.url.includes('news') ) this.selectedTab = 1
+      else if (val.url.includes('reviews') ) this.selectedTab = 2
+      else if (val.url.includes('showtimes')) this.selectedTab = 3
     })
   }
 
@@ -42,9 +44,6 @@ export class MovieDetailsComponent implements OnInit {
 
     await this.getMovie();
     this.isLoaded = true;
-    
-    // if (window.location.href.includes('reviews')) this.selectedTab = 1;
-    // else this.selectedTab = 2;
   }
   initMovie()
   {
@@ -89,12 +88,7 @@ export class MovieDetailsComponent implements OnInit {
   openLoginModal()
   {
     const modalRef = this.modalService.open(LoginModalComponent, {windowClass: "login"});
-    modalRef.result.then(async (result: any) => 
-      {
-        if (result == 'Success') window.location.reload();
-        else this.toastr.toastError("Đăng nhập không thành công!");
-
-      }, () => {})
+    modalRef.result.then(async (result: any) => {}, () => {})
   }
   async likeMovie(event: any)
   {
@@ -159,7 +153,16 @@ export class MovieDetailsComponent implements OnInit {
 
       modalRef.result.then(async (result: any) => 
       {
-        if (result == 'Success') window.location.reload();
+        if (typeof(result) == 'object') 
+        {
+          if (this.selectedTab == 2) window.location.reload()
+          else 
+          {
+            this.movie.ratings = result.ratings
+            if (this.auth.activityStorage.rateIds.find(r => r == this.movie.movie.id)) this.toastr.toastSuccess('Đánh giá phim thành công!')
+            else this.toastr.toastSuccess('Xóa đánh giá thành công!')
+          }
+        }
         else if (result == 'Failed' && rated) this.toastr.toastError('Cập nhật đánh giá không thành công!');
         else if (result == 'Delete Failed' && rated) this.toastr.toastError('Xóa đánh giá không thành công!');
         else if (result == 'Failed' && !rated) this.toastr.toastError('Post đánh giá không thành công!');       
@@ -177,14 +180,10 @@ export class MovieDetailsComponent implements OnInit {
     modalRef.componentInstance.url = this.movie.movie.trailer;
     modalRef.result.then( () => {}, () => {})
   }
-  onChildLoaded(component: ReviewListComponent | ShowtimesComponent) 
+  onChildLoaded(component: ReviewListComponent | ShowtimesComponent | NewsComponent) 
   {
-    if (component instanceof ShowtimesComponent) 
-    {
-      component.movieName = this.movie.movie.title;
-    } 
-    else if (component instanceof ReviewListComponent) {
-      component.movieAvgRating = this.movie.ratings;
-    }
+    if (component instanceof ShowtimesComponent) component.movieName = this.movie.movie.title
+    else if (component instanceof ReviewListComponent) component.movieAvgRating = this.movie.ratings
+    else if (component instanceof NewsComponent) component.title = this.movie.movie.title
   }
 }

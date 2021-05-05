@@ -144,3 +144,14 @@ p {font-size: 14.5px;}
 }
 
 
+@media (max-width: 544px) {  
+  p {
+    font-size: 14px;
+  }
+  .title1 {
+    font-size: 32px;
+  }
+  .title2 {
+    font-size: 16px;
+  }
+}

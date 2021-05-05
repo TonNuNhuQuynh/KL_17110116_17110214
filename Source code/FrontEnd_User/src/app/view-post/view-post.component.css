@@ -10,7 +10,7 @@
     max-width: 70%;
 }
 .text-muted {
-    color: #95aac9!important;
+    color: #12263f!important;
 }
 .card {
     margin-bottom: 1.5rem;
@@ -162,26 +162,3 @@ p
     font-size: .8125rem;
     /* font-weight: 400; */
 }
-/* .social-bar {
-    position: fixed;
-    left: 10px;
-    top: 180px;
-}
-:host ::ng-deep .sb-facebook {
-    background-color: #3b5999;
-    display: block;
-    margin: 5px 0;
-    color: #fff;
-    border-radius: 50%!important;
-    -moz-border-radius: 50%!important;
-    -webkit-border-radius: 50%!important;
-    width: 36px!important;
-    height: 36px;
-    text-align: center;
-    border: none;
-    box-shadow: 0 3px 5px -1px rgb(0 0 0 / 20%), 0 6px 10px 0 rgb(0 0 0 / 14%), 0 1px 18px 0 rgb(0 0 0 / 12%);
-    z-index: 100;
-}
-:host ::ng-deep .sb-facebook:focus{
-    outline: none;
-} */

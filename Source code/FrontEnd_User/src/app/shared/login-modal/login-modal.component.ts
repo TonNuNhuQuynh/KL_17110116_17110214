@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { FacebookLoginProvider, GoogleLoginProvider, SocialAuthService, SocialUser } from 'angularx-social-login';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
-import { Account } from '../../authentication/model';
+import { Account } from 'app/authentication/model';
 
 @Component({
   selector: 'app-login-modal',
@@ -13,7 +13,7 @@ import { Account } from '../../authentication/model';
 })
 export class LoginModalComponent implements OnInit {
 
-  constructor(public activeModal: NgbActiveModal, private http: HttpClient, private apiService: ApiService, private auth: AuthenticationService) 
+  constructor(private externalAuthService: SocialAuthService, public activeModal: NgbActiveModal, private http: HttpClient, private apiService: ApiService, private auth: AuthenticationService) 
   { }
   account: Account;
   remember: boolean = false;
@@ -48,7 +48,7 @@ export class LoginModalComponent implements OnInit {
       else if (result == 'locked') this.setAlert("Tài khoản đã bị khóa!");
       else 
       {
-        this.auth.saveAccount(result.account, this.remember, result.activities);
+        this.auth.saveAccount(result.account, this.remember, result.activities, result.token);
         this.closeModal('Success');
       }
     } 
@@ -72,5 +72,56 @@ export class LoginModalComponent implements OnInit {
   closeModal(result: any)
   {
     this.activeModal.close(result);
+  }
+  async loginWithGoogle()
+  {
+    this.externalAuthService.signIn(GoogleLoginProvider.PROVIDER_ID)
+    .then(async res => {
+      const user: SocialUser = { ...res };
+      this.isLoaded = false;
+      let url = this.apiService.backendHost + `/api/Accounts/LoginGoogle`;
+      try 
+      {
+        let result = await this.http.post(url, {provider: user.provider, token: user.idToken}).toPromise() as any;
+        if (result == 'email') this.setAlert("Chưa xác nhận email");
+        else if (result == 'locked') this.setAlert("Tài khoản đã bị khóa!");
+        else 
+        {
+          this.auth.saveAccount(result.account, true, result.activities, result.token);
+          this.closeModal('Success');
+        }
+      } 
+      catch(e) 
+      {
+        this.setAlert('Tài khoản không tồn tại!');
+      }
+      this.isLoaded = true;
+    }, error => console.log(error))
+  }
+  async loginWithFacebook()
+  {
+    this.externalAuthService.signIn(FacebookLoginProvider.PROVIDER_ID)
+    .then(async res => {
+      const user: SocialUser = { ...res };
+      
+      this.isLoaded = false;
+      let url = this.apiService.backendHost + `/api/Accounts/LoginFacebook`;
+      try 
+      {
+        let result = await this.http.post(url, {provider: user.provider, token: user.authToken}).toPromise() as any;
+        if (result == 'email') this.setAlert("Chưa xác nhận email");
+        else if (result == 'locked') this.setAlert("Tài khoản đã bị khóa!");
+        else 
+        {
+          this.auth.saveAccount(result.account, true, result.activities, result.token);
+          this.closeModal('Success');
+        }
+      } 
+      catch(e) 
+      {
+        this.setAlert('Tài khoản không tồn tại!');
+      }
+      this.isLoaded = true;
+    }, error => console.log(error))
   }
 }

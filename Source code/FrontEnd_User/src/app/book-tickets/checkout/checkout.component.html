@@ -30,7 +30,7 @@
                         <tr *ngFor="let detail of summary">
                             <td>{{detail.seatTypeName}}</td>
                             <td class="text-center">{{detail.quantity}}</td>
-                            <td class="text-right">{{detail.amount}} đ</td>
+                            <td class="text-right">{{detail.amount | number:'1.0-0'}} đ</td>
                         </tr>
                     </tbody>
                 </table>
@@ -76,8 +76,12 @@
                     </ng-container>
                 </div>
                 
-                <button [disabled]="fullname.invalid || email.invalid || phone.invalid" (click)="checkout()" class="btn btn-lg btn-dark btn-block">Thanh toán</button>
+                <!-- <button [disabled]="fullname.invalid || email.invalid || phone.invalid" (click)="checkout()" class="btn btn-lg btn-dark btn-block">Thanh toán</button> -->
             </div>
         </div>
+
+        <!-- <ngx-paypal [config]="payPalConfig"></ngx-paypal> -->
+
+        <div id="paypal-button" [ngClass]="{ 'd-none': fullname.invalid || email.invalid || phone.invalid }"></div>
     </ng-container>
 </div>

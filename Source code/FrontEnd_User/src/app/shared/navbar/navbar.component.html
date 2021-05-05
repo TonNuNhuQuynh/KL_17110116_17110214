@@ -1,11 +1,11 @@
-<nav class="navbar navbar-expand-lg fixed-top navbar-transparent" color-on-scroll="500">
+<nav class="navbar navbar-expand-lg fixed-top navbar-transparent" color-on-scroll="500" id="main-nav">
     <div class="container">
         <div class="navbar-translate" style="width: auto">
-            <a [routerLink]="['/home']"><img src="assets/img/logo.png" height="90%" width="100%" /></a>
+            <a [routerLink]="['/home']"><img src="assets/img/logo2.png" height="90%" width="100%" /></a>
         </div>
         
         <div class="collapse navbar-collapse justify-content-start" id="navigation">
-            <ul *ngIf="!isAdmin" class="navbar-nav" >
+            <ul class="navbar-nav" >
                 <!-- Home -->
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="['/home']">Trang chủ</a>
@@ -26,14 +26,19 @@
                     <a class="nav-link" href="javascript:void(0)" (click)="openCinemasModal()">Rạp phim</a>
                 </li>
 
-                <li class="nav-item" *ngIf="isAdmin" >
-                    <div ngbDropdown class="d-inline-block dropdown">
-                        <a class="nav-link" id="dropdownBasic1" ngbDropdownToggle >Admins</a>
-                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-danger">
-                            <a [routerLink]="['/statistics']" class="dropdown-item">Thống kê</a>
-                            <a [routerLink]="['/manage-movies']" class="dropdown-item">Quản lý Phim</a>
-                            <a [routerLink]="['/manage-accounts']" class="dropdown-item">Quản lý Tài khoản</a>
-                            <a *ngIf="isSupAdmin" [routerLink]="['/manage-chains']" class="dropdown-item">Quản lý Chuỗi Rạp</a>                          
+                <!-- Tin tức -->
+                <li class="nav-item">
+                    <div class="dropdown">
+                        <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown">Tin tức</a>
+                        <div class="dropdown-danger dropdown-menu multi-level">
+                            <a *ngFor="let type of types" [routerLink]="['/news/type', type.id]" class="dropdown-item">{{type.name}}</a>
+                            <div class="divider"></div>
+                            <div class="dropdown-submenu">
+                                <a class="dropdown-item">Chủ đề</a>
+                                <div class="dropdown-menu">
+                                    <a *ngFor="let theme of themes" [routerLink]="['/news/theme', theme.id]" class="dropdown-item">{{theme.name}}</a>      
+                                </div>
+                            </div>          
                         </div>
                     </div>
                 </li>
@@ -49,33 +54,10 @@
                     <button (click)="openLoginModal()" type="button" class="btn btn-danger btn-round">Đăng nhập</button>
                 </div>    
             </ul>
-
-            <ul *ngIf="isAdmin" class="navbar-nav" >
-                <!-- Thống kê -->
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/admin/statistics']">Thống kê</a>
-                </li>
-
-                <!-- Quản lý phim -->
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/admin/manage-movies']">Phim</a>
-                </li>
-
-                <!-- Quản lý user -->
-                <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/admin/manage-accounts']">Tài khoản</a>
-                </li>
-
-                <!-- Quản lý chuỗi rạp -->
-                <li class="nav-item" *ngIf="isSupAdmin">
-                    <a class="nav-link" [routerLink]="['/admin/manage-chains']">Chuỗi rạp</a>
-                </li>
-
-            </ul>
         </div>
 
 
-        <form *ngIf="!isAdmin" class="form-inline mr-4 d-none d-lg-flex">
+        <form class="form-inline mr-4 d-none d-lg-flex">
             <div class="input-group col align-items-center d-none d-lg-flex" id="searchbox" style="background: transparent !important;">
                 <input (keyup.enter)="search()" name="search" class="form-control py-2 rounded-pill mr-1 pr-5 bg-transparent border text-light" placeholder="Tìm kiếm phim ..." type="search" name="search" [(ngModel)]="query">
                 <span class="input-group-append">
@@ -104,9 +86,9 @@
                         <img [src]="auth.currentAccountValue.user.image == null? './assets/img/user-default.png': auth.currentAccountValue.user.image" class="avatar-img img-circle img-no-padding">
                     </a>
                     <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-danger dropdown-menu-right">
+                        <a *ngIf="isWriter" [routerLink]="['/writer']" class="dropdown-item">Moviefy Editor</a>
                         <a [routerLink]="['/profile']" class="dropdown-item">Quản lý Tài khoản</a>
                         <a [routerLink]="['/watchlist']" class="dropdown-item">Tủ phim</a>
-
                         <hr class="dropdown-divider">
                         <a href="javascript:void(0)" (click)="logout()" class="dropdown-item">Đăng xuất</a>
                     </div>

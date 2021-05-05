@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
@@ -12,9 +12,10 @@ import { TaskService } from '../task-list/task.service';
   templateUrl: './task-details.component.html',
   styleUrls: ['./task-details.component.scss']
 })
-export class TaskDetailsComponent implements OnInit, AfterViewChecked {
+export class TaskDetailsComponent implements OnInit, AfterViewInit {
 
   constructor(private toast: ToastService, private route: ActivatedRoute, private http: HttpClient, private apiService: ApiService, public auth: AuthenticationService) { }
+
   
   task: Task = {
     id: 0,
@@ -92,7 +93,12 @@ export class TaskDetailsComponent implements OnInit, AfterViewChecked {
     let url = this.apiService.backendHost + `/api/Notifications/View/${this.notificationId}`;
     await this.http.get(url).toPromise();
   }
-  async ngAfterViewChecked(): Promise<void> {
+
+  async ngAfterViewInit(): Promise<void> {
     if (this.notificationId != 0) await this.viewNotification();
+  }
+  reviewPost()
+  {
+    window.open(this.apiService.frontEndHost_User + `/review?id=${this.task.postId}`, '_blank')
   }
 }

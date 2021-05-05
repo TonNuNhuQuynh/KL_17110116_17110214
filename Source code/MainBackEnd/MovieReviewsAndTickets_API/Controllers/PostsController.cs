@@ -90,8 +90,8 @@ namespace MovieReviewsAndTickets_API.Controllers
                     notification = new Notification() { ReceiverId = task.CreatorId, CreatedDate = DateTime.Now, SenderId = (int)task.ExecuterId };
                     (notification.Message, notification.Url) = NotificationHelper.UpdatePostNoti(task.Executer.UserName, post.Id);
                     _context.Notifications.Add(notification);
-                }
-            }
+                }     
+            }    
             await _context.SaveChangesAsync();
             // Nếu post đã được gửi rồi thì notify admin
             if (notification != null) SendMessage(new NotificationVM() { Id = notification.Id, Url = notification.Url, CreatedDate = notification.CreatedDate, Message = notification.Message, SenderImage = postInDb.Account.User.Image, SenderName = postInDb.Account.UserName }, notification.ReceiverId);
@@ -109,15 +109,15 @@ namespace MovieReviewsAndTickets_API.Controllers
             return new JsonResult(post.Id);
         }
 
-        // DELETE: api/Posts/5 -> manage-posts
+        // DELETE: api/Posts/TakeDown/0/5: Gỡ bài viết (mode = 1) hay hủy gỡ bài viết (mode = 0) - manage-posts
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = RolesHelper.SuperAdmin)]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePost(int id)
+        [HttpDelete("TakeDown/{mode}/{id}")]
+        public async Task<IActionResult> TakeDownPost(int id, int mode)
         {
             var post = await _context.Posts.FindAsync(id);
             if (post == null) return NotFound();
-            post.IsDeleted = true;
+            post.IsDeleted = mode == 1 ? true : false;
             await _context.SaveChangesAsync();
             return NoContent();
         }

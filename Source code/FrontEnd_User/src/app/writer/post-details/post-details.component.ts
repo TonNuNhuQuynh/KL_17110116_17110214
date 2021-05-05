@@ -190,6 +190,7 @@ export class PostDetailsComponent implements OnInit,  AfterViewInit {
         }
       }
       this.isUpdated = false
+      this.name = 'Chi tiết bài viết'
     }
     catch(e) {
       console.log(e) 

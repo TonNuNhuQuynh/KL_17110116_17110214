@@ -10,14 +10,14 @@ using MovieReviewsAndTickets_API.Models;
 using MovieReviewsAndTickets_API.Services.Emails;
 using Microsoft.AspNetCore.Identity;
 using System;
+using MovieReviewsAndTickets_API.Services;
 using MovieReviewsAndTickets_API.Services.SignalR;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using MovieReviewsAndTickets_API.Services;
-using Microsoft.Extensions.ML;
+using System.Collections.Generic;
 using MovieReviewsAndTickets_API.MLModels;
+using Microsoft.Extensions.ML;
 
 namespace MovieReviewsAndTickets_API
 {
@@ -37,7 +37,7 @@ namespace MovieReviewsAndTickets_API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             var issuers = new List<string>() { ApiHelper.FrontEndHost_User.Remove(ApiHelper.FrontEndHost_User.Length - 2, 2), ApiHelper.FrontEndHost_Admin.Remove(ApiHelper.FrontEndHost_Admin.Length - 2, 2) };
-
+            
             services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -64,6 +64,7 @@ namespace MovieReviewsAndTickets_API
             services.AddCors(options => options.AddPolicy("Cors", builder =>
             {
                 builder
+                .AllowAnyOrigin()
                 .WithOrigins(ApiHelper.FrontEndHost_User.Remove(ApiHelper.FrontEndHost_User.Length - 2, 2), ApiHelper.FrontEndHost_Admin.Remove(ApiHelper.FrontEndHost_Admin.Length - 2, 2))
                 .AllowCredentials()
                 .AllowAnyMethod()

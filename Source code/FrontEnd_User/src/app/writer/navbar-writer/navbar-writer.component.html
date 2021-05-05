@@ -12,13 +12,13 @@
         <div class="navbar-brand d-none d-sm-block" style="color: #f5593d;">Moviefy Editor</div>
       </div>
 
-      <button class="navbar-toggler" type="button" (click)="collapse()"
-        [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+      <!-- <button class="navbar-toggler" type="button" (click)="collapse()" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
         <span class="navbar-toggler-bar navbar-kebab"></span>
         <span class="navbar-toggler-bar navbar-kebab"></span>
         <span class="navbar-toggler-bar navbar-kebab"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-end" id="collapseExample" [ngbCollapse]="isCollapsed">
+      </button> -->
+
+      <div class="justify-content-end">
         <ul class="navbar-nav">
           <!-- Notification -->
           <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left" #notiDropdown="ngbDropdown">
@@ -26,7 +26,7 @@
               <i class="nc-icon nc-bell-55"></i>
               <span *ngIf="notifications.length > 0" class="badge badge-danger">{{notifications.length}}</span>
             </a>
-            <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-xl py-0 dropdown-menu-right">
+            <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-xl py-0 dropdown-menu-right" style="inset: 100% 0px auto auto;transform: translateY(0px);">
               <!-- Header -->
               <div class="px-3 py-3">
                 <p class="text-sm text-muted m-0 small">Bạn có <strong class="text-danger">{{notifications.length}}</strong> thông báo chưa đọc</p>
@@ -55,16 +55,16 @@
           <!-- Setting -->
           <li class="nav-item btn-rotate" ngbDropdown placement="bottom-left">
             <a class="nav-link" ngbDropdownToggle id="navbarDropdownMenuLink" >
-              <i class="nc-icon nc-settings-gear-65"></i><p><span class="d-lg-none d-md-block"></span></p>
+              <i class="nc-icon nc-settings-gear-65"></i>
             </a>
             <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-right">
+              <a ngbDropdownItem [routerLink]="['/home']">Trang chủ</a>
               <a ngbDropdownItem [routerLink]="['/profile']">Quản lý tài khoản</a>
               <a ngbDropdownItem href="javascript:void(0)" (click)="logout()">Đăng xuất</a>
             </div>
           </li>
-
         </ul>
       </div>
     </div>
-  </nav>
+</nav>
   

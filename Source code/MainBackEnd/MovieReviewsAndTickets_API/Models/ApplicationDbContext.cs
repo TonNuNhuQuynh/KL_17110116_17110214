@@ -36,6 +36,7 @@ namespace MovieReviewsAndTickets_API.Models
         public DbSet<Task> Tasks { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -115,7 +116,7 @@ namespace MovieReviewsAndTickets_API.Models
             {
                 entity.Property(e => e.Id).UseIdentityColumn();
             });
-
+           
             modelBuilder.Entity<Role>().HasData(new List<Role>
             {
                 new Role

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieReviewsAndTickets_API.Helpers;
@@ -79,7 +80,7 @@ namespace MovieReviewsAndTickets_API.Controllers
                     if (cinemasInDB.Contains(cinema.Id)) _context.Entry(cinema).State = EntityState.Modified;
                     else _context.Cinemas.Add(cinema);
                 });
-
+                
             }
             else _context.CinemaChains.Add(cinemaChain);
             await _context.SaveChangesAsync();

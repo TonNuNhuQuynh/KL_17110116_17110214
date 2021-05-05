@@ -21,7 +21,7 @@
                                 <div ngbDropdown class="d-inline-block btn-block mb-4">
                                     <button class="btn btn-block form-control dropdown-text" id="dropdownMenu1" ngbDropdownToggle>{{gSelectAll}}</button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                                        <button (click)="filterGenres(genres.length + 1, 'Tất cả')" class="dropdown-item">Tất cả</button>
+                                        <button (click)="filterGenres(lastGId + 1, 'Tất cả')" class="dropdown-item">Tất cả</button>
                                         <button *ngFor="let g of genres" (click)="filterGenres(g.id, g.name)" class="dropdown-item">{{g.name}}</button>
                                     </div>
                                 </div>
@@ -31,7 +31,7 @@
                                 <div ngbDropdown class="d-inline-block btn-block mb-4">
                                     <button class="btn btn-block form-control" id="dropdownMenu1" ngbDropdownToggle>{{lSelectAll}}</button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                                        <button (click)="filterLanguages(languages.length + 1, 'Tất cả')" class="dropdown-item">Tất cả</button>
+                                        <button (click)="filterLanguages(lastLId + 1, 'Tất cả')" class="dropdown-item">Tất cả</button>
                                         <button *ngFor="let l of languages" (click)="filterLanguages(l.id, l.name)" class="dropdown-item">{{l.name}}</button>
                                     </div>
                                 </div>
@@ -62,7 +62,7 @@
                                         <div class="card-body border-top">
                                             <h3 class="text-truncate h4 mb-1" placement="top" ngbTooltip="{{m.movie.title}}" container="body"><a [routerLink]="['/movie-details']" [queryParams]="{ movieId: m.movie.id }"> {{m.movie.title}}</a></h3>
                                             <div class="row no-gutters small">
-                                                <div class="col text-muted">{{m.movie.releaseDate | date : 'dd/MM'}}</div>
+                                                <div class="col text-muted">{{m.movie.releaseDate | date : 'dd/MM/yyyy'}}</div>
                                                 <div *ngIf="m.ratings > 0" class="col text-right">
                                                     <a class="text-muted" [ngClass]="{'text-success': m.ratings >= 7.5, 'text-danger': m.ratings <= 5}"><i class="fa fa-star"></i> {{m.ratings | number:'1.1-1'}}/10</a>
                                                 </div>

@@ -7,6 +7,7 @@ import { ListReview, Review } from './model';
 import { ReviewLike } from 'app/authentication/model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginModalComponent } from 'app/shared/login-modal/login-modal.component';
+import { RolesService } from 'app/authentication/roles.service';
 
 
 @Component({
@@ -16,13 +17,15 @@ import { LoginModalComponent } from 'app/shared/login-modal/login-modal.componen
 })
 export class ReviewListComponent implements OnInit{
 
-  lstReview: ListReview;
-  movieId: number = 0;
-  movieAvgRating: number = 0;
-  allowedDate: Date = null;
-  isLoaded: boolean = false;
-  isLoadedMore: boolean = false;
-  isRevealed: boolean = true;
+  lstReview: ListReview
+  movieId: number = 0
+  movieAvgRating: number = 0
+  allowedDate: Date = null
+  isLoaded: boolean = false
+  isLoadedMore: boolean = false
+  isRevealed: boolean = true
+
+  writer: string = RolesService.writer
 
   constructor(private modalService: NgbModal, private auth: AuthenticationService, private http: HttpClient, private apiService: ApiService, private route: ActivatedRoute) 
   { }
@@ -81,10 +84,7 @@ export class ReviewListComponent implements OnInit{
   openLoginModal()
   {
     const modalRef = this.modalService.open(LoginModalComponent, {windowClass: "login"});
-    modalRef.result.then(async (result: any) => 
-      {
-        if (result == 'Success') window.location.reload();
-      }, (reason: any) => {})
+    modalRef.result.then(async (result: any) => { }, (reason: any) => {})
   }
   isLiked(id: number)
   {

@@ -82,7 +82,7 @@ namespace MovieReviewsAndTickets_API.Controllers
                 Username = account.UserName,
                 Email = account.Email,
                 Password = null,
-                Phone = account.PhoneNumber == null ? "" : account.PhoneNumber,
+                Phone = account.PhoneNumber == null? "": account.PhoneNumber,
                 IsActive = !account.LockoutEnabled,
                 User = account.User,
                 RoleName = _userManager.GetRolesAsync(account).Result.ToList()[0]
@@ -193,7 +193,7 @@ namespace MovieReviewsAndTickets_API.Controllers
 
             if (!accountInDB.EmailConfirmed) return new JsonResult("email");
             if (accountInDB.LockoutEnabled) return new JsonResult("locked");
-
+           
             account.Id = accountInDB.Id;
             account.Password = null;
             account.User.Image = accountInDB.User.Image;
@@ -257,14 +257,14 @@ namespace MovieReviewsAndTickets_API.Controllers
                 var message = string.Join(", ", r.Errors.Select(x => "Code " + x.Code + " Description" + x.Description));
                 //return Content(message);
                 return BadRequest();
-
+                
             }
         }
 
         //POST: Xác nhận email -> verify-email
         [HttpPost]
         [Route("ConfirmEmail")]
-        public async Task<ActionResult> ConfirmRegistration(ConfirmEmailVM confirmEmailVM)
+        public async Task<ActionResult> ConfirmRegistration (ConfirmEmailVM confirmEmailVM)
         {
             if (string.IsNullOrWhiteSpace(confirmEmailVM.Code))
             {
@@ -315,7 +315,7 @@ namespace MovieReviewsAndTickets_API.Controllers
 
                 string token = await this._userManager.GenerateEmailConfirmationTokenAsync(savedAccount);
                 var callbackUrl = $"{ApiHelper.FrontEndHost_Admin}/verify?userId={savedAccount.Id}&code={Base64Token(token)}";
-
+                
                 await this._emailSender.SendEmailAsync(accountInDB.Email, "Xác nhận vai trò Admin", $"Xin chào {savedAccount.UserName}, <br>" +
                     $"Bạn đã được thêm vào hệ thống của website với vai trò Admin, trước tiên bạn cần xác thực để kích hoạt tài khoản bằng cách nhấn vào đường dẫn sau <a href={callbackUrl}>here</a>");
                 return Content(savedAccount.Id.ToString());
@@ -372,7 +372,7 @@ namespace MovieReviewsAndTickets_API.Controllers
 
         //Gửi email reset password -> send-email
         [HttpGet("SendEmailResetPassword")]
-        public async Task<ActionResult> SendEmailResetPassword([FromQuery(Name = "email")] string email)
+        public async Task<ActionResult> SendEmailResetPassword([FromQuery(Name="email")] string email)
         {
             var accountInDb = await _context.Accounts.Where(a => a.Email.ToLower() == email.ToLower() && a.IsDeleted == false).FirstOrDefaultAsync();
             if (accountInDb == null) return NoContent();
@@ -497,7 +497,7 @@ namespace MovieReviewsAndTickets_API.Controllers
                 MovieLikeIds = accountInDB.MovieLikes.Select(r => r.MovieId).ToList(),
                 ReviewLikes = accountInDB.ReviewLikes.Select(r => new ReviewLike { AccountId = r.AccountId, ReviewId = r.ReviewId, Liked = r.Liked, DisLiked = r.DisLiked }).ToList()
             };
-            return new { Account = account, Activities = activity, Token = GenerateJwtToken(account.RoleName) };
+            return new { Account = account, Activities = activity, Token=GenerateJwtToken(account.RoleName) }; 
         }
         // POST: Super admin tạo account writer -> add-admin-modal
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -543,7 +543,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             var accountInDB = await _context.Accounts.Where(a => a.UserName.ToLower() == account.Username.ToLower() && a.IsDeleted == false)
                                                      .Include(a => a.User).FirstOrDefaultAsync();
             //Không tìm thấy account
-            if (accountInDB == null) return NotFound();
+            if (accountInDB == null) return NotFound(); 
             // Tìm thấy account nhưng ko phải role Super Admin vs Admin
             account.RoleName = _userManager.GetRolesAsync(accountInDB).Result.ToList()[0];
             if (account.RoleName != RolesHelper.SuperAdmin && account.RoleName != RolesHelper.Admin) return NotFound();
@@ -552,7 +552,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             if (passresult == PasswordVerificationResult.Failed) return NotFound();
             // Account chưa confirm email hay account bị lock
             if (!accountInDB.EmailConfirmed) return new JsonResult("email");
-            if (accountInDB.LockoutEnabled) return new JsonResult("locked");
+            if (accountInDB.LockoutEnabled) return new JsonResult("locked");            
             account.Id = accountInDB.Id;
             account.Password = null;
             account.User.Image = accountInDB.User.Image;

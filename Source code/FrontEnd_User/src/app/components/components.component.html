@@ -104,7 +104,7 @@
                                 <hr *ngIf="!first">
                                 <div class="row mt-2">                            
                                     <div class="col">
-                                        <p class="mb-1 text-justify" style="font-weight: 600;">{{p.title}}</p>
+                                        <a [routerLink]="['/post', p.id]" class="mb-1 text-justify" style="font-weight: 600; color: #333333; line-height: 1.5em; font-size: 15px;">{{p.title}}</a>
                                         <p class="mb-0 small">
                                             <a class="text-danger" style="font-weight: 510;" [routerLink]="['/news/type', p.postTypeId]">{{p.postType.name}} </a>
                                             <a class="text-danger" style="font-weight: 510;">· {{p.account.userName}} </a>

@@ -17,13 +17,13 @@
                     </div>
                     <!-- Deadline -->
                     <div class="row">
-                        <div class="col-md-6 pr-1">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Hết hạn ngày</label>
                                 <input readonly type="text" class="form-control" [value]="task.deadline | date:'dd/MM/yyyy'">
                             </div>
                         </div>
-                        <div class="col-md-6 pl-1">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>vào lúc</label>
                                 <input readonly type="text" class="form-control" [value]="task.deadline | date:'HH:mm'">
@@ -49,8 +49,14 @@
                     <!-- Accept or Deny task -->
                     <div *ngIf="!notAllowedToResponse" class="row">
                         <div class="update ml-auto mr-auto">
-                            <button [disabled]="!loaded" class="btn btn-primary btn-round" (click)="accept()">Chấp nhận</button>
-                            <button [disabled]="!loaded" class="btn btn-round btn-danger" (click)="deny()">Từ chối task</button>
+                            <button [disabled]="!loaded" class="btn btn-primary" (click)="accept()">Chấp nhận</button>
+                            <button [disabled]="!loaded" class="btn btn-danger" (click)="deny()">Từ chối task</button>
+                        </div>
+                    </div>
+                    <!-- View post when post is sent for the task -->
+                    <div *ngIf="task.postId != null" class="row">
+                        <div class="update ml-auto mr-auto">
+                            <button class="btn btn-success" (click)="reviewPost()">Xem bài viết</button>
                         </div>
                     </div>
                 </form>

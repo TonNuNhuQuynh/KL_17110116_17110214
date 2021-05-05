@@ -15,16 +15,16 @@ namespace MovieReviewsAndTickets_API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.8")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.1");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -47,7 +47,7 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("nvarchar(max)");
@@ -132,9 +132,7 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -147,8 +145,8 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -163,12 +161,12 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -186,17 +184,17 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                        .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasName("UserNameIndex")
+                        .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
@@ -206,14 +204,14 @@ namespace MovieReviewsAndTickets_API.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5caeb66a-9d83-448b-9afc-e3549666b820",
+                            ConcurrencyStamp = "9765bd91-9e93-469b-8aca-690242d35b6f",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "17110214@student.hcmute.edu.vn",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "tnnhuquynh",
-                            PasswordHash = "AQAAAAEAACcQAAAAEMCcizRC4Fm3RjQFzLjP/RfU3kuC0RCX0rwt2ClChhNLhPtY2mTZl2MUrtWP77Tzxw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBeQBCXSyDwmjWR+WoN3uDZavg5u+TDY+Oh3OPfkXMQv61k+kxgzAJmTwZH/TBqsBw==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "tnnhuquynh"
@@ -291,14 +289,33 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.ToTable("CinemaChains");
                 });
 
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Feedback", b =>
+                {
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PostId", "AccountId", "CreatedDate");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("Feedbacks");
+                });
+
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Genre", b =>
                 {
                     b.Property<byte>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -313,9 +330,7 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -415,9 +430,7 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.Property<byte>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("tinyint")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -427,12 +440,46 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.ToTable("MovieStatuses");
                 });
 
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsViewed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
@@ -466,14 +513,144 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("AccountId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cover")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Keywords")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<byte?>("PostThemeId")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("PostTypeId")
+                        .HasColumnType("tinyint");
+
+                    b.Property<DateTime?>("PublishedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Spoilers")
+                        .HasColumnType("bit");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.HasIndex("MovieId");
+
+                    b.HasIndex("PostThemeId");
+
+                    b.HasIndex("PostTypeId");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.PostTheme", b =>
+                {
+                    b.Property<byte>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PostThemes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = (byte)1,
+                            Name = "Tv Series"
+                        },
+                        new
+                        {
+                            Id = (byte)2,
+                            Name = "Siêu anh hùng"
+                        },
+                        new
+                        {
+                            Id = (byte)3,
+                            Name = "Phân tích nghệ thuật"
+                        });
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.PostType", b =>
+                {
+                    b.Property<byte>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PostTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = (byte)1,
+                            Name = "Tin điện ảnh"
+                        },
+                        new
+                        {
+                            Id = (byte)2,
+                            Name = "Đánh giá"
+                        },
+                        new
+                        {
+                            Id = (byte)3,
+                            Name = "Trailer"
+                        });
+                });
+
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Review", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
@@ -531,27 +708,25 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasName("RoleNameIndex")
+                        .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
@@ -560,23 +735,30 @@ namespace MovieReviewsAndTickets_API.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "fa471c3c-18ed-4cb2-b1b5-29fcff592abc",
+                            ConcurrencyStamp = "2652294e-2176-4892-9948-54d221c7dab1",
                             Name = "User",
                             NormalizedName = "user"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "3fc45d19-7f56-496c-8440-689a7063c12f",
+                            ConcurrencyStamp = "f7908f73-87cb-4d18-970c-41e28e56efe9",
                             Name = "Admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "aa71c75d-bdae-40b6-bb55-1a26d798542d",
+                            ConcurrencyStamp = "895b7d02-502d-4859-a26c-3291dc3f8837",
                             Name = "Super Admin",
                             NormalizedName = "super admin"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ConcurrencyStamp = "7c4ee4e6-c1a5-4966-ac5a-acca3f91458f",
+                            Name = "Writer",
+                            NormalizedName = "writer"
                         });
                 });
 
@@ -598,14 +780,62 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.ToTable("SeatsInOrders");
                 });
 
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Task", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<DateTime?>("AssignTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ExecuterId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("Status")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("ExecuterId");
+
+                    b.HasIndex("PostId")
+                        .IsUnique()
+                        .HasFilter("[PostId] IS NOT NULL");
+
+                    b.ToTable("Tasks");
+                });
+
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
-                        .HasAnnotation("SqlServer:IdentitySeed", 1)
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
@@ -693,6 +923,8 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Cinema", b =>
@@ -702,6 +934,27 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasForeignKey("CinemaChainId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("CinemaChain");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Feedback", b =>
+                {
+                    b.HasOne("MovieReviewsAndTickets_API.Models.Account", "Account")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MovieReviewsAndTickets_API.Models.Post", "Post")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Movie", b =>
@@ -723,6 +976,12 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasForeignKey("MovieStatusId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Language");
+
+                    b.Navigation("MovieStatus");
                 });
 
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.MovieLike", b =>
@@ -738,6 +997,29 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Notification", b =>
+                {
+                    b.HasOne("MovieReviewsAndTickets_API.Models.Account", "Receiver")
+                        .WithMany("ReceivedNotifications")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MovieReviewsAndTickets_API.Models.Account", "Sender")
+                        .WithMany("SentNotifications")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Order", b =>
@@ -759,6 +1041,45 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Cinema");
+
+                    b.Navigation("Movie");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Post", b =>
+                {
+                    b.HasOne("MovieReviewsAndTickets_API.Models.Account", "Account")
+                        .WithMany("Posts")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MovieReviewsAndTickets_API.Models.Movie", "Movie")
+                        .WithMany("Posts")
+                        .HasForeignKey("MovieId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MovieReviewsAndTickets_API.Models.PostTheme", "PostTheme")
+                        .WithMany("Posts")
+                        .HasForeignKey("PostThemeId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MovieReviewsAndTickets_API.Models.PostType", "PostType")
+                        .WithMany("Posts")
+                        .HasForeignKey("PostTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("PostTheme");
+
+                    b.Navigation("PostType");
                 });
 
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Review", b =>
@@ -774,6 +1095,10 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Movie");
                 });
 
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.ReviewLike", b =>
@@ -789,6 +1114,10 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasForeignKey("ReviewId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Account");
+
+                    b.Navigation("Review");
                 });
 
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.SeatsInOrder", b =>
@@ -798,6 +1127,33 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Task", b =>
+                {
+                    b.HasOne("MovieReviewsAndTickets_API.Models.Account", "Creator")
+                        .WithMany("OwnedTasks")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("MovieReviewsAndTickets_API.Models.Account", "Executer")
+                        .WithMany("AssignedTasks")
+                        .HasForeignKey("ExecuterId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("MovieReviewsAndTickets_API.Models.Post", "Post")
+                        .WithOne("Task")
+                        .HasForeignKey("MovieReviewsAndTickets_API.Models.Task", "PostId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("Executer");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("MovieReviewsAndTickets_API.Models.User", b =>
@@ -807,6 +1163,95 @@ namespace MovieReviewsAndTickets_API.Migrations
                         .HasForeignKey("MovieReviewsAndTickets_API.Models.User", "AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Account", b =>
+                {
+                    b.Navigation("AssignedTasks");
+
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("MovieLikes");
+
+                    b.Navigation("Movies");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("OwnedTasks");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("ReceivedNotifications");
+
+                    b.Navigation("ReviewLikes");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("SentNotifications");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Cinema", b =>
+                {
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.CinemaChain", b =>
+                {
+                    b.Navigation("Cinemas");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Language", b =>
+                {
+                    b.Navigation("Movies");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Movie", b =>
+                {
+                    b.Navigation("Casts");
+
+                    b.Navigation("MovieLikes");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("Posts");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.MovieStatus", b =>
+                {
+                    b.Navigation("Movies");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Order", b =>
+                {
+                    b.Navigation("SeatsInOrders");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Post", b =>
+                {
+                    b.Navigation("Feedbacks");
+
+                    b.Navigation("Task");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.PostTheme", b =>
+                {
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.PostType", b =>
+                {
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("MovieReviewsAndTickets_API.Models.Review", b =>
+                {
+                    b.Navigation("ReviewLikes");
                 });
 #pragma warning restore 612, 618
         }

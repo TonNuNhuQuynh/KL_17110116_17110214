@@ -1,4 +1,4 @@
-import { Movie } from "../movie-modal/model";
+import { Movie } from "../../movie-details/model";
 
 export class Review {
     id: number;

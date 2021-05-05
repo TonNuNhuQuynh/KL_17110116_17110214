@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MovieReviewsAndTickets_API.Helpers;
@@ -31,12 +28,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         public async Task<ActionResult<IEnumerable<Cast>>> GetCast(int movieId)
         {
             var cast = await _context.Casts.Where(c => c.MovieId == movieId).ToListAsync();
-
-            if (cast == null)
-            {
-                return NotFound();
-            }
-
+            if (cast == null) return NotFound();
             return cast;
         }
 
@@ -47,21 +39,14 @@ namespace MovieReviewsAndTickets_API.Controllers
             var lstCastInDB = await _context.Casts.Where(c => c.MovieId == id).ToListAsync();
             _context.Casts.RemoveRange(lstCastInDB);
             _context.Casts.AddRange(casts);
-
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CastExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                if (!CastExists(id)) return NotFound();
+                else throw;
             }
 
             return casts;
@@ -72,14 +57,9 @@ namespace MovieReviewsAndTickets_API.Controllers
         public async Task<ActionResult<Cast>> DeleteCast(int id)
         {
             var cast = await _context.Casts.FindAsync(id);
-            if (cast == null)
-            {
-                return NotFound();
-            }
-
+            if (cast == null) return NotFound();
             _context.Casts.Remove(cast);
             await _context.SaveChangesAsync();
-
             return cast;
         }
 

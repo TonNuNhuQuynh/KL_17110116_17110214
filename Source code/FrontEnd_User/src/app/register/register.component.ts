@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from 'app/api.service';
-import { Account } from '../authentication/model';
+import { Account } from 'app/authentication/model';
 import { ToastService } from 'app/toast/toast.service';
 
 @Component({
@@ -12,13 +12,10 @@ import { ToastService } from 'app/toast/toast.service';
 })
 export class RegisterComponent implements OnInit {
 
-  focus: boolean;
-  focus1: boolean;
-  focus2: boolean;
-  focus3: boolean;
-
   account: Account;
   confirmPass: string = '';
+  isLoaded: boolean = true;
+
   constructor(private router: Router, private toast: ToastService, private http: HttpClient, private apiService: ApiService) 
   { }
 
@@ -50,6 +47,7 @@ export class RegisterComponent implements OnInit {
   }
   async register()
   {
+    this.isLoaded = false;
     let url = this.apiService.backendHost + `/api/Accounts`;
     try 
     {
@@ -63,6 +61,7 @@ export class RegisterComponent implements OnInit {
     {
       console.log(e);
       this.toast.toastError('Đăng kí tài khoản không thành công!');
+      this.isLoaded = true;
     }
   }
 

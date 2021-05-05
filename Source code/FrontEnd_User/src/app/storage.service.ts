@@ -11,7 +11,10 @@ export class StorageService
     public static countdown: string = 'endcount';
     public static selectedSeats: string = 'selectedSeats';
     public static orderTotal: string = 'total';
-
+    public static token: string = 't';
+    public static id: string = 'i';
+    public static role: string = 'r';
+    
     constructor() { }
     
 }

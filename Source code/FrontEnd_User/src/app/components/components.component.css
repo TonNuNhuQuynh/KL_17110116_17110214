@@ -3,10 +3,11 @@ ngb-progressbar {
 }
 @media (min-width: 576px)
 {
-  .modal-dialog {
-    max-width: 350px;
-  }
+    .modal-dialog {
+        max-width: 350px;
+    }
 }
+
 .carousel
 {
   width: 100%;
@@ -39,6 +40,7 @@ ngb-progressbar {
   background-repeat: no-repeat;
   background-position: top center;
 }
+
 :host ::ng-deep .carousel-inner .carousel-item img {
   border-radius: 0px;
   box-shadow: 0 2px 2px rgba(204, 197, 185, 0.5);
@@ -56,6 +58,7 @@ ngb-progressbar {
   background: linear-gradient(rgba(0, 0, 0, 0),
   rgba(0, 0, 0, 0.7));
 }
+
 :host ::ng-deep .carousel-inner .carousel-item .container
 {
   z-index: 1;
@@ -309,7 +312,7 @@ a {
 }
 .card-img-top{
   min-height: 15rem;
-  max-height: 400px; 
+  max-height: 280px; 
 }
 /* Latest trailer */
 .w3l-main-slider .banner-top3 {
@@ -331,7 +334,7 @@ a {
 }
 .w3l-main-slider .banner-view::before {
   content: "";
-  background: rgba(5, 6, 0, 0.53);
+  background: rgba(5, 6, 0, 0.5);
   position: absolute;
   top: 0;
   min-height: 100%;
@@ -341,7 +344,7 @@ a {
   border-radius: 6px;
   -webkit-border-radius: 6px;
 }
-.w3l-main-slider .banner-info {
+.w3l-main-slider .banner-info, .banner-info {
   max-width: 500px;
   padding: 0 60px;
 }
@@ -448,14 +451,14 @@ hr
   z-index: 99999;
 }
 
-@media (min-width: 940px) 
+/* @media (min-width: 940px) 
 {
-  .now-playing ::ng-deep .owl-item
-  {
-    max-width: 200px !important;
-  }
+  
+} */
+.now-playing ::ng-deep .owl-item
+{
+  max-width: 200px !important;
 }
-
 .now-playing ::ng-deep .owl-stage{
   margin: 0 auto;
 }
@@ -485,3 +488,4 @@ hr
   float: left;
   clear: both;
 }
+

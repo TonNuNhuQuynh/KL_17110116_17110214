@@ -2,9 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
-
 import { ComponentsComponent } from './components/components.component';
-
 //New import
 import { ProfileComponent } from './profile/profile.component';
 import { RegisterComponent } from './register/register.component';
@@ -35,8 +33,8 @@ import { TaskListComponent } from './writer/task-list/task-list.component';
 import { TaskDetailsComponent } from './writer/task-details/task-details.component';
 import { PostReviewComponent } from './writer/post-review/post-review.component';
 import { NewsListComponent } from './news-list/news-list.component';
-import { ViewPostComponent } from './view-post/view-post.component';
 import { NewsComponent } from './movie-details/news/news.component';
+import { ViewPostComponent } from './view-post/view-post.component';
 
 const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -47,7 +45,7 @@ const routes: Routes = [
       path: 'profile', 
       component: ProfileComponent,
       canActivate: [RoleGuard], 
-      data: { expectedRoles: [Roles.user, Roles.admin, Roles.superAdmin]}
+      data: { expectedRoles: [Roles.user, Roles.writer]}
     },
 
     { path: 'register', component: RegisterComponent},
@@ -86,10 +84,9 @@ const routes: Routes = [
       path: 'watchlist', 
       component: WatchlistComponent,
       canActivate: [RoleGuard], 
-      data: { expectedRoles: [Roles.admin, Roles.superAdmin, Roles.user]}
+      data: { expectedRoles: [Roles.writer, Roles.user]}
     },
 
-  
     // Writer
     { path: 'writer', redirectTo: 'writer/home'},
     { path: 'writer', 

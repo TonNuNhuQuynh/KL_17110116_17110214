@@ -15,7 +15,7 @@ namespace MovieReviewsAndTickets_API.Models
         public string Cover { get; set; }       // Hình nền bài viết
         public string Content { get; set; }     // Nội dung
         public PostType PostType { get; set; }  // Loại bài viết
-        public byte PostTypeId { get; set; }
+        public byte PostTypeId { get; set; } 
         public PostTheme PostTheme { get; set; } // Chuyên đề bài viết
         public byte? PostThemeId { get; set; }
         public bool Spoilers { get; set; }       // Có chứa spoiler ko

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MovieReviewsAndTickets_API.Services.SignalR
 {
-    public class ConnectionMapping<T> : IConnectionMapping<T>
+    public class ConnectionMapping<T>: IConnectionMapping<T>
     {
         private readonly Dictionary<T, HashSet<string>> _connections = new Dictionary<T, HashSet<string>>();
         public int Count

@@ -64,7 +64,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             List<Review> firstReviews = new List<Review>();
             firstReviews = lstReviewInDB;
             if (lstReviewInDB.Count > Threshold) firstReviews = lstReviewInDB.GetRange(0, Threshold);
-
+         
             ListReviewVM listReviewVM = new ListReviewVM();
             foreach (var review in firstReviews)
             {
@@ -84,7 +84,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         [HttpGet("{movieId}/{startIndex}")]
-        public async Task<ActionResult<IEnumerable<ReviewVM>>> LoadMoreReviews(int movieId, int startIndex)
+        public async Task<ActionResult<IEnumerable<ReviewVM>>> LoadMoreReviews (int movieId, int startIndex)
         {
             var lstReviewInDB = await _context.Reviews.Where(r => r.MovieId == movieId && !r.IsDeleted).Include(r => r.ReviewLikes).Include(r => r.Account).ThenInclude(a => a.User).OrderByDescending(r => r.CreatedDate).ToListAsync();
             int leftOver = lstReviewInDB.Count - startIndex;
@@ -119,8 +119,8 @@ namespace MovieReviewsAndTickets_API.Controllers
             await _context.SaveChangesAsync();
             var reviews = await _context.Reviews.Where(r => !r.IsDeleted).ToListAsync();
             if (rate != reviewInDB.Ratings) RetrainModel(_mlContext, reviews.Select(r => new MovieRating() { userId = r.AccountId, movieId = r.MovieId, Label = r.Ratings }).ToList());
-            var movie = await _context.Movies.Where(m => m.Id == review.MovieId).FirstOrDefaultAsync();
-            return new MovieVM() { Movie = movie, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == review.MovieId).ToList()) };
+            //var movie = await _context.Movies.Where(m => m.Id == review.MovieId).FirstOrDefaultAsync();
+            return new MovieVM() { Movie = null, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == review.MovieId).ToList()) };
         }
 
         // POST: api/Reviews
@@ -138,14 +138,14 @@ namespace MovieReviewsAndTickets_API.Controllers
                 reviewInDB.Ratings = review.Ratings;
                 reviewInDB.Spoilers = review.Spoilers;
                 reviewInDB.IsDeleted = false;
-            }
+            }    
             else _context.Reviews.Add(review);
             await _context.SaveChangesAsync();
 
             var reviews = await _context.Reviews.Where(r => !r.IsDeleted).ToListAsync();
             RetrainModel(_mlContext, reviews.Select(r => new MovieRating() { userId = r.AccountId, movieId = r.MovieId, Label = r.Ratings }).ToList());
-            var movie = await _context.Movies.Where(m => m.Id == review.MovieId).FirstOrDefaultAsync();
-            return new MovieVM() { Movie = movie, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == review.MovieId).ToList()) };
+            //var movie = await _context.Movies.Where(m => m.Id == review.MovieId).FirstOrDefaultAsync();
+            return new MovieVM() { Movie = null, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == review.MovieId).ToList()) };
         }
 
         // DELETE: api/Reviews/5
@@ -168,7 +168,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         //private bool ReviewExists(int id)
         //{
         //    return _context.Reviews.Any(e => e.Id == id);
-
+            
         //}
         private int CalculateSatisfiedScore(List<Review> reviews)
         {

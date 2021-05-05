@@ -1,5 +1,5 @@
 import { ShowtimeFormatVM } from "app/movie-details/showtimes/model";
-import { Movie } from "app/shared/movie-modal/model";
+import { Movie } from "../movie-details/model";
 
 export class ShowtimesInMovie
 {

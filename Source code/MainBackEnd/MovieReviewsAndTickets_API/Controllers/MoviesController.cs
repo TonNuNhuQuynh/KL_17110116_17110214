@@ -156,7 +156,7 @@ namespace MovieReviewsAndTickets_API.Controllers
                                             .Select(m => new MovieVM() { Movie = m, Ratings = AvgRatingsAsync(reviews.Where(r => r.MovieId == m.Id && r.IsDeleted == false).ToList()) })
                                             .OrderByDescending(m => m.Ratings)
                                             .ThenByDescending(m => reviews.Where(r => r.MovieId == m.Movie.Id && r.IsDeleted == false).ToList().Count)
-                                            .Take(4).ToList();
+                                            .Take(4).ToList();             
             return top4Movies;
         }
 
@@ -217,7 +217,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             var reviews = await _context.Reviews.ToListAsync();
             var movies = await _context.Movies.ToListAsync();
             // Lấy id của những phim mà user đã đánh giá
-            var ratedIds = reviews.Where(r => r.AccountId == userId).Select(r => r.MovieId).ToList();
+            var ratedIds = reviews.Where(r => r.AccountId == userId).Select(r => r.MovieId).ToList();            
             // Sử dụng model để dự đoán rating của userId lên một số phim
             var recommendedMovies = new List<Movie>();
             MovieRatingPrediction prediction = null;

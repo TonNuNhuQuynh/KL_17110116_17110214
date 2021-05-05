@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'app/api.service';
@@ -11,7 +12,7 @@ import { TaskService } from '../task-list/task.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private http: HttpClient, private apiService: ApiService, private auth: AuthenticationService) { }
+  constructor(private datePipe: DatePipe, private http: HttpClient, private apiService: ApiService, private auth: AuthenticationService) { }
 
   finishTasks: number = 0
   waitingTasks: number = 0
@@ -30,7 +31,6 @@ export class HomeComponent implements OnInit {
     await this.getNotifications()
     await this.getWriters()
     await this.getTasks()
-    console.log(this.progress)
     this.checkStatus()
   }
   async getNumbers()
@@ -81,15 +81,16 @@ export class HomeComponent implements OnInit {
   {
     let d2: Date = new Date();
     let d1 = new Date(date);
-    var diffYears = d2.getFullYear() - d1.getFullYear()
-    if (diffYears >= 1) return diffYears + (diffYears > 1? " years": " year")
-    var diffMonths = diffYears * 12 + (d2.getMonth() - d1.getMonth())
-    if (diffMonths >= 1) return diffMonths + (diffMonths > 1? " mons": " mon")
+    // var diffYears = d2.getFullYear() - d1.getFullYear()
+    // if (diffYears >= 1) return diffYears + (diffYears > 1? " years": " year")
+    // var diffMonths = diffYears * 12 + (d2.getMonth() - d1.getMonth())
+    // if (diffMonths >= 1) return diffMonths + (diffMonths > 1? " mons": " mon")
     var diffMs = d2.getTime() - d1.getTime()
     var diffDays = Math.floor(diffMs / 86400000); // days
     var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-    if (diffDays >= 1) return diffDays + (diffDays > 1? " days": " day")
+    if (diffDays > 30) return this.datePipe.transform(d1, 'dd/MM/yyyy')
+    if (diffDays >= 1 && diffDays <= 30) return diffDays + (diffDays > 1? " days": " day")
     if (diffHrs >= 1) return diffHrs + (diffHrs > 1? " hrs": " hr")
     if (diffMins >= 1) return diffMins + (diffMins > 1? " mins": " min")
     else return "now";

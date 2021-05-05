@@ -77,7 +77,7 @@
                                 <div class="row align-items-center">
                                     <!-- Avatar -->
                                     <div class="col-auto">
-                                        <a class="avatar avatar-verified">
+                                        <a class="avatar" [ngClass]="{'avatar-verified': r.role == writer}">
                                             <img *ngIf="r.image != null && r.image != ''" class="img-circle img-no-padding img-responsive" [src]="r.image">
                                             <img *ngIf="r.image == null || r.image == ''" class="img-circle img-no-padding img-responsive" src="./assets/img/user-default.png">
                                         </a>
@@ -95,7 +95,8 @@
                                     <i class="fa fa-info-circle" aria-hidden="true"></i><br>Review có chứa tình tiết phim, cân nhắc trước khi đọc.<br>Nhấn để xem nội dung.
                                 </a>
                             </div>
-                            <div *ngIf="!r.spoilers" class=""><div class="review-content text-justify" [innerHTML]="r.content"></div></div>
+                            <!-- <div *ngIf="!r.spoilers"></div> -->
+                            <div *ngIf="!r.spoilers" class="review-content text-justify" [innerHTML]="r.content"></div>
                         </div>
 
                         <!-- Button dislike vs like -->

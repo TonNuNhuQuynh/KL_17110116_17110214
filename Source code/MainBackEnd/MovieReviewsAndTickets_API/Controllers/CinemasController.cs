@@ -19,7 +19,7 @@ namespace MovieReviewsAndTickets_API.Controllers
     public class CinemasController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-
+       
         public CinemasController(ApplicationDbContext context)
         {
             _context = context;
@@ -43,7 +43,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             List<CinemaCountsInCityVM> cinemaCountsInCities = new List<CinemaCountsInCityVM>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync(ApiHelper.CinemaChainHost + "/api/Cities"))
+                using (var response = await httpClient.GetAsync(ApiHelper.CinemaChainHost + "/api/Cities")) 
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     var cities = JsonConvert.DeserializeObject<List<City>>(apiResponse);
@@ -63,7 +63,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         {
             var cinema = await _context.Cinemas.Include(c => c.CinemaChain).Where(c => c.Id == id && !c.IsDeleted).FirstOrDefaultAsync();
             if (cinema == null) return NotFound();
-            return new { Id = cinema.Id, Name = cinema.Name, Address = cinema.Address, Logo = cinema.CinemaChain.Logo, CinemaChainId = cinema.CinemaChainId, Description = cinema.Description, CityId = cinema.CityId, CinemaChainName = cinema.CinemaChain.Name };
+            return new { Id = cinema.Id, Name = cinema.Name, Address = cinema.Address, Logo = cinema.CinemaChain.Logo, CinemaChainId = cinema.CinemaChainId, Description = cinema.Description, CityId = cinema.CityId, CinemaChainName = cinema.CinemaChain.Name};
         }
         //Sửa thông tin rạp -> Manage cinema chains
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -92,7 +92,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Cinema>> PostCinema(List<Cinema> cinemas)
         {
-            cinemas.ForEach(cinema =>
+            cinemas.ForEach(cinema => 
             {
                 if (IsDeleted(cinema.Id)) _context.Entry(cinema).State = EntityState.Modified;
                 else _context.Cinemas.Add(cinema);
@@ -161,7 +161,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         {
             string cinemaChainName = await _context.CinemaChains.Where(c => c.Id == chainId && c.IsDeleted == false).Select(c => c.Name).FirstOrDefaultAsync();
             if (cinemaChainName == null) return NoContent();
-            var lstCinema = await _context.Cinemas.Where(cinema => cinema.CinemaChainId == chainId && !cinema.IsDeleted)
+            var lstCinema =  await _context.Cinemas.Where(cinema => cinema.CinemaChainId == chainId && !cinema.IsDeleted)
                                                    .Select(cinema => new Cinema() { Id = cinema.Id, Address = cinema.Address, Name = cinema.Name, CityId = cinema.CityId })
                                                    .ToListAsync();
             return new { CinemaChainName = cinemaChainName, Cinemas = lstCinema };

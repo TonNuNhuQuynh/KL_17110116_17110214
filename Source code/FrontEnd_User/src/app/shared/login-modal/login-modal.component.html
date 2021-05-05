@@ -5,10 +5,15 @@
 
 <div class="modal-body"> 
 
-    <h3 class="title">Login</h3>
-    <form class="register-form">
+    <h3 class="title">Đăng nhập</h3>
 
-      <div class="mb-4">
+    <div class="social-line text-center">
+      <a style="background-color: white;" class="btn btn-neutral btn-google btn-just-icon" (click)="loginWithGoogle()"><i class="fab fa-google-plus-g"></i></a>
+      <a style="background-color: white;" class="btn btn-neutral btn-facebook btn-just-icon" (click)="loginWithFacebook()"><i class="fab fa-facebook-square"></i></a>
+    </div>
+
+    <form class="register-form">
+      <div class="mb-4 mt-2">
         <ngb-alert *ngIf="showAlert" type="danger" [dismissible]="true">
           <div class="container"><i class="nc-bell-55 nc-icon"></i>  {{alertMsg}}</div>
         </ngb-alert>
@@ -54,7 +59,7 @@
       </div>
       <!-- Register -->
       <div class="text-center">
-          <small class="text-light">Chưa có tài khoản? <a href="#/register" (click)="closeModal('Close')">Đăng ký ngay</a>!</small>
+        <small class="text-light">Chưa có tài khoản? <a href="#/register" (click)="closeModal('Close')">Đăng ký ngay</a>!</small>
       </div>
     </form>
 

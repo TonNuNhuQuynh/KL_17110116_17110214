@@ -20,4 +20,5 @@ export class Review
     dislikeCounts: number;
     username: string;
     image: string;
+    role: string;
 }

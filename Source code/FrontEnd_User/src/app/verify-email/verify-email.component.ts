@@ -44,7 +44,8 @@ export class VerifyEmailComponent implements OnInit {
     catch(e) 
     {
       console.log(e);
-      this.success = true;
+      //this.success = true;
+      this.isLoaded = false;
       this.toast.toastError('Xác nhận email không thành công!');
     }
     

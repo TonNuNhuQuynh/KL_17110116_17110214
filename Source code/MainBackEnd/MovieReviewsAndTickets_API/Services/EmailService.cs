@@ -1,8 +1,12 @@
-﻿using Microsoft.Extensions.Options;
+﻿
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Protocols;
 using MovieReviewsAndTickets_API.Helpers;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 

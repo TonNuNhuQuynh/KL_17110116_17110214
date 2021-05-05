@@ -61,7 +61,7 @@ p {
   font-size: 14.5px;
 }
 .text-muted {
-  color: #95aac9 !important;
+  color: #95aac9!important;
   font-weight: 550;
 }
 .card {
@@ -100,7 +100,7 @@ h4 {
 .sub-name{
   font-weight: 500;
   font-size: 0.9em;
-  color: #74839a!important;
+  color: #12263f!important;
 }
 .section
 {
@@ -174,4 +174,8 @@ a.btn.disabled, fieldset:disabled a.btn {
 }
 a {
   cursor: pointer;
+}
+.small, small {
+  font-size: .8125rem;
+  /* font-weight: 400; */
 }

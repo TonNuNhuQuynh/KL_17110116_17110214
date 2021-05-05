@@ -41,8 +41,17 @@
                                 </div>
 
                                 <!-- Share to fb -->
-                                <div class="fb-share-button" attr.data-href="{{shareUrl}}" data-layout="button_count" data-size="small">
-                                    <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{shareUrl}}" class="fb-xfbml-parse-ignore">Chia sẻ</a>
+                                <div class="row">
+                                    <div class="col-auto">
+                                        <div class="text-muted small">
+                                            <i class="far fa-clock"></i> {{post.publishedDate | date:'dd/MM/yyyy HH:mm'}}
+                                        </div>
+                                    </div>
+                                    <div class="col-auto ml-auto">
+                                        <div class=" fb-share-button" attr.data-href="{{shareUrl}}" data-layout="button_count" data-size="small">
+                                            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{shareUrl}}" class="fb-xfbml-parse-ignore">Chia sẻ</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +71,7 @@
                                             </a>
                                         </div>
                                         <div class="col ml-2">
-                                            <p class="mb-1 text-justify" style="font-weight: 600;">{{post.title}}</p>
+                                            <a [routerLink]="['/post', post.id]" class="mb-1 text-justify" style="font-weight: 600; color: #333333; line-height: 1.5em; font-size: 15px;">{{post.title}}</a>
                                             <p class="mb-0 small">
                                                 <a class="text-danger" style="font-weight: 510;">{{post.account.userName}} </a>
                                                 <a class="text-muted">· {{post.publishedDate | date:'dd/MM/yyyy'}}</a>

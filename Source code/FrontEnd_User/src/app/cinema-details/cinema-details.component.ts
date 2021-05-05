@@ -10,7 +10,7 @@ import { ShowDate, ShowtimeVM } from 'app/movie-details/showtimes/model';
 import { CinemaVM, ShowtimesInMovie } from './model';
 import { BookingInfo } from 'app/book-tickets/model';
 import { StorageService } from 'app/storage.service';
-import { Movie } from 'app/shared/movie-modal/model';
+import { Movie } from 'app/movie-details/model';
 import { TrailerModalComponent } from 'app/movie-details/trailer-modal/trailer-modal.component';
 import { LocationService } from 'app/location.service';
 import { CinemasModalComponent } from 'app/shared/cinemas-modal/cinemas-modal.component';

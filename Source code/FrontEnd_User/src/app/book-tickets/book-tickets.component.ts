@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
-import { DatePipe, Location } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { BookingInfo, RoomVM, SelectedSeat } from './model';
+import { BookingInfo, RoomVM, SeatVM, SelectedSeat } from './model';
 import { ApiService } from 'app/api.service';
 import { HttpClient } from '@angular/common/http';
 import { SeatsComponent } from './seats/seats.component';
@@ -10,6 +10,7 @@ import { TicketDetailsComponent } from './ticket-details/ticket-details.componen
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorModalComponent } from './error-modal/error-modal.component';
 import { StorageService } from 'app/storage.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-book-tickets',
@@ -18,19 +19,23 @@ import { StorageService } from 'app/storage.service';
 })
 export class BookTicketsComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked{
 
-  bookingInfo: BookingInfo;
+  bookingInfo: BookingInfo
   roomInfo: RoomVM = {id: 0, name: '', cols: 0, rows: 0, minPrice: 0, checkoutKey:'', seats: [], seatTypes: [], noOfMaxSeats: 0}
-  isLoaded: boolean = false;
-  selectedSeats: SelectedSeat[] = [];
-  total: number = 0;
-  countdownColor: string = '#000000';
-  countdownText: string = '';
-  previousURL: string;
-  activeTab: number = 2;
-  done: boolean = false;
-  endDate: Date;
+  isLoaded: boolean = false
+  selectedSeats: SelectedSeat[] = []
+  total: number = 0
+  countdownColor: string = '#000000'
+  countdownText: string = ''
+  previousURL: string
+  activeTab: number = 2
+  done: boolean = false
+  endDate: Date
 
-  constructor(private chRef: ChangeDetectorRef, private datePipe: DatePipe, private modalService: NgbModal, private http: HttpClient, private router: Router, private location: Location, private apiService: ApiService) 
+  countDownInterval: any
+  pauseInterval: any
+  pauseSecond: number = 0
+
+  constructor(private chRef: ChangeDetectorRef, private datePipe: DatePipe, private modalService: NgbModal, private http: HttpClient, private router: Router, private apiService: ApiService) 
   { 
     if (router.getCurrentNavigation().extras.state != null)
     {
@@ -56,6 +61,7 @@ export class BookTicketsComponent implements OnInit, AfterViewInit, OnDestroy, A
     }
     else this.endDate = new Date(sessionStorage.getItem(StorageService.countdown))
     this.countDown();
+    this.removePage();
   }
 
   async ngOnInit(): Promise<void> 
@@ -68,6 +74,8 @@ export class BookTicketsComponent implements OnInit, AfterViewInit, OnDestroy, A
       this.total = Number(sessionStorage.getItem(StorageService.orderTotal));
     }
     await this.getRoomInfo();
+    this.checkSeats();
+    this.isLoaded = true;
   }
   async getRoomInfo()
   {
@@ -75,9 +83,8 @@ export class BookTicketsComponent implements OnInit, AfterViewInit, OnDestroy, A
     try
     {
       this.roomInfo = await this.http.get<RoomVM>(url).toPromise();
-      this.isLoaded = true;
     }
-    catch(e) { console.log(e); this.router.navigate(['not-found']) }
+    catch(e) { console.log(e); this.router.navigate(['/not-found']) }
   }
   onChildLoaded(component: SeatsComponent | CheckoutComponent | TicketDetailsComponent) 
   {
@@ -88,11 +95,9 @@ export class BookTicketsComponent implements OnInit, AfterViewInit, OnDestroy, A
       component.roomInfo = this.roomInfo;
       component.selectedSeats = this.selectedSeats;
       component.total = this.total;
-
       component.seatChanged.subscribe((data: SelectedSeat[]) => {
         this.selectedSeats = data;
       })
-
       component.totalChanged.subscribe((data: number) => {
         this.total = data;
       })
@@ -105,9 +110,12 @@ export class BookTicketsComponent implements OnInit, AfterViewInit, OnDestroy, A
       component.bookingInfo = this.bookingInfo;
       component.total = this.total;
       component.redirectUrl = this.previousURL;
-
       component.bookingInfoChanged.subscribe((data: BookingInfo) => {
         this.bookingInfo = data;
+      })
+      component.pauseChanged.subscribe((data: boolean) => {
+        if (data) this.pause()
+        else this.resume()
       })
     }
     else if (component instanceof TicketDetailsComponent) 
@@ -122,15 +130,16 @@ export class BookTicketsComponent implements OnInit, AfterViewInit, OnDestroy, A
   countDown()
   {
     var _this = this;
-    var x = setInterval(function() {
+    this.countDownInterval = setInterval(function() {
       var distance = _this.endDate.getTime() - Date.now();
       var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-      _this.countdownText = `0${minutes < 0? 0: minutes}:${seconds < 10? `0${seconds < 0? 0: seconds}`: seconds }`;   
+      _this.countdownText = `0${minutes < 0? 0: minutes}:${seconds < 10? `0${seconds < 0? 0: seconds}`: seconds }`;
+
       if (minutes <= 1) _this.countdownColor = '#f5593d';
       if (distance <= 0) 
       {
-        clearInterval(x);
+        clearInterval(_this.countDownInterval);
         if(window.location.href.includes('seats') || window.location.href.includes('checkout')) _this.openError();
       }
     }, 1000);
@@ -150,9 +159,9 @@ export class BookTicketsComponent implements OnInit, AfterViewInit, OnDestroy, A
     modalRef.componentInstance.message = 'Hết thời gian giữ ghế. Hãy thực hiện lại đơn hàng của bạn';
     modalRef.componentInstance.redirectUrl = this.previousURL;
 
-    modalRef.result.then((result: string) => {}, (reason: any) => {})
+    modalRef.result.then(() => {}, () => {})
   }
-  @HostListener("window:beforeunload", ["$event"]) unloadHandler(event: Event) {
+  @HostListener("window:beforeunload", ["$event"]) unloadHandler() {
     this.savePage();
   }
   savePage()
@@ -170,5 +179,32 @@ export class BookTicketsComponent implements OnInit, AfterViewInit, OnDestroy, A
     sessionStorage.removeItem(StorageService.countdown);
     sessionStorage.removeItem(StorageService.selectedSeats);
     sessionStorage.removeItem(StorageService.orderTotal);
+  }
+  checkSeats()
+  {
+    this.roomInfo.seats.forEach((seat: SeatVM) => {
+      if (seat.status != 0)
+      {
+        let error = this.selectedSeats.find(s => s.id == seat.id)
+        if (error) 
+        {
+          this.selectedSeats = this.selectedSeats.filter(s => s.id != error.id)
+          this.total -= error.price
+        }
+      }
+    })
+  }
+  pause()
+  {
+    clearInterval(this.countDownInterval)
+    let _this = this
+    this.pauseInterval = setInterval(function() { _this.pauseSecond++ }, 1000)
+  }
+  resume()
+  {
+    clearInterval(this.pauseInterval)
+    this.endDate.setSeconds(this.endDate.getSeconds() + this.pauseSecond);
+    this.pauseSecond = 0
+    this.countDown()
   }
 }

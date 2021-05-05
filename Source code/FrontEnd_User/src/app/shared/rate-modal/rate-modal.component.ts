@@ -3,7 +3,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
-import { Movie } from '../movie-modal/model';
+import { MovieWithAvgRatings } from 'app/movie-list/model';
+import { Movie } from '../../movie-details/model';
 import { Review } from './model';
 
 @Component({
@@ -21,6 +22,7 @@ export class RateModalComponent implements OnInit {
 
   review: Review;
   invalid: boolean = false;
+  isLoaded: boolean = false;
 
   async ngOnInit(): Promise<void> 
   {
@@ -62,15 +64,16 @@ export class RateModalComponent implements OnInit {
     if (this.review.ratings == 0) this.invalid = true;
     else 
     {
+      this.isLoaded = true;
       this.review.content = this.replaceLineBreak(this.review.content)
       let url = this.apiService.backendHost + '/api/Reviews';
       if (!this.rated)
       {
         try 
         {
-          await this.http.post(url, this.review).toPromise();
+          let result = await this.http.post<MovieWithAvgRatings>(url, this.review).toPromise();
           this.auth.updateRate(this.review.movieId, true);
-          this.closeModal('Success');
+          this.closeModal(result);
         }
         catch(e) { this.closeModal('Failed'); }
       }
@@ -80,11 +83,12 @@ export class RateModalComponent implements OnInit {
         {
           let headers: any = new HttpHeaders();
           headers.append('Content-Type', 'application/json');
-          await this.http.put(url + `/${this.review.id}`, this.review, headers).toPromise();
-          this.closeModal('Success');
+          let result = await this.http.put<MovieWithAvgRatings>(url + `/${this.review.id}`, this.review, headers).toPromise();
+          this.closeModal(result);
         }
         catch(e) { this.closeModal('Failed'); }
       }
+      this.isLoaded = false;
     }
   }
   async deleteReview()
@@ -92,17 +96,16 @@ export class RateModalComponent implements OnInit {
     var r = confirm('Bạn có muốn xóa bài đánh giá này?');
     if (r)
     {
+      this.isLoaded = true;
       let url = this.apiService.backendHost + `/api/Reviews/${this.review.id}`;
       try 
       {
         let result = await this.http.delete(url).toPromise();
-        if (result) 
-        {
-          this.auth.updateRate(this.movie.id, false);
-          this.closeModal('Success');
-        }
+        this.auth.updateRate(this.movie.id, false);
+        this.closeModal(result);
       }
       catch(e) { this.closeModal('Delete Failed'); }
+      this.isLoaded = false;
     }
   }
   replaceLineBreak(value: string): string 

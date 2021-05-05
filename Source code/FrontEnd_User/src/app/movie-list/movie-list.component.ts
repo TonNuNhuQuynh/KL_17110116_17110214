@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
-import { MovieWithAvgRatings } from 'app/manage-movies/model';
+import { MovieWithAvgRatings } from 'app/movie-list/model';
 import { LoginModalComponent } from 'app/shared/login-modal/login-modal.component';
 import { RateModalComponent } from 'app/shared/rate-modal/rate-modal.component';
 import { ToastService } from 'app/toast/toast.service';
@@ -17,7 +17,7 @@ import { ToastService } from 'app/toast/toast.service';
 })
 export class MovieListComponent implements OnInit, OnDestroy{
 
-  constructor(private modalService: NgbModal, private auth: AuthenticationService, private toastr: ToastService, private http: HttpClient, private apiService: ApiService, route: ActivatedRoute) 
+  constructor(private modalService: NgbModal, private auth: AuthenticationService, private toast: ToastService, private http: HttpClient, private apiService: ApiService, route: ActivatedRoute) 
   { 
     this.snapshot = route.snapshot;
   }
@@ -44,6 +44,9 @@ export class MovieListComponent implements OnInit, OnDestroy{
   snapshot: any;
   loaded: boolean = false;
 
+  lastGId: number = 0
+  lastLId: number = 0
+
   async ngOnInit(): Promise<void> 
   {
     this.status = this.snapshot.data.status;
@@ -64,11 +67,11 @@ export class MovieListComponent implements OnInit, OnDestroy{
     await this.getMovies();
 
   
-    this.genreId = sessionStorage.getItem('genreId') ? Number(sessionStorage.getItem('genreId')): this.genres.length + 1;
-    this.languageId = sessionStorage.getItem('languageId') ? Number(sessionStorage.getItem('languageId')): this.languages.length + 1;
+    this.genreId = sessionStorage.getItem('genreId') ? Number(sessionStorage.getItem('genreId')): this.lastGId + 1;
+    this.languageId = sessionStorage.getItem('languageId') ? Number(sessionStorage.getItem('languageId')): this.lastLId + 1;
     
-    this.filterGenres(this.genreId, this.genreId > this.genres.length? '': this.genres.find(g =>g.id == this.genreId).name);
-    this.filterLanguages(this.languageId, this.languageId > this.languages.length? '': this.languages.find(l => l.id == this.languageId).name);
+    this.filterGenres(this.genreId, this.genreId > this.lastGId? '': this.genres.find(g => g.id == this.genreId).name);
+    this.filterLanguages(this.languageId, this.languageId > this.lastLId? '': this.languages.find(l => l.id == this.languageId).name);
 
     this.loaded = true;
   }
@@ -77,7 +80,7 @@ export class MovieListComponent implements OnInit, OnDestroy{
   {
     this.genreId = value;
     sessionStorage.setItem('genreId', this.genreId.toString())
-    if (value > this.genres.length)  this.gSelectAll = 'Thể loại';
+    if (value > this.lastGId)  this.gSelectAll = 'Thể loại';
     else this.gSelectAll = text;
     this.filter();
   }
@@ -86,7 +89,7 @@ export class MovieListComponent implements OnInit, OnDestroy{
   {
     this.languageId = value;
     sessionStorage.setItem('languageId', this.languageId.toString())
-    if (value > this.languages.length) this.lSelectAll = 'Ngôn ngữ';
+    if (value > this.lastLId) this.lSelectAll = 'Ngôn ngữ';
     else this.lSelectAll = text;
     this.filter();
   }
@@ -108,11 +111,13 @@ export class MovieListComponent implements OnInit, OnDestroy{
   {
     let url = this.apiService.backendHost + "/api/Genres";
     this.genres = await this.http.get<any>(url).toPromise();
+    this.lastGId = this.genres[this.genres.length - 1].id
   }
   async getLanguages()
   {
     let url = this.apiService.backendHost + "/api/Languages";
     this.languages = await this.http.get<any>(url).toPromise();
+    this.lastLId = this.languages[this.languages.length - 1].id;
   }
   
   openLoginModal()
@@ -120,8 +125,8 @@ export class MovieListComponent implements OnInit, OnDestroy{
     const modalRef = this.modalService.open(LoginModalComponent, {windowClass: "login"});
     modalRef.result.then(async (result: any) => 
       {
-        if (result == 'Success') window.location.reload();
-        else this.toastr.toastError("Đăng nhập không thành công!");
+        // if (result == 'Success') window.location.reload();
+        // else this.toast.toastError("Đăng nhập không thành công!");
 
       }, () => {})
   }
@@ -137,10 +142,10 @@ export class MovieListComponent implements OnInit, OnDestroy{
         try 
         {
           await this.http.delete(url).toPromise();
-          this.toastr.toastSuccess("Unlike phim thành công!");
+          this.toast.toastSuccess("Unlike phim thành công!");
           this.auth.updateLike(id, false);
         }
-        catch (e) { this.toastr.toastError("Unlike phim không thành công"); }
+        catch (e) { this.toast.toastError("Unlike phim không thành công"); }
       }
       else 
       {
@@ -151,31 +156,31 @@ export class MovieListComponent implements OnInit, OnDestroy{
           let result = await this.http.post(url, postObject).toPromise();
           if (result) 
           {
-            this.toastr.toastSuccess("Like phim thành công!")
+            this.toast.toastSuccess("Like phim thành công!")
             this.auth.updateLike(id, true);
           }
         }
-        catch (e) { this.toastr.toastError("Like phim không thành công"); }
+        catch (e) { this.toast.toastError("Like phim không thành công"); }
       }
     }
   }
 
   async rateMovie(event: any, id: number)
   {
-    let movie = this.movies.find(m => m.movie.id == id).movie;
-    var release = new Date(movie.releaseDate);
-    release.setHours(0); 
-    release.setMinutes(0); 
-    release.setSeconds(0);
+    let movie = this.movies.find(m => m.movie.id == id)
+    var release = new Date(movie.movie.releaseDate);
+    release.setHours(0)
+    release.setMinutes(0) 
+    release.setSeconds(0)
 
-    var now = new Date();
+    var now = new Date()
 
     if (release.getTime() > now.getTime()) 
     {
       var hDiff = release.getTime() - now.getTime() / 3600000;
       if (hDiff > 48) 
       { 
-        this.toastr.toastInfo('Chỉ được đánh giá phim 2 ngày trước ngày khởi chiếu!');
+        this.toast.toastInfo('Chỉ được đánh giá phim 2 ngày trước ngày khởi chiếu!');
         return;
       }
     }
@@ -183,17 +188,27 @@ export class MovieListComponent implements OnInit, OnDestroy{
     if (this.auth.currentAccountValue == null) this.openLoginModal();
     else 
     {
-      const rated = event.currentTarget.classList.contains('rated');
-      const modalRef = this.modalService.open(RateModalComponent, {windowClass: "rate"});
-      modalRef.componentInstance.movie = movie;
-      modalRef.componentInstance.rated = rated;
+      const rated = event.currentTarget.classList.contains('rated')
+      const modalRef = this.modalService.open(RateModalComponent, {windowClass: "rate"})
+      modalRef.componentInstance.movie = movie.movie
+      modalRef.componentInstance.rated = rated
 
       modalRef.result.then(async (result: any) => 
       {
-        if (result == 'Success') window.location.reload();
-        else if (result == 'Failed' && rated) this.toastr.toastError('Cập nhật đánh giá không thành công!');
-        else if (result == 'Delete Failed' && rated) this.toastr.toastError('Xóa đánh giá không thành công!');
-        else if (result == 'Failed' && !rated) this.toastr.toastError('Post đánh giá không thành công!');       
+        if (typeof(result) == 'object') // Post or update thành công
+        {
+          movie.ratings = result.ratings 
+          // {
+          //   movie.movie = result.movie
+          //   movie.ratings = result.ratings 
+          // }
+          if (this.auth.activityStorage.rateIds.find(r => r == movie.movie.id)) this.toast.toastSuccess('Đánh giá phim thành công!')
+          else this.toast.toastSuccess('Xóa đánh giá thành công!')
+          this.filter()
+        }
+        else if (result == 'Failed' && rated) this.toast.toastError('Cập nhật đánh giá không thành công!');
+        else if (result == 'Delete Failed' && rated) this.toast.toastError('Xóa đánh giá không thành công!');
+        else if (result == 'Failed' && !rated) this.toast.toastError('Post đánh giá không thành công!');       
       }, () => {})
     }
   }

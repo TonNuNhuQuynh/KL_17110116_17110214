@@ -18,10 +18,11 @@ namespace WebAPI
 {
     public class Startup
     {
-        //string frontEndOrigin = "http://localhost:4200";
-        //string mainBEOrigin = "https://localhost:44320";
-        string frontEndOrigin = "https://movie-reviews-and-tickets.web.app";
-        string mainBEOrigin = "https://www.tlcn-moviereviews.somee.com";
+        string frontEndOrigin_Admin = "http://localhost:4200";
+        string frontEndOrigin_User = "http://localhost:5000";
+        string mainBEOrigin = "https://localhost:44320";
+        //string frontEndOrigin = "https://movie-reviews-and-tickets.web.app";
+        //string mainBEOrigin = "https://www.tlcn-moviereviews.somee.com";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -44,7 +45,7 @@ namespace WebAPI
             services.AddCors(options => options.AddPolicy("Cors", builder =>
             {
                 builder
-                .WithOrigins(frontEndOrigin, mainBEOrigin)
+                .WithOrigins(frontEndOrigin_Admin, frontEndOrigin_User, mainBEOrigin)
                 .AllowAnyMethod()
                 .AllowAnyHeader();
             }));

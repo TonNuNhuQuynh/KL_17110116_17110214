@@ -9,7 +9,7 @@ export class LocationService
 
     public cities: any[] = [];
     url: string = 'https://ipinfo.io?token=';
-    token: string = '';
+    token: string = '1fc3528fac02b9';
 
     public cityStorage = StorageService.pickedCityStorage;
     public currentCity: any;

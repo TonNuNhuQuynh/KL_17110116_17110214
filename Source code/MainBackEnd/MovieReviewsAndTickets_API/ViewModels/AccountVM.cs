@@ -8,6 +8,10 @@ namespace MovieReviewsAndTickets_API.ViewModels
 {
     public class AccountVM
     {
+        public AccountVM()
+        {
+            User = new User();
+        }
         public int Id { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }

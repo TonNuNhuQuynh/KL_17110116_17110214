@@ -45,8 +45,6 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // POST: api/MovieLikes
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
         public async Task<ActionResult<MovieLike>> PostMovieLike(MovieLike movieLike)
         {
@@ -58,16 +56,9 @@ namespace MovieReviewsAndTickets_API.Controllers
             }
             catch (DbUpdateException)
             {
-                if (MovieLikeExists(movieLike.AccountId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                if (MovieLikeExists(movieLike.AccountId)) return Conflict();
+                else throw;
             }
-
             return movieLike;
         }
 
@@ -75,15 +66,9 @@ namespace MovieReviewsAndTickets_API.Controllers
         public async Task<IActionResult> DeleteMovieLike(int id)
         {
             var movieLike = await _context.MovieLikes.Where(m => m.MovieId == id).FirstOrDefaultAsync();
-
-            if (movieLike == null)
-            {
-                return NotFound();
-            }
-
+            if (movieLike == null) return NotFound();
             _context.MovieLikes.Remove(movieLike);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 

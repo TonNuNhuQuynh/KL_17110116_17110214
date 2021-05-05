@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'app/api.service';
-import { CinemaVM } from '../../cinema-details/model';
+import { CinemaVM } from 'app/cinema-chain/model';
 
 @Component({
   selector: 'app-cinemas-modal',

@@ -55,7 +55,7 @@
                     
                     <div class="row">
                         <!-- Post type vs Post theme -->
-                        <div class="col-md-6 col-sm-12 pr-1">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label>Loại bài viết (*)</label>
                                 <select name="type" #type="ngModel" required [ngClass]="{'is-invalid': post.postTypeId == 0 && type.touched}" [(ngModel)]="post.postTypeId" class="form-control" [disabled]="post.status == 2">
@@ -72,7 +72,7 @@
                             </div>
                         </div>
                         <!-- Post cover vs spoiler -->
-                        <div class="col-md-6 col-sm-12 pl-1">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label>Ảnh bìa (*)</label>
                                 <div class="custom-file mb-3">
@@ -96,14 +96,14 @@
                     <!-- Keywords & Movie -->
                     <div class="row">
                         <!-- Keywords -->
-                        <div class="col-md-6 col-sm-12 pr-1">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label>Các từ khóa (viết cách nhau bởi dấu '/')</label>
                                 <input type="text" class="form-control" name="keywords" #keywords="ngModel" [(ngModel)]="post.keywords" [readonly]="post.status == 2"/>
                             </div>
                         </div>
                         <!-- Movie -->
-                        <div class="col-md-6 col-sm-12 pl-1">
+                        <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label>Liên quan đến phim</label>
                                 <input [readonly]="post.status == 2" id="typeahead-prevent-manual-entry" name="movie" type="text" class="form-control"

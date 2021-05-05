@@ -1,42 +1,42 @@
-import { Component, OnInit, Inject, Renderer2, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
-import { DOCUMENT } from '@angular/common';
-import { LocationStrategy, PlatformLocation, Location } from '@angular/common';
-import { NavbarComponent } from './shared/navbar/navbar.component';
-import { LocationService } from './location.service';
+import { Location } from '@angular/common';
+import { AuthenticationService } from './authentication/authentication.service';
+import { HttpClient } from '@angular/common/http';
+import { ApiService } from './api.service';
+import { NotificationService } from './writer/notification.service';
+import { Subscription } from 'rxjs/Subscription';
+import { RolesService } from './authentication/roles.service';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-    private _router: Subscription;
-    @ViewChild(NavbarComponent) navbar: NavbarComponent;
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
+    isWriter: boolean = false
+    notifySubscription: Subscription
 
-    constructor(private locationService: LocationService, private renderer : Renderer2, private router: Router, @Inject(DOCUMENT,) private document: any, private element : ElementRef, public location: Location) {}
+    constructor(private titleService: Title, private metaService: Meta, private notify: NotificationService, router: Router, public location: Location, private apiService: ApiService, private auth: AuthenticationService, private http: HttpClient) 
+    {
+        router.events.filter(event => event instanceof NavigationEnd).subscribe((val: any) => 
+        {
+            if (val.url.includes('writer') ) this.isWriter = true;
+            else this.isWriter = false;
+
+            if (val.url.includes('post') == false) 
+            {
+                this.titleService.setTitle('Moviefy')
+                this.metaService.addTags([
+                    { name: 'description', content: 'Trang tin tức điện ảnh, đánh giá phim và mua vé xem phim' },
+                ])
+            }
+        })
+    }
+    
     ngOnInit() {
-        var navbar : HTMLElement = this.element.nativeElement.children[0].children[0];
-        this._router = this.router.events.filter(event => event instanceof NavigationEnd).subscribe((event: NavigationEnd) => {
-            if (window.outerWidth > 991) {
-                window.document.children[0].scrollTop = 0;
-            }else{
-                window.document.activeElement.scrollTop = 0;
-            }
-            this.navbar.sidebarClose();
-        });
-        this.renderer.listen('window', 'scroll', (event) => {
-            const number = window.scrollY;
-            if (number > 150 || window.pageYOffset > 150) {
-                // add logic
-                navbar.classList.remove('navbar-transparent');
-            } else {
-                // remove logic
-                navbar.classList.add('navbar-transparent');
-            }
-        });
         var ua = window.navigator.userAgent;
         var trident = ua.indexOf('Trident/');
         if (trident > 0) {
@@ -61,4 +61,29 @@ export class AppComponent implements OnInit {
             return true;
         }
     }
+
+    async ngAfterViewInit(): Promise<void> 
+    {
+        this.notifySubscription = this.notify.notifySubject.subscribe(action => {
+            // Nếu notification chưa đc đọc thì thông báo
+            if (!action.isViewed && !window.location.href.includes('writer') && this.auth.currentAccountValue.roleName == RolesService.writer) alert('Bạn có thông báo mới từ Moviefy Editor!')
+        });
+
+        if (this.auth.currentAccountValue)
+        {
+            try
+            {
+                let result = await this.http.post<any>(this.apiService.backendHost + '/api/Accounts/UserInfo', this.auth.currentAccountValue).toPromise()
+                this.auth.setAccount = result.account
+                this.auth.activityStorage = result.activities
+            }
+            catch(e) {console.log(e); this.auth.logout(); window.location.reload()}
+        }      
+    }
+    ngOnDestroy(): void 
+    {
+        this.notify.disconnect()
+        this.notifySubscription.unsubscribe()
+    }
+    
 }

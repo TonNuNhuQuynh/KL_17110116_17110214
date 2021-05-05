@@ -248,3 +248,23 @@ h4 {
   border-color: #edf2f9;
   font-weight: 400;
 }
+
+@media (min-width: 940px) 
+{
+  .now-playing ::ng-deep .owl-item
+  {
+    max-width: 200px !important;
+  }
+}
+.now-playing ::ng-deep .owl-stage{
+  margin: 0 auto;
+}
+
+.now-playing ::ng-deep .owl-carousel .owl-stage { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+.now-playing h3 {
+  margin-top: 0;
+}

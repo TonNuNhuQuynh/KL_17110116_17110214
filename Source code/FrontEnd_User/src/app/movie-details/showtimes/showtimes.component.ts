@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'app/api.service';
 import { BookingInfo } from 'app/book-tickets/model';
 import { LocationService } from 'app/location.service';
-import { City } from 'app/manage-chains/model';
+import { City } from 'app/cinema-chain/model';
 import { StorageService } from 'app/storage.service';
 import { ToastService } from 'app/toast/toast.service';
 import { CinemaChainVM, ShowDate, ShowtimeFormatVM, ShowtimeVM } from './model';

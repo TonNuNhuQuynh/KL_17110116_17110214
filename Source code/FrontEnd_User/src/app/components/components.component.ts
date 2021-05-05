@@ -222,13 +222,13 @@ export class ComponentsComponent implements OnInit, OnDestroy, AfterViewChecked 
   }
   async rateMovie(event: any, id: number)
   {
-    let movie = this.nowMovies.find(m => m.movie.id == id) != undefined ? this.nowMovies.find(m => m.movie.id == id).movie: this.recommends.find(m => m.movie.id == id).movie
-    var release = new Date(movie.releaseDate);
-    release.setHours(0); 
-    release.setMinutes(0); 
-    release.setSeconds(0);
+    let movie = this.nowMovies.find(m => m.movie.id == id) != undefined ? this.nowMovies.find(m => m.movie.id == id): this.recommends.find(m => m.movie.id == id)
+    var release = new Date(movie.movie.releaseDate)
+    release.setHours(0)
+    release.setMinutes(0) 
+    release.setSeconds(0)
 
-    var now = new Date();
+    var now = new Date()
 
     if (release.getTime() > now.getTime()) 
     {
@@ -245,22 +245,23 @@ export class ComponentsComponent implements OnInit, OnDestroy, AfterViewChecked 
     {
       const rated = event.currentTarget.classList.contains('rated');
       const modalRef = this.modalService.open(RateModalComponent, {windowClass: "rate"});
-      modalRef.componentInstance.movie = movie;
-      modalRef.componentInstance.rated = rated;
+      modalRef.componentInstance.movie = movie.movie
+      modalRef.componentInstance.rated = rated
 
       modalRef.result.then(async (result: any) => 
       {
         if (typeof(result) == 'object') // Post or update thành công
         {
-          let movie = this.nowMovies.find(m => m.movie.id == result.movie.id)
-          if (movie)
-          {
-            movie.movie = result.movie
-            movie.ratings = result.ratings 
-          }
-          if (this.auth.activityStorage.rateIds.find(r => r == result.movie.id)) this.toast.toastSuccess('Đánh giá phim thành công!')
+          // let movie = this.nowMovies.find(m => m.movie.id == result.movie.id)
+          // if (movie) movie.ratings = result.ratings
+          // {
+          //   movie.movie = result.movie
+          //   movie.ratings = result.ratings 
+          // }
+          movie.ratings = result.ratings
+          if (this.auth.activityStorage.rateIds.find(r => r == movie.movie.id)) this.toast.toastSuccess('Đánh giá phim thành công!')
           else this.toast.toastSuccess('Xóa đánh giá thành công!')
-          await this.getRecommends()
+          //await this.getRecommends()
         }
         else if (result == 'Failed' && rated) this.toast.toastError('Cập nhật đánh giá không thành công!');
         else if (result == 'Delete Failed' && rated) this.toast.toastError('Xóa đánh giá không thành công!');

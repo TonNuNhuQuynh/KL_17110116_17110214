@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginModalComponent } from 'app/shared/login-modal/login-modal.component';
@@ -6,44 +6,37 @@ import { LocationModalComponent } from '../location-modal/location-modal.compone
 import { CinemasModalComponent } from '../cinemas-modal/cinemas-modal.component';
 import { LocationService } from 'app/location.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
-import { RolesService } from 'app/manage-accounts/roles.service';
-import { NavigationEnd, Router } from '@angular/router';
+import { RolesService } from 'app/authentication/roles.service';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { ApiService } from 'app/api.service';
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, AfterViewInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
-
-    constructor(private router: Router, public auth: AuthenticationService, private locationService: LocationService, private modalService: NgbModal, public location: Location, private element : ElementRef) 
+    
+    constructor(private http: HttpClient, private apiService: ApiService, private router: Router, public auth: AuthenticationService, private locationService: LocationService, private modalService: NgbModal, public location: Location, private element : ElementRef) 
     {
-        this.sidebarVisible = false;
-        router.events.filter(event => event instanceof NavigationEnd).subscribe((val: any) => 
-        {
-            if (val.url.includes('admin') ) 
-            {
-                this.isAdmin = true;
-                this.isSupAdmin = this.auth.currentAccountValue == null ? false: this.auth.currentAccountValue.roleName == RolesService.superAdmin;
-            }
-            else this.isAdmin = false;
-        })
+        this.sidebarVisible = false
+
     }
-
-    isAdmin: boolean = false;
-    isSupAdmin: boolean = false;
+    
     query: string = '';
+    isWriter: boolean = false;
+    types: any[] = []
+    themes: any[] = []
 
-    ngOnInit() {
-        const navbar: HTMLElement = this.element.nativeElement;
-        this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
-
-        // this.auth.currentAccountAsSubject.subscribe(() => {
-        //     this.isAdmin = this.auth.currentAccountValue == null ? false: this.auth.currentAccountValue.roleName == RolesService.admin || this.auth.currentAccountValue.roleName == RolesService.superAdmin;
-        //     this.isSupAdmin = this.auth.currentAccountValue == null ? false: this.auth.currentAccountValue.roleName == RolesService.superAdmin;
-        // })
+    ngOnInit() 
+    {
+        this.isWriter = this.auth.currentAccountValue != null && this.auth.currentAccountValue.roleName == RolesService.writer? true: false
+        const navbar: HTMLElement = this.element.nativeElement
+        this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0]
+        this.router.events.subscribe((event) => { this.sidebarClose() })
     }
     sidebarOpen() {
         const toggleButton = this.toggleButton;
@@ -102,7 +95,7 @@ export class NavbarComponent implements OnInit {
         {
             if (result == 'Success') 
             {
-                if (this.auth.currentAccountValue.roleName == RolesService.superAdmin || this.auth.currentAccountValue.roleName == RolesService.admin) this.router.navigate(['/admin']);
+                if (this.auth.currentAccountValue.roleName == RolesService.writer) this.router.navigate(['/writer']);
             }
         }, () => {})
     }
@@ -126,22 +119,15 @@ export class NavbarComponent implements OnInit {
     {
         this.router.navigate(['/search'], {queryParams: {name: this.query}});
     }
-    getImageMime(base64: string): string
-    {
-        if (base64.charAt(0)=='/') return 'jpg';
-        else if (base64.charAt(0)=='R') return "gif";
-        else if(base64.charAt(0)=='i') return 'png';
-        else return 'jpeg';
-    }
-    getImageSource(base64: string): string
-    {
-        if (base64 == null || base64 == '') return "./assets/img/user-default.png";
-        return `data:image/${this.getImageMime(base64)};base64,${base64}`; 
-    }
     logout()
     {
-        this.auth.logout();
-        window.location.reload();
-        //this.router.navigate(['home']);
+        this.auth.logout()
+        window.location.reload()
+    }
+    async ngAfterViewInit(): Promise<void> 
+    {
+        let result = await this.http.get<any>(this.apiService.backendHost + '/api/Posts/GetCategories').toPromise()
+        this.types = result.types
+        this.themes = result.themes
     }
 }

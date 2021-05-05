@@ -34,6 +34,7 @@ export class PickTaskComponent implements OnInit {
     let r = confirm(`Bạn có chắc gửi bài viết cho task '${name}'?`)
     if (r)
     {
+      this.isLoaded = false
       let url = this.apiService.backendHost + `/api/Posts/Send/${this.postId}/${id}`;
       try
       {

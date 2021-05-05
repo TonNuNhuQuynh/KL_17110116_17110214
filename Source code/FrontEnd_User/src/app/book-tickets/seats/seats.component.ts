@@ -80,4 +80,5 @@ export class SeatsComponent implements OnInit {
     if (this.selectedSeats.find(s => s.id == seat.id)) return true;
     return false;
   }
+  
 }
