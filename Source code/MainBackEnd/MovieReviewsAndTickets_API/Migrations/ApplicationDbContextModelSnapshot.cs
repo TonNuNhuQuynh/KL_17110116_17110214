@@ -204,14 +204,14 @@ namespace MovieReviewsAndTickets_API.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9765bd91-9e93-469b-8aca-690242d35b6f",
+                            ConcurrencyStamp = "1484e69d-8e9d-4b41-b16a-c1d946999a40",
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "17110214@student.hcmute.edu.vn",
                             EmailConfirmed = true,
                             IsDeleted = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "tnnhuquynh",
-                            PasswordHash = "AQAAAAEAACcQAAAAEBeQBCXSyDwmjWR+WoN3uDZavg5u+TDY+Oh3OPfkXMQv61k+kxgzAJmTwZH/TBqsBw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBMten229ZosmVRiUTxp0z5s98waYbUkkL6VRvc8jnPOGTkdH+V6RETOHw1c6RUpCA==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "tnnhuquynh"
@@ -588,6 +588,9 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Views")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("PostThemes");
@@ -596,17 +599,20 @@ namespace MovieReviewsAndTickets_API.Migrations
                         new
                         {
                             Id = (byte)1,
-                            Name = "Tv Series"
+                            Name = "Tv Series",
+                            Views = 0
                         },
                         new
                         {
                             Id = (byte)2,
-                            Name = "Siêu anh hùng"
+                            Name = "Siêu anh hùng",
+                            Views = 0
                         },
                         new
                         {
                             Id = (byte)3,
-                            Name = "Phân tích nghệ thuật"
+                            Name = "Phân tích nghệ thuật",
+                            Views = 0
                         });
                 });
 
@@ -623,6 +629,9 @@ namespace MovieReviewsAndTickets_API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Views")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("PostTypes");
@@ -631,17 +640,20 @@ namespace MovieReviewsAndTickets_API.Migrations
                         new
                         {
                             Id = (byte)1,
-                            Name = "Tin điện ảnh"
+                            Name = "Tin điện ảnh",
+                            Views = 0
                         },
                         new
                         {
                             Id = (byte)2,
-                            Name = "Đánh giá"
+                            Name = "Đánh giá",
+                            Views = 0
                         },
                         new
                         {
                             Id = (byte)3,
-                            Name = "Trailer"
+                            Name = "Trailer",
+                            Views = 0
                         });
                 });
 
@@ -735,28 +747,28 @@ namespace MovieReviewsAndTickets_API.Migrations
                         new
                         {
                             Id = 1,
-                            ConcurrencyStamp = "2652294e-2176-4892-9948-54d221c7dab1",
+                            ConcurrencyStamp = "616e7b33-00a9-418b-b343-271372fe0214",
                             Name = "User",
                             NormalizedName = "user"
                         },
                         new
                         {
                             Id = 2,
-                            ConcurrencyStamp = "f7908f73-87cb-4d18-970c-41e28e56efe9",
+                            ConcurrencyStamp = "e88c0b0d-835b-4a6e-95a7-168deaa2eb6c",
                             Name = "Admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
                             Id = 3,
-                            ConcurrencyStamp = "895b7d02-502d-4859-a26c-3291dc3f8837",
+                            ConcurrencyStamp = "2505d65c-8f96-48b1-a440-2089b47f3efd",
                             Name = "Super Admin",
                             NormalizedName = "super admin"
                         },
                         new
                         {
                             Id = 4,
-                            ConcurrencyStamp = "7c4ee4e6-c1a5-4966-ac5a-acca3f91458f",
+                            ConcurrencyStamp = "cfd28085-6214-4f49-b276-af78e5e533f6",
                             Name = "Writer",
                             NormalizedName = "writer"
                         });

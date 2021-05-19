@@ -47,6 +47,8 @@ namespace MovieReviewsAndTickets_API.Controllers
         }
 
         // GET: api/Posts/5 -> post-details
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.Writer)]
         [HttpGet("{id}")]
         public async Task<ActionResult<Post>> GetPost(int id)
         {
@@ -160,9 +162,9 @@ namespace MovieReviewsAndTickets_API.Controllers
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
             //Gửi email vs noti cho admin đc gửi post
-            //string link = $"{notification.Url}&view={notification.Id}";
-            //await this._emailSender.SendEmailAsync(task.Creator.Email, task.Title, $"Xin chào {task.Creator.UserName}, <br>" +
-            //        $"{task.Executer.UserName} đã gửi cho bạn bài viết của task <strong>{task.Title}</strong>. Xem bài viết <a href={link}>tại đây</a>");
+            string link = $"{notification.Url}&view={notification.Id}";
+            await this._emailSender.SendEmailAsync(task.Creator.Email, task.Title, $"Xin chào {task.Creator.UserName}, <br>" +
+                    $"{task.Executer.UserName} đã gửi cho bạn bài viết của task <strong>{task.Title}</strong>. Xem bài viết <a href={link}>tại đây</a>");
             SendMessage(new NotificationVM() { Id = notification.Id, Url = notification.Url, CreatedDate = notification.CreatedDate, Message = notification.Message, SenderImage = task.Executer.User.Image, SenderName = task.Executer.UserName }, notification.ReceiverId);
             return NoContent();
         }
@@ -366,6 +368,20 @@ namespace MovieReviewsAndTickets_API.Controllers
                                        .Include(p => p.PostType).Include(p => p.PostTheme)
                                        .OrderByDescending(p => p.PublishedDate).Take(8).ToListAsync();
         }
+
+        // GET: api/Posts/UpdateViews - Cập nhật view của PostTypes & PostThemes - view-post (User)
+        [HttpGet("UpdateViews")]
+        public async Task<IActionResult> UpdateViews([FromQuery(Name = "type")] byte typeId, [FromQuery(Name = "theme")] byte? themeId)
+        {
+            var postType = await _context.PostTypes.Where(t => t.Id == typeId).FirstOrDefaultAsync();
+            if (postType == null) return NotFound();
+            postType.Views++;
+            var postTheme = await _context.PostThemes.Where(t => t.Id == themeId).FirstOrDefaultAsync();
+            if (postTheme != null) postTheme.Views++;
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
         public void SendMessage(NotificationVM notification, int receiver)
         {
             //Receive Message

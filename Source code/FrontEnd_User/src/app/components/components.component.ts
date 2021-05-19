@@ -11,7 +11,7 @@ import { ToastService } from 'app/toast/toast.service';
 import { OwlOptions, SlidesOutputData } from 'ngx-owl-carousel-o';
 import * as $ from 'jquery';
 import { TrailerModalComponent } from 'app/movie-details/trailer-modal/trailer-modal.component';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -140,12 +140,14 @@ export class ComponentsComponent implements OnInit, OnDestroy, AfterViewChecked 
     await this.getTop4Movies();
     this.fadeOut()
     await this.getWeeklyFavoriteMovies()
-    await this.getLatestPosts()
-    await this.getMovies()
+    this.getLatestPosts()
+    this.getMovies()
+    this.getLatest()
+    
     this.authSubcription = this.auth.currentAccountSubject.subscribe(async account => {
-      if (account != null) await this.getRecommends()
+      if (account != null) this.getRecommends()
     })
-    await this.getLatest();
+    
     let _this = this
     $("#horizontal-gallery .owl-prev").on('click', function() {
       _this.isBack = true
@@ -307,12 +309,8 @@ export class ComponentsComponent implements OnInit, OnDestroy, AfterViewChecked 
 
   calculateDiff(date: string): string
   {
-    let d2: Date = new Date();
-    let d1 = new Date(date);
-    // var diffYears = d2.getFullYear() - d1.getFullYear()
-    // if (diffYears >= 1) return diffYears + " năm trước"
-    // var diffMonths = diffYears * 12 + (d2.getMonth() - d1.getMonth())
-    // if (diffMonths >= 1) return diffMonths + " tháng trước"
+    let d2: Date = new Date()
+    let d1 = new Date(date)
     var diffMs = d2.getTime() - d1.getTime()
     var diffDays = Math.floor(diffMs / 86400000); // days
     var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours

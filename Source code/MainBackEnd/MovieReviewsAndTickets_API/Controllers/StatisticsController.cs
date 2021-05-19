@@ -27,7 +27,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             _userManager = userManager;
             _connections = connectionMapping;
         }
-        // GET: api/Statistics/Numbers - Lấy số liệu thống kê -> statistics
+        // GET: api/Statistics/Numbers - Lấy số liệu thống kê -> home
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = RolesHelper.Admin + "," + RolesHelper.SuperAdmin)]
         [HttpGet("Numbers")]
@@ -41,7 +41,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             return new { Movies = movies.Count, Accounts = accounts.Count, Chains = chains.Count, Cinemas = cinemas.Count };
         }
 
-        // GET: api/Statistics/Top5Reviewed - Lấy top 5 phim được review nhiều nhất -> statistics
+        // GET: api/Statistics/Top5Reviewed - Lấy top 5 phim được review nhiều nhất -> home
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = RolesHelper.Admin + "," + RolesHelper.SuperAdmin)]
         [HttpGet("Top5Reviewed")]
@@ -54,7 +54,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             return new { Labels = labels, Series = series, LastReview = lastReview.CreatedDate};  
         }
 
-        // GET: api/Statistics/Languages - Lấy phim group theo ngôn ngữ -> statistics
+        // GET: api/Statistics/Languages - Lấy phim group theo ngôn ngữ -> home
         [HttpGet("Languages")]
         public async Task<ActionResult<object>> GetMoviesGroupByLanguage()
         {
@@ -155,7 +155,7 @@ namespace MovieReviewsAndTickets_API.Controllers
                 Posts = posts.Count
             };
         }
-        // GET: api/Statistics/RecentNotifications - Lấy 5 thông báo gần đây nhất của user -> writer/home (User), statistics (Admin)
+        // GET: api/Statistics/RecentNotifications - Lấy 5 thông báo gần đây nhất của user -> writer/home (User), home (Admin)
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = RolesHelper.Writer + "," + RolesHelper.Admin + "," + RolesHelper.SuperAdmin)]
         [HttpGet("RecentNotifications/{userId}")]
@@ -172,7 +172,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             return notifications;
         }
 
-        // GET: api/Statistics/RecentNotifications - Lấy 5 thông báo gần đây nhất của user -> writer/home (User), statistics (Admin)
+        // GET: api/Statistics/RecentNotifications - Lấy 5 thông báo gần đây nhất của user -> writer/home (User), home (Admin)
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = RolesHelper.Writer)]
         [HttpGet("OnlineWriters/{userId}")]
@@ -203,7 +203,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             tasks = tasks.Count > 8 ? tasks.Take(8).ToList() : tasks;
             return tasks;
         }
-        // GET: api/Statistics/Online - Lấy trạng thái hoạt động của writer và admin -> statistics
+        // GET: api/Statistics/Online - Lấy trạng thái hoạt động của writer và admin -> home
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = RolesHelper.Admin + "," + RolesHelper.SuperAdmin)]
         [HttpGet("Online/{userId}")]
@@ -229,6 +229,26 @@ namespace MovieReviewsAndTickets_API.Controllers
                 }
             });
             return new { Writers = writers, Admins = admins };
+        }
+
+        // GET: api/Statistics/Reviews - Lượt review của từng phim -> statistics
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.Admin + "," + RolesHelper.SuperAdmin)]
+        [HttpGet("Reviews")]
+        public async Task<ActionResult<IEnumerable<object>>> GetReviewsCount()
+        {
+            var movies = await _context.Movies.Where(m => m.IsDeleted == false).Include(m => m.Reviews).OrderByDescending(m => m.Reviews.Count).ToListAsync();
+            return movies.Select(m => new { Name = m.Title, Count = m.Reviews.Count }).ToList();
+        }
+
+        // GET: api/Statistics/Orders - Lượt mua vé của từng phim -> statistics
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.Admin + "," + RolesHelper.SuperAdmin)]
+        [HttpGet("Orders")]
+        public async Task<ActionResult<IEnumerable<object>>> GetOrdersCount()
+        {
+            var movies = await _context.Movies.Where(m => m.IsDeleted == false).Include(m => m.Orders).OrderByDescending(m => m.Orders.Count).ToListAsync();
+            return movies.Select(m => new { Name = m.Title, Count = m.Orders.Count }).ToList();
         }
     }
 }

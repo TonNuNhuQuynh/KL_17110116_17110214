@@ -41,11 +41,11 @@ namespace MovieRecommender
             Console.WriteLine("\n-----------------------Evaluate Improved model-------------------");
             EvaluateModel(mlContext, testDataView, improvedModel);
             // 8: Save improved model & load model
-            Console.WriteLine("\n------------------------Saving the model to a file --------------------------");
-            SaveModel(mlContext, trainingDataView.Schema, improvedModel);
-            DataViewSchema modelSchema;
-            ITransformer savedModel = mlContext.Model.Load(GetAbsolutePath(ModelRelativePath), out modelSchema);
-            UseModelForSinglePrediction(mlContext, savedModel);
+            //Console.WriteLine("\n------------------------Saving the model to a file --------------------------");
+            //SaveModel(mlContext, trainingDataView.Schema, improvedModel);
+            //DataViewSchema modelSchema;
+            //ITransformer savedModel = mlContext.Model.Load(GetAbsolutePath(ModelRelativePath), out modelSchema);
+            //UseModelForSinglePrediction(mlContext, savedModel);
         }
         public static IDataView LoadData(MLContext mlContext)
         {

@@ -32,7 +32,6 @@
           "Microsoft.Extensions.Logging.Debug": "3.0.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "3.0.0",
           "PayPal.SDK.NETCore": "1.9.1.2",
-          "Stripe.net": "39.23.0",
           "Microsoft.AspNetCore.Antiforgery": "3.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "3.0.0.0",
           "Microsoft.AspNetCore.Authentication.Cookies": "3.0.0.0",
@@ -1517,22 +1516,6 @@
           "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
         }
       },
-      "Stripe.net/39.23.0": {
-        "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "1.1.1",
-          "Newtonsoft.Json": "12.0.2",
-          "System.Configuration.ConfigurationManager": "4.5.0"
-        },
-        "runtime": {
-          "lib/netstandard2.0/Stripe.net.dll": {
-            "assemblyVersion": "39.23.0.0",
-            "fileVersion": "39.23.0.0"
-          }
-        },
-        "compile": {
-          "lib/netstandard2.0/Stripe.net.dll": {}
-        }
-      },
       "System.AppContext/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.0"
@@ -1767,9 +1750,6 @@
             "assemblyVersion": "4.0.1.0",
             "fileVersion": "4.6.26515.6"
           }
-        },
-        "compile": {
-          "ref/netstandard2.0/System.Configuration.ConfigurationManager.dll": {}
         }
       },
       "System.Console/4.3.0": {
@@ -4765,13 +4745,6 @@
       "sha512": "sha512-4Z/Dtk/qqW/UTwmfAcfrzUUEkT7lf5lnAbKCUFLB6pPl0gL6p8CTj7/2zfw2LuT8Gjpd9XCus4LnrAj1p2J3Bw==",
       "path": "sqlitepclraw.provider.dynamic_cdecl/2.0.0",
       "hashPath": "sqlitepclraw.provider.dynamic_cdecl.2.0.0.nupkg.sha512"
-    },
-    "Stripe.net/39.23.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-MEejeYQVRxbmtB7D8gjmWVwAPFO2+e42HyRS9kI+Ec3+LYjKPNKFuva34hMCGudXAWr7qVsvZ/K/ZUUYnrEmZw==",
-      "path": "stripe.net/39.23.0",
-      "hashPath": "stripe.net.39.23.0.nupkg.sha512"
     },
     "System.AppContext/4.3.0": {
       "type": "package",

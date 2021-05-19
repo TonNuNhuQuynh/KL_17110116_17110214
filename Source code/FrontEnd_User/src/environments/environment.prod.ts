@@ -9,6 +9,5 @@ export const environment = {
     messagingSenderId: "1096081760606",
     appId: "1:1096081760606:web:f180edb87b1cc162a9efcf"
   },
-  aes_key: "youcan'tspellawesomewithoutme",
-  backend_domain: "localhost:44320"
+  aes_key: "youcan'tspellawesomewithoutme"
 };

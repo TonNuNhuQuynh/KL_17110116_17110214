@@ -7,7 +7,7 @@ import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
 import { RolesService } from 'app/manage-accounts/roles.service';
 import { ToastService } from 'app/toast/toast.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { Task } from './model';
 import { TaskModalComponent } from './task-modal/task-modal.component';
 import { TaskService } from './task.service';
@@ -57,10 +57,10 @@ export class ManageTasksComponent implements OnInit, OnDestroy, AfterViewInit {
       lengthMenu: [10, 15, 20, 30, 40],
       autoWidth: true,
       columnDefs: [ { "orderable": false, "targets": 0 }, 
-                    {"visible": false, "targets": 4},
-                    { "width": '40%', "targets": 1 }
+                    { "visible": false, "targets": 5 },
+                    { "width": '30%', "targets": 1 }
                   ],
-      order: [[4, 'desc']]
+      order: [[5, 'desc']]
     };
     this.url = this.apiService.backendHost + '/api/Tasks';
     

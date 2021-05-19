@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output, AfterContentChecked, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -52,75 +52,75 @@ export class CheckoutComponent implements OnInit, AfterContentChecked, AfterView
     });
 
   }
-  postOrder(token: any)
-  {
-    let seatsInOrder: SeatsInOrder[] = [];
-    this.selectedSeats.forEach(element => {
-      seatsInOrder.push({orderId: 0, seatId: element.id, price: element.price, code: element.code})
-    });
+  // postOrder(token: any)
+  // {
+  //   let seatsInOrder: SeatsInOrder[] = [];
+  //   this.selectedSeats.forEach(element => {
+  //     seatsInOrder.push({orderId: 0, seatId: element.id, price: element.price, code: element.code})
+  //   });
 
-    let order: Order = 
-    {
-      id: 0, 
-      total: this.total, 
-      showtime: this.bookingInfo.startDate, 
-      roomName: this.roomInfo.name,
-      createdDate: new Date(),
-      accountId: this.auth.currentAccountValue == null? 0: this.auth.currentAccountValue.id,
-      movieId: this.bookingInfo.movieId,
-      cinemaId: this.bookingInfo.cinemaId,
-      showtimeId: this.bookingInfo.showtimeId,
-      seatsInOrderVMs: seatsInOrder,
-      name: this.bookingInfo.name,
-      email: this.bookingInfo.email,
-      phone: this.bookingInfo.phone,
-      cinemaName: this.bookingInfo.cinemaName
-    }
+  //   let order: Order = 
+  //   {
+  //     id: 0, 
+  //     total: this.total, 
+  //     showtime: this.bookingInfo.startDate, 
+  //     roomName: this.roomInfo.name,
+  //     createdDate: new Date(),
+  //     accountId: this.auth.currentAccountValue == null? 0: this.auth.currentAccountValue.id,
+  //     movieId: this.bookingInfo.movieId,
+  //     cinemaId: this.bookingInfo.cinemaId,
+  //     showtimeId: this.bookingInfo.showtimeId,
+  //     seatsInOrderVMs: seatsInOrder,
+  //     name: this.bookingInfo.name,
+  //     email: this.bookingInfo.email,
+  //     phone: this.bookingInfo.phone,
+  //     cinemaName: this.bookingInfo.cinemaName
+  //   }
 
-    let url = this.apiService.backendHost + '/api/Orders';
-    this.http.post(url, {order: order, token: token.id}).toPromise().then(res => {
-      if (res == "Invalid card") this.toast.toastError("Thông tin thẻ không hợp lệ!");
-      else 
-      {
-        this.bookingInfo.orderId = Number(res);
-        this.bookingInfoChanged.emit(this.bookingInfo);
-        this.router.navigate(['/booking/done'])
-      }
-      this.loading = false;
-    })
-    .catch( err => { 
-      this.loading = false;
-      this.openError() 
-    });
-  }
+  //   let url = this.apiService.backendHost + '/api/Orders';
+  //   this.http.post(url, {order: order, token: token.id}).toPromise().then(res => {
+  //     if (res == "Invalid card") this.toast.toastError("Thông tin thẻ không hợp lệ!");
+  //     else 
+  //     {
+  //       this.bookingInfo.orderId = Number(res);
+  //       this.bookingInfoChanged.emit(this.bookingInfo);
+  //       this.router.navigate(['/booking/done'])
+  //     }
+  //     this.loading = false;
+  //   })
+  //   .catch( err => { 
+  //     this.loading = false;
+  //     this.openError() 
+  //   });
+  // }
 
-  openCheckout(tokenCallback: any) 
-  {
-    let handler = (<any>window).StripeCheckout.configure({
-      key: this.roomInfo.checkoutKey,
-      locale: "auto",
-      token: tokenCallback
-    });
+  // openCheckout(tokenCallback: any) 
+  // {
+  //   let handler = (<any>window).StripeCheckout.configure({
+  //     key: this.roomInfo.checkoutKey,
+  //     locale: "auto",
+  //     token: tokenCallback
+  //   });
 
-    handler.open({
-      name: "Movie reviews and tickets",
-      description: this.bookingInfo.movieName,
-      zipCode: false,
-      currency: "vnd",
-      amount: this.total,
-      panelLabel: "Pay {{amount}}",
-      allowRememberMe: true,
-      email: this.bookingInfo.email
-    });
-  }
-  checkout()
-  {
-    this.openCheckout((token: any) => {
-      this.loading = true
-      this.postOrder(token)
-    })
+  //   handler.open({
+  //     name: "Movie reviews and tickets",
+  //     description: this.bookingInfo.movieName,
+  //     zipCode: false,
+  //     currency: "vnd",
+  //     amount: this.total,
+  //     panelLabel: "Pay {{amount}}",
+  //     allowRememberMe: true,
+  //     email: this.bookingInfo.email
+  //   });
+  // }
+  // checkout()
+  // {
+  //   this.openCheckout((token: any) => {
+  //     this.loading = true
+  //     this.postOrder(token)
+  //   })
 
-  }
+  // }
   openError()
   {
     const modalRef = this.modalService.open(ErrorModalComponent, {backdrop: 'static', keyboard: false});

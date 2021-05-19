@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild, OnDestroy } from '@ang
 import { MovieWithAvgRatings } from './model';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from 'app/api.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { DataTableDirective } from 'angular-datatables';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MovieModalComponent } from 'app/shared/movie-modal/movie-modal.component';
@@ -34,6 +34,10 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
   languageId: number;
   statusId: number;
 
+  lastGId: number = 0
+  lastLId: number = 0
+  lastSId: number = 0
+
   gSelectAll: string = 'Thể loại';
   lSelectAll: string = 'Ngôn ngữ';
   sSelectAll: string = 'Trạng thái';
@@ -49,7 +53,11 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
     this.dtOptions = {
       pagingType: 'full_numbers',
       lengthMenu: [10, 15, 20],
-      autoWidth: true };
+      autoWidth: true,
+      columnDefs: [ { "orderable": false, "targets": 0 }, 
+                    {"visible": false, "targets": 5} ],
+      order: [[5, 'desc']]
+    };
 
     this.movies = [];
     this.filterMovies = [];
@@ -67,9 +75,9 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
     await this.getLanguages();
     await this.getStatuses();
 
-    this.genreId = this.genres.length + 1;
-    this.languageId = this.languages.length + 1;
-    this.statusId = this.statuses.length + 1;
+    this.genreId = this.lastGId + 1;
+    this.languageId = this.lastLId + 1;
+    this.statusId = this.lastSId + 1;
   }
 
   async getMovies()
@@ -80,16 +88,19 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
   {
     let url = this.apiService.backendHost + "/api/Genres";
     this.genres = await this.http.get<any>(url).toPromise();
+    this.lastGId = this.genres[this.genres.length - 1].id;
   }
   async getLanguages()
   {
     let url = this.apiService.backendHost + "/api/Languages";
     this.languages = await this.http.get<any>(url).toPromise();
+    this.lastLId = this.languages[this.languages.length - 1].id;
   }
   async getStatuses()
   {
     let url = this.apiService.backendHost + "/api/MovieStatus";
     this.statuses = await this.http.get<any>(url).toPromise();
+    this.lastSId = this.statuses[this.statuses.length - 1].id;
   }
   filter()
   {
@@ -103,7 +114,7 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
   filterGenres(value: number, text: string)
   {
     this.genreId = value;
-    if (value > this.genres.length)  this.gSelectAll = 'Thể loại';
+    if (value > this.lastGId)  this.gSelectAll = 'Thể loại';
     else this.gSelectAll = text;
     this.filter();
   }
@@ -111,14 +122,14 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
   filterLanguages(value: number, text: string)
   {
     this.languageId = value;
-    if (value > this.languages.length) this.lSelectAll = 'Ngôn ngữ';
+    if (value > this.lastLId) this.lSelectAll = 'Ngôn ngữ';
     else this.lSelectAll = text;
     this.filter();
   }
   filterStatuses(value: number, text: string)
   {
     this.statusId = value;
-    if (value > this.statuses.length) this.sSelectAll = 'Trạng thái';
+    if (value > this.lastSId) this.sSelectAll = 'Trạng thái';
     else this.sSelectAll = text;
     this.filter();
   }

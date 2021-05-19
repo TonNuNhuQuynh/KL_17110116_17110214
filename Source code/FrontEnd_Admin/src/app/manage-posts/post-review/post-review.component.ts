@@ -16,7 +16,7 @@ declare var iframely: any;
 })
 export class PostReviewComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
-  constructor(private toast: ToastService, public sanitizer: DomSanitizer, private router: Router, private apiService: ApiService, private route: ActivatedRoute, private http: HttpClient, private auth: AuthenticationService) 
+  constructor(private toast: ToastService, public sanitizer: DomSanitizer, private router: Router, private apiService: ApiService, private route: ActivatedRoute, private http: HttpClient, public auth: AuthenticationService) 
   {
     router.routeReuseStrategy.shouldReuseRoute = function () { return false; };
     
@@ -37,21 +37,7 @@ export class PostReviewComponent implements OnInit, AfterViewInit, AfterViewChec
   }
   async ngAfterViewInit(): Promise<void> 
   {
-    // window.addEventListener('scroll', () => {
-    //   if (!this.isChecked)
-    //   {
-    //     let elements = document.querySelectorAll('oembed[url]')
-    //     if (elements.length > 0)
-    //     {
-    //       this.isChecked = true
-    //       elements.forEach( (element: HTMLElement) => {
-    //         iframely.load( element, element.attributes['url'].value );
-    //       });        
-    //     }
-    //   }
-    // })
-    if (this.notificationId != 0) await this.viewNotification();
-
+    if (this.notificationId != 0) await this.viewNotification()
   }
   
   post: Post = {

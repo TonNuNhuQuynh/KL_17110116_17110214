@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@ang
 import { DataTableDirective } from 'angular-datatables';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { Task } from './model';
 import { TaskService } from './task.service';
 

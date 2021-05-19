@@ -12,13 +12,14 @@ declare var FB: any;
   templateUrl: './view-post.component.html',
   styleUrls: ['./view-post.component.css']
 })
-export class ViewPostComponent implements OnInit, AfterViewChecked {
+export class ViewPostComponent implements OnInit, AfterViewChecked{
 
   constructor(private titleService: Title, private metaService: Meta, public sanitizer: DomSanitizer, private router: Router, private route: ActivatedRoute, private apiService: ApiService, private http: HttpClient) 
   {
     this.router.routeReuseStrategy.shouldReuseRoute = function () { return false; };
     this.shareUrl = window.location.href
   }
+  
   
   post: Post = {
     id: 0,
@@ -66,8 +67,9 @@ export class ViewPostComponent implements OnInit, AfterViewChecked {
     this.safeContent = this.sanitizer.bypassSecurityTrustHtml(this.post.content);
 
     this.postTags = this.post.keywords.split('/')
-    FB.XFBML.parse();
-    await this.getSimilarPosts()
+    this.updateViews()
+    this.getSimilarPosts()
+    FB.XFBML.parse()
   }
   getBackdrop()
   {
@@ -105,4 +107,14 @@ export class ViewPostComponent implements OnInit, AfterViewChecked {
     }    
   }
 
+  updateViews()
+  {
+    try
+    {
+      let url = this.apiService.backendHost + `/api/Posts/UpdateViews?type=${this.post.postTypeId}&theme=${this.post.postThemeId}`
+      this.http.get(url).toPromise()
+    }
+    catch(e) {console.log(e)}
+  }
+  
 }

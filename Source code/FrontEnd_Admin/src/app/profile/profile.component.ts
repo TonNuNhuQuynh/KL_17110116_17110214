@@ -8,7 +8,7 @@ import { AuthenticationService } from 'app/authentication/authentication.service
 import { Account} from 'app/manage-accounts/model';
 import { City } from 'app/manage-chains/model';
 import { ToastService } from 'app/toast/toast.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 
 

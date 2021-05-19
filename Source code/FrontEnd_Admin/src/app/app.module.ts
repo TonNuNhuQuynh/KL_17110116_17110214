@@ -9,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 //Components
 import { AddMovieComponent } from './add-movie/add-movie.component';
 import { ManageMoviesComponent } from './manage-movies/manage-movies.component';
@@ -41,7 +41,7 @@ import { SendEmailComponent } from './reset-password/send-email/send-email.compo
 import { NotFoundComponent } from './not-found/not-found.component';
 import { UpdatesComponent } from './manage-chains/updates/updates.component';
 import { WaitingComponent } from './manage-chains/waiting/waiting.component';
-import { StatisticsComponent } from './statistics/statistics.component'; 
+import { HomeComponent } from './home/home.component'; 
 // Firebase
 import { AngularFireModule } from "@angular/fire";
 import { AngularFireStorageModule, AngularFireStorage } from "@angular/fire/storage";
@@ -50,11 +50,11 @@ import { ManageTasksComponent } from './manage-tasks/manage-tasks.component';
 import { TaskModalComponent } from './manage-tasks/task-modal/task-modal.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { LoginComponent } from './login/login.component';
-
-import { JwtModule } from '@auth0/angular-jwt';
 import { ManagePostsComponent } from './manage-posts/manage-posts.component';
 import { PostReviewComponent } from './manage-posts/post-review/post-review.component';
+import { JwtModule } from '@auth0/angular-jwt';
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 export function tokenGetter() {
   return sessionStorage.getItem(StorageService.token)? sessionStorage.getItem(StorageService.token): localStorage.getItem(StorageService.token);
@@ -80,13 +80,14 @@ export function tokenGetter() {
     NotFoundComponent,
     UpdatesComponent,
     WaitingComponent,
-    StatisticsComponent,
+    HomeComponent,
     ManageTasksComponent,
     TaskModalComponent,
     LoginComponent,
     ManagePostsComponent,
     PostReviewComponent,
-    ManageCategoryComponent
+    ManageCategoryComponent,
+    StatisticsComponent,
   ],
   imports: [
     BrowserModule,
@@ -106,7 +107,7 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        whitelistedDomains: [environment.backend_domain]
+        allowedDomains: ["tlcn-moviereviews.somee.com", "localhost:44320"]
       } })
   ],
   providers: [
@@ -118,6 +119,7 @@ export function tokenGetter() {
     RoleGuard,
     StorageService,
     AngularFireStorage,
+    DecimalPipe
   ],
   bootstrap: [AppComponent]
 })

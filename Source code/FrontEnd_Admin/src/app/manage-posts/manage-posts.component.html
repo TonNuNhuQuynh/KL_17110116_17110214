@@ -63,8 +63,12 @@
                                     <td class="text-center">{{post.publishedDate | date:'dd/MM/yy HH:mm'}}</td>
                                     <!-- Hidden -->
                                     <td class="text-center">{{post.createdDate}}</td>
-                                    <td *ngIf="isSuperAdmin && !post.isDeleted" class="text-center">
-                                        <button (click)="deletePost(post.id)" class="btn btn-sm btn-danger"><i class="fa fa-remove"></i></button>
+                                    <td *ngIf="isSuperAdmin" class="text-center">
+                                        <button type="button" class="btn btn-round btn-warning btn-sm" [ngClass]="{'btn-warning': !post.isDeleted, 'btn-default': post.isDeleted}" (click)="takeDownPost(post.id)">
+                                            <i class="fa" [ngClass]="{'fa-ban': !post.isDeleted, 'fa-unlock': post.isDeleted}"></i>
+                                        </button>
+                                        <!-- <button *ngIf="!post.isDeleted" type="button" class="btn btn-round btn-default btn-sm" (click)="takeDownPost(post.id)"><i class="fa fa-unlock"></i></button> -->
+                                        <!-- <button (click)="deletePost(post.id)" class="btn btn-sm btn-danger"><i class="fa fa-remove"></i></button> -->
                                     </td>
                                 </tr>
                             </tbody>

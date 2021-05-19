@@ -5,7 +5,7 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { debounceTime, finalize } from 'rxjs/operators';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { filter, map } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { ToastService } from 'app/toast/toast.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';

@@ -16,16 +16,16 @@ import { RolesService as Roles} from './manage-accounts/roles.service';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { SendEmailComponent } from './reset-password/send-email/send-email.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { StatisticsComponent } from './statistics/statistics.component';
+import { HomeComponent } from './home/home.component';
 import { ManageTasksComponent } from './manage-tasks/manage-tasks.component';
 import { LoginComponent } from './login/login.component';
 import { ManagePostsComponent } from './manage-posts/manage-posts.component';
 import { PostReviewComponent } from './manage-posts/post-review/post-review.component';
 import { ManageCategoryComponent } from './manage-category/manage-category.component';
-
+import { StatisticsComponent } from './statistics/statistics.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'admin/statistics', pathMatch:'full' },
+    // { path: '', redirectTo: 'admin/statistics', pathMatch:'full' },
     { path: 'login', component: LoginComponent},
 
     { 
@@ -40,11 +40,11 @@ const routes: Routes = [
     { path: 'not-found', component: NotFoundComponent },
 
     //Admin
-    { path: 'admin', redirectTo: 'admin/statistics'},
-
+    { path: '', redirectTo: 'admin/home', pathMatch:'full' },
+    { path: 'admin', redirectTo: 'admin/home'},
     { 
-      path: 'admin/statistics', 
-      component: StatisticsComponent,
+      path: 'admin/home', 
+      component: HomeComponent,
       canActivate: [RoleGuard], 
       data: { expectedRoles: [Roles.admin, Roles.superAdmin]}
     },
@@ -103,6 +103,13 @@ const routes: Routes = [
       component: ManageCategoryComponent,
       canActivate: [RoleGuard], 
       data: { expectedRoles: [Roles.superAdmin] }
+    },
+
+    { 
+      path: 'admin/statistics',
+      component: StatisticsComponent,
+      canActivate: [RoleGuard], 
+      data: { expectedRoles: [Roles.superAdmin, Roles.admin] }
     }
 ];
 

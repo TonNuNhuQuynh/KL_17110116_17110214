@@ -55,33 +55,37 @@
                     </div>  
                     <!-- Task List -->
                     <div class="col-lg-10 col-md-12">
+                        <div class="d-block d-md-none"><br></div>
                         <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" id="table" class="table table-striped table-hover table-responsive-lg">
                             <thead class="thead-dark">
-                              <tr>
-                                <th class="text-center" scope="col">Trạng thái</th>
-                                <th class="text-center" scope="col">Tựa đề</th>
-                                <th class="text-center" scope="col">Deadline</th>
-                                <th class="text-center" scope="col">Được giao task</th>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
-                              </tr>
+                                <tr>
+                                    <th class="text-center" scope="col">Trạng thái</th>
+                                    <th class="text-center" scope="col">Tựa đề</th>
+                                    <th class="text-center" scope="col">Deadline</th>
+                                    <th class="text-center" scope="col">Tạo bởi</th>
+                                    <th class="text-center" scope="col">Được giao</th>
+                                    <th scope="col"></th>
+                                    <th scope="col"></th>
+                                </tr>
                             </thead>
                             <tbody >
-                              <tr *ngFor='let task of filterTasks'>
-                                <td class="text-center" [ngClass]="{'text-secondary': task.status == 1, 'text-primary': task.status == 2, 'text-warning': task.status == 3, 'text-success': task.status == 4, 'text-danger': task.status == 5, 'text-dark': task.status == 6}">
-                                    <i *ngIf="task.status != 0" class="fa fa-circle" aria-hidden="true"></i>
-                                </td>
-                                <td><p class="cut-text text-justify mb-3" placement="top" ngbTooltip="Tạo bởi {{task.creator.userName}}">{{task.title}}</p></td>
-                                <td class="text-center">{{task.deadline | date:'dd/MM/yy HH:mm'}}</td>
-                                <td class="text-center text-truncate"><ng-container *ngIf="task.executer != null">{{task.executer.userName}}</ng-container></td>
-                                <td class="text-center">{{task.createdDate}}</td>
-                                <td>
-                                    <!-- View task  -->
-                                    <button type="button" class="btn btn-info btn-sm" (click)="viewTask(task.id)"><i class="far fa-eye"></i></button>
-                                    <!-- Delete -->
-                                    <button *ngIf="isSuperAdmin" type="button" class="btn btn-danger btn-sm" (click)="deleteTask(task.id)"><i class="fa fa-remove"></i></button>
-                                </td>
-                              </tr>
+                                <tr *ngFor='let task of filterTasks'>
+                                    <td class="text-center" [ngClass]="{'text-secondary': task.status == 1, 'text-primary': task.status == 2, 'text-warning': task.status == 3, 'text-success': task.status == 4, 'text-danger': task.status == 5, 'text-dark': task.status == 6}">
+                                        <i *ngIf="task.status != 0" class="fa fa-circle" aria-hidden="true"></i>
+                                    </td>
+                                    <td><p class="cut-text text-justify mb-3">{{task.title}}</p></td>
+                                    <td class="text-center">{{task.deadline | date:'dd/MM/yy HH:mm'}}</td>
+                                    <td class="text-center text-truncate" placement="top" ngbTooltip="{{task.creator.userName}}" container="body">{{task.creator.userName}}</td>
+                                    <td class="text-center text-truncate"><ng-container *ngIf="task.executer != null">{{task.executer.userName}}</ng-container></td>
+                                    <!-- Hidden -->
+                                    <td class="text-center">{{task.createdDate}}</td>
+                                    <td>
+                                        <!-- View task  -->
+                                        <button type="button" class="btn btn-info btn-sm btn-round" (click)="viewTask(task.id)"><i class="far fa-eye"></i></button>
+                                        <!-- Delete -->
+                                        <button *ngIf="isSuperAdmin" type="button" class="btn btn-danger btn-sm btn-round" (click)="deleteTask(task.id)"><i class="fa fa-remove"></i></button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

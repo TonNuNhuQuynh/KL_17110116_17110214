@@ -29,7 +29,7 @@
             <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-xl py-0 dropdown-menu-right" style="inset: 100% 0px auto auto;transform: translateY(0px);">
               <!-- Header -->
               <div class="px-3 py-3">
-                <p class="text-sm text-muted m-0 small">Bạn có <strong class="text-danger">{{notifications.length}}</strong> thông báo chưa đọc</p>
+                <p class="text-sm text-muted m-0 font-weight-bold">Bạn có <strong class="text-danger">{{notifications.length}}</strong> thông báo chưa đọc</p>
               </div>
               <!-- List notification -->
               <div class="list-group list-group-flush">
@@ -43,7 +43,7 @@
                         <div><p class="mb-0 text-sm font-weight-bold">{{notification.senderName}}</p></div>
                         <div class="text-right text-muted"><small>{{calculateDiff(notification.createdDate)}}</small></div>
                       </div>
-                      <p class="text-sm mb-0">{{notification.message}}</p>
+                      <p class="text-sm mb-0" style="font-size: 80%;">{{notification.message}}</p>
                     </div>
                   </div>
                 </a>

@@ -5,6 +5,7 @@ import { StorageService } from 'app/storage.service';
 import * as CryptoJS from 'crypto-js';
 import { environment } from 'environments/environment.prod';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { NotificationService } from 'app/notification.service';
 
 @Injectable({
     providedIn: 'root',
@@ -15,24 +16,8 @@ export class AuthenticationService
    public currentAccountSubject: BehaviorSubject<Account>;
    public remember: boolean = false;
 
-   constructor(private jwtHelper: JwtHelperService) 
+   constructor(private jwtHelper: JwtHelperService, private notify: NotificationService) 
    {
-    //    let account = localStorage.getItem(this.account_storage);
-    //    if (account == null) 
-    //    {
-    //        account = sessionStorage.getItem(this.account_storage);
-    //        this.remember = false;
-    //    }
-    //    else this.remember = true;
-       
-    //    let temp = null;
-    //    if (account != null)
-    //    {
-    //        temp = JSON.parse(account)
-    //        temp.roleName = CryptoJS.AES.decrypt(temp.roleName, environment.aes_key.trim()).toString(CryptoJS.enc.Utf8)
-    //    }
-    //    this.currentAccountSubject = new BehaviorSubject<Account>(temp);
-
        let token = localStorage.getItem(StorageService.token)
        if (token == null) 
        {
@@ -53,6 +38,7 @@ export class AuthenticationService
                user: { fullname: '', area: null, image: null, accountId: 0 }
             }
        }
+       if (temp) notify.connect(temp.id)
        this.currentAccountSubject = new BehaviorSubject<Account>(temp);
    }
   
@@ -82,6 +68,7 @@ export class AuthenticationService
            sessionStorage.setItem(StorageService.role, role)
            sessionStorage.setItem(StorageService.token, token)
        }
+       this.notify.connect(account.id)
        this.currentAccountSubject.next(account);
    }
    public logout()
@@ -104,7 +91,8 @@ export class AuthenticationService
            sessionStorage.removeItem(StorageService.role)
            sessionStorage.removeItem(StorageService.token)
        }
-       this.currentAccountSubject.next(null);
+       this.currentAccountSubject.next(null)
+       this.notify.disconnect()
    }
    public isAuthenticated(): boolean 
    {

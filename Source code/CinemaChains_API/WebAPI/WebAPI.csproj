@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UserSecretsId>62814fc3-63f3-4e78-9923-0ae132cf2969</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +17,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="PayPal.SDK.NETCore" Version="1.9.1.2" />
-    <PackageReference Include="Stripe.net" Version="39.23.0" />
   </ItemGroup>
 
 </Project>

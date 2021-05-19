@@ -74,10 +74,6 @@
             "PayPal.SDK.NETCore": {
               "target": "Package",
               "version": "[1.9.1.2, )"
-            },
-            "Stripe.net": {
-              "target": "Package",
-              "version": "[39.23.0, )"
             }
           },
           "imports": [

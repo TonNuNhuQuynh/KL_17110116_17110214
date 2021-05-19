@@ -15,7 +15,6 @@ using MovieReviewsAndTickets_API.Services.SignalR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Collections.Generic;
 using MovieReviewsAndTickets_API.MLModels;
 using Microsoft.Extensions.ML;
 
@@ -36,7 +35,7 @@ namespace MovieReviewsAndTickets_API
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            var issuers = new List<string>() { ApiHelper.FrontEndHost_User.Remove(ApiHelper.FrontEndHost_User.Length - 2, 2), ApiHelper.FrontEndHost_Admin.Remove(ApiHelper.FrontEndHost_Admin.Length - 2, 2) };
+            //var audiences = new List<string>() { ApiHelper.FrontEndHost_User.Remove(ApiHelper.FrontEndHost_User.Length - 2, 2), ApiHelper.FrontEndHost_Admin.Remove(ApiHelper.FrontEndHost_Admin.Length - 2, 2) };
             
             services.AddAuthentication(opt => {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -47,12 +46,11 @@ namespace MovieReviewsAndTickets_API
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidateAudience = true,
+                    ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     ClockSkew = TimeSpan.Zero,
                     ValidIssuer = ApiHelper.MainBEHost,
-                    ValidAudience = ApiHelper.MainBEHost,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("AppSettings:SecretKey")))
                 };
             });
@@ -115,9 +113,9 @@ namespace MovieReviewsAndTickets_API
 
             app.UseHttpsRedirection();
 
-            app.UseRouting();
-
             app.UseAuthentication();
+
+            app.UseRouting();
 
             app.UseAuthorization();
 

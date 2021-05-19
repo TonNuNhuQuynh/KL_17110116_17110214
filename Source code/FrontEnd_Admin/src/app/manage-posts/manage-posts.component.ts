@@ -6,7 +6,7 @@ import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
 import { RolesService } from 'app/manage-accounts/roles.service';
 import { ToastService } from 'app/toast/toast.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { Post } from './model';
 import { PostServive } from './post.service';
 
@@ -40,12 +40,12 @@ export class ManagePostsComponent implements OnInit, OnDestroy {
                     { "width": '40%', "targets": 1 }
                   ],
       order: [[4, 'desc']]
-    };
-    await this.getPosts();
-    this.filterPosts = this.posts;
+    }
+    await this.getPosts()
+    this.filterPosts = this.posts
     this.isSuperAdmin = this.auth.currentAccountValue.roleName == RolesService.superAdmin? true: false
-    this.chRef.detectChanges();
-    this.dtTrigger.next();
+    this.chRef.detectChanges()
+    this.dtTrigger.next()
   }
 
   async getPosts() 
@@ -78,22 +78,23 @@ export class ManagePostsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.dtTrigger.unsubscribe();
   }
-  async deletePost(id: number)
+  async takeDownPost(id: number)
   {
     let post = this.filterPosts.find(m => m.id == id)
-    var r = confirm(`Bạn có chắc muốn gỡ bài viết '${post.title}' khỏi trang không?` );
+    var r = post.isDeleted? confirm(`Bạn có chắc muốn đăng lại bài viết '${post.title}' trên trang user không?` ): confirm(`Bạn có chắc muốn gỡ bài viết '${post.title}' khỏi trang user không?` )
     if (r)
     {
       try
       {
-        await this.http.delete(this.apiService.backendHost + `/api/Posts/${id}`).toPromise()
-        post.status = PostServive.deletedP
+        await this.http.delete(this.apiService.backendHost + `/api/Posts/TakeDown/${post.isDeleted? 0: 1}/${id}`).toPromise()
+        // post.status = post.isDeleted? PostServive.publishedP: PostServive.deletedP
+        post.isDeleted = post.isDeleted? false: true
         this.filter()
-        this.toast.toastSuccess('Xóa bài viết thành công!')
+        this.toast.toastSuccess(post.isDeleted? 'Gỡ bài viết thành công!': 'Đăng bài viết thành công!')
       } 
       catch(e) {
         console.log(e)
-        this.toast.toastError('Xóa bài viết không thành công')
+        this.toast.toastError(post.isDeleted? 'Đăng bài viết không thành công!': 'Gỡ bài viết không thành công!')
       }
     }
   }

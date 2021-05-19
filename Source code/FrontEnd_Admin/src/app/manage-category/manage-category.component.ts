@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { DataTableDirective } from 'angular-datatables';
 import { ApiService } from 'app/api.service';
 import { ToastService } from 'app/toast/toast.service';
-import { Subject } from 'rxjs-compat/Subject';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-manage-category',
@@ -31,6 +31,7 @@ export class ManageCategoryComponent implements OnInit, OnDestroy {
   categoryId: number = 0
   name: string = ""
   description: string = ""
+  views: number = 0
   loading: boolean = false
   isAdded: boolean = true
 
@@ -109,7 +110,11 @@ export class ManageCategoryComponent implements OnInit, OnDestroy {
     this.categoryId = id
     let category = this.category.find(c => c.id == id)
     this.name = category.name
-    if (this.modeId == 3 || this.modeId == 4) this.description = category.description
+    if (this.modeId == 3 || this.modeId == 4) 
+    {
+      this.description = category.description
+      this.views = category.views
+    }
     this.isAdded = false
   }
 
@@ -144,13 +149,13 @@ export class ManageCategoryComponent implements OnInit, OnDestroy {
       }
       else if (this.modeId == 3) 
       {
-        result = await this.http.post<any>(this.apiService.backendHost + '/api/PostTypes', {id: 0, name: this.name, description: this.description}).toPromise()
+        result = await this.http.post<any>(this.apiService.backendHost + '/api/PostTypes', {id: 0, name: this.name, description: this.description, views: 0}).toPromise()
         this.types.push(result)
         this.category = this.types
       }
       else if (this.modeId == 4)
       {
-        result = await this.http.post<any>(this.apiService.backendHost + '/api/PostThemes', {id: 0, name: this.name, description: this.description}).toPromise()
+        result = await this.http.post<any>(this.apiService.backendHost + '/api/PostThemes', {id: 0, name: this.name, description: this.description, views: 0}).toPromise()
         this.themes.push(result)
         this.category = this.themes
       }
@@ -185,13 +190,13 @@ export class ManageCategoryComponent implements OnInit, OnDestroy {
       }
       else if (this.modeId == 3) 
       {
-        result = await this.http.put<any>(this.apiService.backendHost + `/api/PostTypes/${this.categoryId}`, {id: this.categoryId, name: this.name, description: this.description}, headers).toPromise()
+        result = await this.http.put<any>(this.apiService.backendHost + `/api/PostTypes/${this.categoryId}`, {id: this.categoryId, name: this.name, description: this.description, views: this.views}, headers).toPromise()
         this.category[this.category.findIndex(c => c.id == this.categoryId)] = result
         this.types = this.category
       }
       else if (this.modeId == 4)
       {
-        result = await this.http.put<any>(this.apiService.backendHost + `/api/PostThemes/${this.categoryId}`, {id: this.categoryId, name: this.name, description: this.description}, headers).toPromise()
+        result = await this.http.put<any>(this.apiService.backendHost + `/api/PostThemes/${this.categoryId}`, {id: this.categoryId, name: this.name, description: this.description, views: this.views}, headers).toPromise()
         this.category[this.category.findIndex(c => c.id == this.categoryId)] = result
         this.themes = this.category
       }

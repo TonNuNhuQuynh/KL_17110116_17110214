@@ -218,7 +218,6 @@ D:\2020_2021\KLTN\Code\CinemaChains_API\WebAPI\bin\Debug\netcoreapp3.0\SQLitePCL
 D:\2020_2021\KLTN\Code\CinemaChains_API\WebAPI\bin\Debug\netcoreapp3.0\SQLitePCLRaw.nativelibrary.dll
 D:\2020_2021\KLTN\Code\CinemaChains_API\WebAPI\bin\Debug\netcoreapp3.0\SQLitePCLRaw.core.dll
 D:\2020_2021\KLTN\Code\CinemaChains_API\WebAPI\bin\Debug\netcoreapp3.0\SQLitePCLRaw.provider.dynamic_cdecl.dll
-D:\2020_2021\KLTN\Code\CinemaChains_API\WebAPI\bin\Debug\netcoreapp3.0\Stripe.net.dll
 D:\2020_2021\KLTN\Code\CinemaChains_API\WebAPI\bin\Debug\netcoreapp3.0\System.Collections.Immutable.dll
 D:\2020_2021\KLTN\Code\CinemaChains_API\WebAPI\bin\Debug\netcoreapp3.0\System.ComponentModel.Annotations.dll
 D:\2020_2021\KLTN\Code\CinemaChains_API\WebAPI\bin\Debug\netcoreapp3.0\System.Composition.AttributedModel.dll

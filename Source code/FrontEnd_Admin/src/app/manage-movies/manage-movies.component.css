@@ -9,10 +9,11 @@
 .cut-text 
 { 
   width: 160px; 
-  height: 1.4em; 
+  /* height: 1.4em;  */
   word-wrap: break-word;
   font-weight: 600;
 }
+
 .form-control {
   border-color: black;
   border-width: 1.2px;

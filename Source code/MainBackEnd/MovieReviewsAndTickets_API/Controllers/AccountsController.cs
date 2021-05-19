@@ -569,6 +569,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             //Không tìm thấy account
             if (accountInDB == null) return NotFound();
             // Tìm thấy account nhưng ko phải role Super Admin vs Admin
+            account.Username = accountInDB.UserName;
             account.RoleName = _userManager.GetRolesAsync(accountInDB).Result.ToList()[0];
             if (account.RoleName != RolesHelper.SuperAdmin && account.RoleName != RolesHelper.Admin) return NotFound();
             account.Id = accountInDB.Id;

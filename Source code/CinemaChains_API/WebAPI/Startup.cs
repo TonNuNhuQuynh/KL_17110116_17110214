@@ -1,17 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using WebAPI.Models;
 
 namespace WebAPI
@@ -21,8 +14,10 @@ namespace WebAPI
         string frontEndOrigin_Admin = "http://localhost:4200";
         string frontEndOrigin_User = "http://localhost:5000";
         string mainBEOrigin = "https://localhost:44320";
-        //string frontEndOrigin = "https://movie-reviews-and-tickets.web.app";
-        //string mainBEOrigin = "https://www.tlcn-moviereviews.somee.com";
+
+        //string frontEndOrigin_Admin = "https://admin-moviefy.web.app";
+        //string frontEndOrigin_User = "https://movie-reviews-and-tickets.web.app";
+        //string mainBEOrigin = "https://tlcn-moviereviews.somee.com";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;

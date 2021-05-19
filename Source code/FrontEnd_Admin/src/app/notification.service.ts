@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs/Subject";
+import { Subject } from "rxjs";
 import * as signalR from '@microsoft/signalr';
 import { ApiService } from "app/api.service";
 
@@ -12,15 +12,15 @@ export class NotificationService {
     public notiCount: number = 0;
     public notifySubject = new Subject<NotifyAction>();
 
-    constructor() {}
+    constructor(private apiService: ApiService) {}
 
-    public connect(apiService: ApiService, userId: number)
+    public connect(userId: number)
     {
         if (!this.connection)
         {
             this.connection = new signalR.HubConnectionBuilder()
                                 .configureLogging(signalR.LogLevel.Information) 
-                                .withUrl(apiService.backendHost + `/notify?user=${userId}`)  
+                                .withUrl(this.apiService.backendHost + `/notify?user=${userId}`)  
                                 .withAutomaticReconnect()
                                 .configureLogging(signalR.LogLevel.Debug)
                                 .build();

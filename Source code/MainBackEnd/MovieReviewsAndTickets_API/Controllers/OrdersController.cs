@@ -25,9 +25,9 @@ namespace MovieReviewsAndTickets_API.Controllers
     {
         private readonly ApplicationDbContext _context;
         private IEmailSender _emailSender;
-        const string AccountSid = "";
-        const string AuthToken = "";
-        const string PhoneNo = "";
+        const string AccountSid = "AC7a609fce48ac89b3c7cce67d9fc40cc7";
+        const string AuthToken = "41affd115486d4e77b721e7604deebd5";
+        const string PhoneNo = "+15623035460";
         public OrdersController(ApplicationDbContext context, IEmailSender emailSender)
         {
             _context = context;

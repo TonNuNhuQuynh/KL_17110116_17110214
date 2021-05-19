@@ -1,10 +1,10 @@
 import { Component, OnInit, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { AuthenticationService } from 'app/authentication/authentication.service';
 import { RolesService } from 'app/manage-accounts/roles.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { ApiService } from 'app/api.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Notification, NotificationService } from '../../notification.service'
 import { HttpClient } from '@angular/common/http';
 import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
@@ -27,14 +27,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     query: string = '';
     @ViewChild('notiDropdown') notiDropdown: NgbDropdown;
 
-    constructor(private http: HttpClient, private notify: NotificationService, private apiService: ApiService, private router: Router, public auth: AuthenticationService, public location: Location, private element : ElementRef) 
+    constructor(private datePipe: DatePipe, private http: HttpClient, private notify: NotificationService, private apiService: ApiService, private router: Router, public auth: AuthenticationService, public location: Location, private element : ElementRef) 
     {
         this.sidebarVisible = false;
         
     }
 
     
-
     ngOnInit() {
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0];
@@ -50,11 +49,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
             if (this.notiDropdown?.isOpen()) this.notiDropdown.close()
         })
         this.authSubscription = this.auth.currentAccountSubject.subscribe(async account => {
-            if (account != null && this.notifications == null) 
-            {
-                await this.getNotifications();
-                this.notify.connect(this.apiService, this.auth.currentAccountValue.id);  
-            }
+            if (account != null && this.notifications == null) await this.getNotifications();
         })
 
         this.notifySubscription = this.notify.notifySubject.subscribe(action => {
@@ -115,7 +110,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     logout()
     {
         this.auth.logout();
-        window.location.reload();
+        this.router.navigate(['/login'])
     }
     async getNotifications()
     {
@@ -143,15 +138,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   {
     let d2: Date = new Date();
     let d1 = new Date(date);
-    var diffYears = d2.getFullYear() - d1.getFullYear()
-    if (diffYears >= 1) return diffYears + " năm trước"
-    var diffMonths = diffYears * 12 + (d2.getMonth() - d1.getMonth()) + 1
-    if (diffMonths >= 1) return diffMonths + " tháng trước"
     var diffMs = d2.getTime() - d1.getTime()
     var diffDays = Math.floor(diffMs / 86400000); // days
     var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-    if (diffDays >= 1) return diffDays + " ngày trước"
+    if (diffDays > 30) return this.datePipe.transform(d1, 'dd/MM/yyyy')
+    if (diffDays >= 1 && diffDays <= 30) return diffDays + " ngày trước"
     if (diffHrs >= 1) return diffHrs + " giờ trước"
     if (diffMins >= 1) return diffMins + " phút trước"
     else return "Vừa xong";

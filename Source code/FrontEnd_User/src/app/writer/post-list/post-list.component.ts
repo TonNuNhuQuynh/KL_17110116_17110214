@@ -5,7 +5,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
 import { ToastService } from 'app/toast/toast.service';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { Post } from './model';
 import { PostServive } from './post.service';
 

@@ -1346,20 +1346,6 @@
           "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll": {}
         }
       },
-      "Stripe.net/39.23.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "1.1.0",
-          "Newtonsoft.Json": "11.0.1",
-          "System.Configuration.ConfigurationManager": "4.5.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/Stripe.net.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/Stripe.net.dll": {}
-        }
-      },
       "System.AppContext/4.3.0": {
         "type": "package",
         "dependencies": {
@@ -1639,7 +1625,7 @@
           "System.Security.Permissions": "4.5.0"
         },
         "compile": {
-          "ref/netstandard2.0/System.Configuration.ConfigurationManager.dll": {}
+          "ref/netstandard2.0/_._": {}
         },
         "runtime": {
           "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll": {}
@@ -2422,7 +2408,7 @@
           "System.Security.Principal.Windows": "4.5.0"
         },
         "compile": {
-          "ref/netstandard2.0/System.Security.AccessControl.dll": {}
+          "ref/netstandard2.0/_._": {}
         },
         "runtime": {
           "lib/netstandard2.0/System.Security.AccessControl.dll": {}
@@ -2658,7 +2644,7 @@
           "System.Security.AccessControl": "4.5.0"
         },
         "compile": {
-          "ref/netstandard2.0/System.Security.Permissions.dll": {}
+          "ref/netstandard2.0/_._": {}
         },
         "runtime": {
           "lib/netstandard2.0/System.Security.Permissions.dll": {}
@@ -2670,7 +2656,7 @@
           "Microsoft.NETCore.Platforms": "2.0.0"
         },
         "compile": {
-          "ref/netstandard2.0/System.Security.Principal.Windows.dll": {}
+          "ref/netstandard2.0/_._": {}
         },
         "runtime": {
           "lib/netstandard2.0/System.Security.Principal.Windows.dll": {}
@@ -4830,25 +4816,6 @@
         "lib/netstandard2.0/SQLitePCLRaw.provider.dynamic_cdecl.dll",
         "sqlitepclraw.provider.dynamic_cdecl.2.0.0.nupkg.sha512",
         "sqlitepclraw.provider.dynamic_cdecl.nuspec"
-      ]
-    },
-    "Stripe.net/39.23.0": {
-      "sha512": "MEejeYQVRxbmtB7D8gjmWVwAPFO2+e42HyRS9kI+Ec3+LYjKPNKFuva34hMCGudXAWr7qVsvZ/K/ZUUYnrEmZw==",
-      "type": "package",
-      "path": "stripe.net/39.23.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE",
-        "icon.png",
-        "lib/net461/Stripe.net.dll",
-        "lib/net461/Stripe.net.pdb",
-        "lib/net461/Stripe.net.xml",
-        "lib/netstandard2.0/Stripe.net.dll",
-        "lib/netstandard2.0/Stripe.net.pdb",
-        "lib/netstandard2.0/Stripe.net.xml",
-        "stripe.net.39.23.0.nupkg.sha512",
-        "stripe.net.nuspec"
       ]
     },
     "System.AppContext/4.3.0": {
@@ -9163,8 +9130,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 3.1.8",
       "Microsoft.Extensions.Logging.Debug >= 3.0.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.0.0",
-      "PayPal.SDK.NETCore >= 1.9.1.2",
-      "Stripe.net >= 39.23.0"
+      "PayPal.SDK.NETCore >= 1.9.1.2"
     ]
   },
   "packageFolders": {
@@ -9241,10 +9207,6 @@
           "PayPal.SDK.NETCore": {
             "target": "Package",
             "version": "[1.9.1.2, )"
-          },
-          "Stripe.net": {
-            "target": "Package",
-            "version": "[39.23.0, )"
           }
         },
         "imports": [

@@ -17,16 +17,6 @@
                 <div class="row tim-row">
                     <!-- Filters -->
                     <div class="col-lg-12 col-md-12">
-                        <!-- <div class="fixed-section">
-                            <div id="dropdown" ngbDropdown class="d-inline-block btn-block mb-3">
-                                <button class="btn btn-block form-control dropdown-text" style="float: left; width: 20%;" id="dropdownMenu1" ngbDropdownToggle>{{rSelectAll}}</button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu1" ngbDropdownMenu>
-                                    <button *ngIf="roles.length > 1" (click)="filterRoles(roles.length + 1, 'Tất cả')" class="dropdown-item">Tất cả</button>
-                                    <button *ngFor="let r of roles" (click)="filterRoles(r.id, r.name)" class="dropdown-item">{{r.name}}</button>
-                                </div>
-                            </div>
-                            <button id="newAdmin" *ngIf="isSuperAdmin" (click)="openAddAdminModal()" class="btn btn-success btn-block text-center" style="float: right; width: 20%; height: 100%;"><span class="fa fa-plus-circle"></span> Thêm Admin</button>
-                        </div> -->
                         <div class="row align-items-ceter" style="flex: 1;">
                             <div class="col">
                                 <div ngbDropdown class="d-inline-block btn-block mb-3">
@@ -79,8 +69,8 @@
                                     </td>
                                     <td>
                                         <!-- Block  -->
-                                        <button *ngIf="a.isActive" type="button" class="btn btn-round btn-default btn-sm" (click)="block(a.id)"><i class="fa fa-ban"></i></button>
-                                        <button *ngIf="!a.isActive" type="button" class="btn btn-round btn-success btn-sm" (click)="unBlock(a.id)"><i class="fa fa-unlock"></i></button>
+                                        <button *ngIf="a.isActive" type="button" class="btn btn-round btn-warning btn-sm" (click)="block(a.id)"><i class="fa fa-ban"></i></button>
+                                        <button *ngIf="!a.isActive" type="button" class="btn btn-round btn-default btn-sm" (click)="unBlock(a.id)"><i class="fa fa-unlock"></i></button>
                                         <!-- Delete -->
                                         <button type="button" class="btn btn-danger btn-round btn-sm" (click)="deleteAccount(a.id)"><i class="fa fa-remove"></i></button>
                                     </td>

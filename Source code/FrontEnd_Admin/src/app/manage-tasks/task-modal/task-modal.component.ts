@@ -66,10 +66,10 @@ export class TaskModalComponent implements OnInit {
         let diffInMs = assign.getTime() < now.getTime()? now.getTime() - assign.getTime(): 0;
         diffInHours = diffInMs / 1000 / 60 / 60;
       }
-      if ( this.task.creatorId != this.auth.currentAccountValue.id                                                                                // Task không phải do người đang login tạo
-           || this.task.status == TaskService.unApprovedT || this.task.status == TaskService.approvedT                                            // Task đang trong trạng thái chờ duyệt hoặc đã duyệt (Writer đã nộp bài rồi)
-           || (this.task.status == TaskService.processingT && deadline.getTime() > now.getTime())   // Task đang chờ phản hồi từ writer hoặc đã đc writer accept và đang đc thực hiện trong khi deadline vẫn còn time
-           || (this.task.status == TaskService.waitingT && diffInHours <= 2)                                                                       // Task đang chờ phản hồi từ writer trong khoảng dưới 2 giờ từ lúc đc assign
+      if ( this.task.creatorId != this.auth.currentAccountValue.id                                               // Task không phải do người đang login tạo
+           || this.task.status == TaskService.unApprovedT || this.task.status == TaskService.approvedT           // Task đang trong trạng thái chờ duyệt hoặc đã duyệt (Writer đã nộp bài rồi)
+           || (this.task.status == TaskService.processingT && deadline.getTime() > now.getTime())                // Task đang đc thực hiện trong khi deadline vẫn còn time
+           || (this.task.status == TaskService.waitingT && diffInHours <= 2)                                     // Task đang chờ phản hồi từ writer trong khoảng dưới 2 giờ từ lúc đc assign
         ) this.notAllowed = true //thì ko đc chỉnh sửa
     }
     this.router.events.subscribe((event) => {
@@ -128,8 +128,9 @@ export class TaskModalComponent implements OnInit {
       let url = this.apiService.backendHost + "/api/Tasks";
       let result = await this.http.post<any>(url, this.task).toPromise();
       this.task.id = result
-      this.checkTaskStatus();
-      this.activeModal.close(this.task);
+      this.task.creator = {userName: this.auth.currentAccountValue.username, id: this.auth.currentAccountValue.id}
+      this.checkTaskStatus()
+      this.activeModal.close(this.task)
     }
     catch (e)  {
       console.log(e)

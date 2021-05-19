@@ -12,9 +12,9 @@
             </ul>
 
             <ul *ngIf="isAdmin" class="navbar-nav" >
-                <!-- Thống kê -->
+                <!-- Trang chủ -->
                 <li class="nav-item" routerLinkActive="active">
-                    <a class="nav-link" [routerLink]="['/admin/statistics']">Thống kê</a>
+                    <a class="nav-link" [routerLink]="['/admin/home']">Trang chủ</a>
                 </li>
 
                 <!-- Quản lý phim -->
@@ -42,6 +42,16 @@
                     <a class="nav-link" [routerLink]="['/admin/manage-chains']">Chuỗi rạp</a>
                 </li>
 
+                <!-- Quản lý danh mục -->
+                <li class="nav-item" *ngIf="isSupAdmin" routerLinkActive="active">
+                    <a class="nav-link" [routerLink]="['/admin/manage-category']">Danh mục</a>
+                </li>
+
+                <!-- Thống kê -->
+                <li class="nav-item" routerLinkActive="active">
+                    <a class="nav-link" [routerLink]="['/admin/statistics']">Thống kê</a>
+                </li>
+                
             </ul>
         </div>
 

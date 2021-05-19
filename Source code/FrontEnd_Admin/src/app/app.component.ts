@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from './authentication/authentication.service';
 import { ApiService } from './api.service';
 import { Account } from 'app/manage-accounts/model'
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-root',
@@ -17,7 +18,7 @@ export class AppComponent implements OnInit, AfterViewInit{
     
     @ViewChild(NavbarComponent) navbar: NavbarComponent;
     constructor(private renderer : Renderer2, private router: Router, private element : ElementRef, public location: Location, private http: HttpClient, private auth: AuthenticationService, private apiService: ApiService) {}
-    
+    authSubscription: Subscription
     
     ngOnInit() {
         var navbar : HTMLElement = this.element.nativeElement.children[0].children[0];

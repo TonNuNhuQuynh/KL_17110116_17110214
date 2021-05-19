@@ -1,0 +1,227 @@
+<div class="wrapper">
+    <div class="documentation page-header page-header-small" id="landing-wrapper" >
+        <div class="filter"></div>
+        <div class="motto">
+            <br>
+            <h4 class="title-uppercase text-center">Welcom back, Admin!</h4>
+            <br>
+            <h5 class="page-description text-center">Trang chủ của Admin</h5>
+            <br>
+        </div>
+    </div>
+    <div class="main">
+        <div class="section">
+            <div class="container">
+                <!-- Số liệu -->
+                <div class="row">
+                    <!-- Phim -->
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-warning card-header-icon">
+                                <div class="card-icon"><i class="material-icons">movie</i></div>
+                                <p class="card-category">Kho Phim</p>
+                                <h3 class="card-title"><strong>{{numbers.movies}}</strong> bộ phim</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">more_horiz</i> <a [routerLink]="['/admin/manage-movies']">Xem thêm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chuỗi rạp -->
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-success card-header-icon">
+                                <div class="card-icon"><i class="material-icons">apartment</i></div>
+                                <p class="card-category">Chuỗi rạp</p>
+                                <h3 class="card-title"><strong>{{numbers.chains}}</strong> chuỗi</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">more_horiz</i> <a [routerLink]="['/admin/manage-chains']">Xem thêm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rạp phim -->
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-danger card-header-icon">
+                                <div class="card-icon"><i class="material-icons">theaters</i></div>
+                                <p class="card-category">Rạp phim</p>
+                                <h3 class="card-title"><strong>{{numbers.cinemas}}</strong> rạp</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">more_horiz</i> <a [routerLink]="['/admin/manage-chains']">Xem thêm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Người dùng -->
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats">
+                            <div class="card-header card-header-info card-header-icon">
+                                <div class="card-icon"><i class="material-icons">account_circle</i></div>
+                                <p class="card-category">Người dùng</p>
+                                <h3 class="card-title"><strong>{{numbers.accounts}}</strong> tài khoản</h3>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">more_horiz</i> <a [routerLink]="['/admin/manage-accounts']">Xem thêm</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart -->
+                <div class="row">
+                    <div *ngIf="!loaded"  class="col-12 text-center">
+                        <div class="spinner-border text-danger" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>     
+
+                    <!-- Top 5 phim được review nhiều nhất -->
+                    <div *ngIf="loaded && topReviewedMovies.labels.length > 0" class="col-md-4 col-sm-12" #topReviewed>
+                        <div class="card card-chart">
+                            <div class="card-header card-header-success">
+                                <div class="ct-chart" id="topReviewedMovies"></div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-danger"><strong>Top 5 Most Being Reviewed</strong></h5>
+                                <p class="card-category text-truncate" placement="top" ngbTooltip="Top 5 phim được đánh giá nhiều nhất của web"><strong>Top 5 phim được đánh giá nhiều nhất của web</strong></p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats"><i class="material-icons">access_time</i>Đánh giá cuối từ {{topReviewedMovies.lastReview | date : 'dd/MM/yyyy'}}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hoạt động user -->
+                    <div *ngIf="loaded && behaviors.labels.length > 0" class="col-md-8 col-sm-12" #behaviorChart>
+                        <div class="card card-chart">
+                            <div class="card-header card-header-warning">
+                                <div class="ct-chart" id="behaviorChart"></div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-danger"><strong>Users' behaviors</strong></h5>
+                                <p class="card-category text-truncate" placement="top" ngbTooltip="Thống kê hoạt động của user trong 12 tháng gần đây nhất"><strong>Thống kê hoạt động của user trong 12 tháng gần đây nhất</strong></p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="stats">
+                                    <i class="material-icons">access_time</i> Hoạt động user cao nhất vào tháng {{behaviors.most}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4" >
+                    <div *ngIf="!loaded2" class="col-12 text-center">
+                        <div class="spinner-border text-danger" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>  
+                    
+                    <!-- Hoạt động của admin -->
+                    <div class="col-lg-6 col-md-12" *ngIf="loaded2">
+                        <div class="card">
+                            <div class="card-header card-header-tabs card-header-primary">
+                                <div class="nav-tabs-navigation">
+                                    <div class="nav-tabs-wrapper">
+                                        <span class="nav-tabs-title">Trạng thái hoạt động: </span>
+                                        <ul class="nav nav-tabs" data-tabs="tabs">
+                                            <li class="nav-item">
+                                                <a class="nav-link active" href="#admin" data-toggle="tab">
+                                                    <i class="material-icons">notifications_active</i> Admin
+                                                    <div class="ripple-container"></div>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="#user" data-toggle="tab">
+                                                    <i class="material-icons">add_alert</i> Writer
+                                                    <div class="ripple-container"></div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <!-- Trạng thái hoạt động của các admin -->
+                                    <div class="tab-pane active" id="admin">
+                                        <table class="table table-responsive">
+                                            <tbody>
+                                                <tr *ngFor="let a of admins">
+                                                    <td class="w-auto">
+                                                        <div class="text-center" [ngClass]="{'text-secondary': !a.active, 'text-success': a.active}"><i class="fa fa-circle" aria-hidden="true"></i></div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <img *ngIf="a.image != null && a.image != ''" class="img-circle img-responsive" [src]="a.image" style="width:4rem;height:4rem;">
+                                                        <img *ngIf="a.image == null || a.image == ''" class="img-circle img-responsive" src="./assets/img/user-default.png" style="width:4rem;height:4rem;">
+                                                    </td>
+                                                    <td>{{a.username}}</td>
+                                                    <td>{{a.email}}</td>
+                                                </tr>                    
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!-- Trạng thái hoạt động của các writer -->
+                                    <div class="tab-pane" id="user">
+                                        <table class="table table-responsive">
+                                            <tbody>
+                                                <tr *ngFor="let a of writers">
+                                                    <td class="w-auto">
+                                                        <div class="text-center" [ngClass]="{'text-secondary': !a.active, 'text-success': a.active}"><i class="fa fa-circle" aria-hidden="true"></i></div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <img *ngIf="a.image != null && a.image != ''" class="img-circle img-responsive" [src]="a.image" style="width:4rem;height:4rem;">
+                                                        <img *ngIf="a.image == null || a.image == ''" class="img-circle img-responsive" src="./assets/img/user-default.png" style="width:4rem;height:4rem;">
+                                                    </td>
+                                                    <td>{{a.username}}</td>
+                                                    <td>{{a.email}}</td>
+                                                </tr>                                                  
+                                            </tbody>
+                                        </table>
+                                    </div>                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- List admin -->
+                    <div class="col-lg-6 col-md-12" *ngIf="loaded2">
+                        <div class="card">
+                            <div class="card-header card-header-warning">
+                                <h4 class="card-title">Thông báo</h4>
+                                <p class="card-category text-white">Các thông báo gần đây nhất</p>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table class="table table-hover w-auto">
+                                    <tbody>
+                                        <tr *ngFor="let notification of notifications">
+                                            <td>
+                                                <div class="text-center" [ngClass]="{'text-warning': !notification.isViewed, 'text-primary': notification.isViewed}"><i class="fa fa-circle" aria-hidden="true"></i></div>
+                                            </td>
+                                            <td class="text-justify">
+                                                <a href="{{notification.url}}&view={{notification.id}}" class="text-dark" style="font-weight: 500;">{{notification.message}}</a>
+                                            </td>
+                                            <td class="text-danger">{{calculateDiff(notification.createdDate)}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>       
+        </div>
+    </div>
+</div>

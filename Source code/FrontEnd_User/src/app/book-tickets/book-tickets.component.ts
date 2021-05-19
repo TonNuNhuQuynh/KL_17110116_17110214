@@ -10,7 +10,6 @@ import { TicketDetailsComponent } from './ticket-details/ticket-details.componen
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ErrorModalComponent } from './error-modal/error-modal.component';
 import { StorageService } from 'app/storage.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-book-tickets',

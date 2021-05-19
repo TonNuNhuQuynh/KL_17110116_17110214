@@ -6,7 +6,7 @@ import { AuthenticationService } from './authentication/authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { NotificationService } from './writer/notification.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { RolesService } from './authentication/roles.service';
 import { Meta, Title } from '@angular/platform-browser';
 

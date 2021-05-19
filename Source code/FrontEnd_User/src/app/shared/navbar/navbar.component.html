@@ -73,7 +73,7 @@
         </button>
         
         <div class="navbar-user">
-            <div class="d-flex mr-3" *ngIf="!isAdmin">
+            <div class="d-flex mr-3">
                 <a class="text-light location" href="javascript:void(0)" (click)="openLocationModal()" ><i class="fa fa-map-marker-alt"></i></a>
             </div>
             <div class="d-none d-lg-flex" *ngIf="auth.currentAccountValue == null">

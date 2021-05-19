@@ -123,12 +123,7 @@ export class MovieListComponent implements OnInit, OnDestroy{
   openLoginModal()
   {
     const modalRef = this.modalService.open(LoginModalComponent, {windowClass: "login"});
-    modalRef.result.then(async (result: any) => 
-      {
-        // if (result == 'Success') window.location.reload();
-        // else this.toast.toastError("Đăng nhập không thành công!");
-
-      }, () => {})
+    modalRef.result.then(async (result: any) => {}, () => {})
   }
   async likeMovie(event: any, id: number)
   {

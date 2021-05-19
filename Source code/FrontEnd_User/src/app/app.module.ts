@@ -139,7 +139,7 @@ export function tokenGetter() {
     CKEditorModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: tokenGetter, whitelistedDomains: [environment.backend_domain]
+        tokenGetter: tokenGetter, allowedDomains: ["tlcn-moviereviews.somee.com", "localhost:44320"]
     }}),
   ],
   providers: [

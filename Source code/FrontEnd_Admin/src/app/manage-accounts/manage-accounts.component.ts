@@ -6,7 +6,7 @@ import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
 import { AddAdminModalComponent } from 'app/manage-accounts/add-admin-modal/add-admin-modal.component';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { Role } from './model';
 import { Account } from './model';
 import { RolesService } from './roles.service';
@@ -20,7 +20,7 @@ export class ManageAccountsComponent implements OnInit, OnDestroy {
 
   constructor(private modalService: NgbModal, private toastr: ToastrService, 
               private http: HttpClient, private apiService: ApiService, 
-              private auth: AuthenticationService, private chRef : ChangeDetectorRef,) { }
+              private auth: AuthenticationService, private chRef : ChangeDetectorRef) { }
   
   ngOnDestroy(): void 
   {
@@ -44,7 +44,8 @@ export class ManageAccountsComponent implements OnInit, OnDestroy {
     this.dtOptions = {
       pagingType: 'full_numbers',
       lengthMenu: [10, 15, 20],
-      autoWidth: true };
+      autoWidth: true
+    };
     
     if (this.auth.currentAccountValue.roleName == RolesService.superAdmin) this.isSuperAdmin = true;
     await this.getRoles();

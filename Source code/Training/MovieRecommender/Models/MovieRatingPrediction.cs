@@ -6,7 +6,7 @@ namespace MovieRecommender.Models
 {
     class MovieRatingPrediction
     {
-        public bool PredictedLabel;
+        public float Label;
         public float Score;
     }
 }

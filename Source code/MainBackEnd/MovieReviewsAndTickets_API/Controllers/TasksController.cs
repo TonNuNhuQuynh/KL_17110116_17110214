@@ -67,7 +67,6 @@ namespace MovieReviewsAndTickets_API.Controllers
             if (id != task.Id) return BadRequest();
             var taskInDB = await _context.Tasks.Where(t => !t.IsDeleted && t.Id == id).FirstOrDefaultAsync();
             if (taskInDB == null) return NotFound();
-            //task.Deadline = task.Deadline.AddHours(7);
             taskInDB.Title = task.Title;
             taskInDB.Content = task.Content;
             taskInDB.Deadline = task.Deadline.AddHours(7);
@@ -95,19 +94,19 @@ namespace MovieReviewsAndTickets_API.Controllers
             }
             await _context.SaveChangesAsync();
             // Sau khi đã lưu hết thì gửi emai vs broadcast noti
-            if (task.Status >= TaskHelper.WaitingT)
+            if (taskInDB.Status >= TaskHelper.WaitingT)
             {
                 var receiver = await _context.Accounts.Where(a => !a.IsDeleted && a.Id == task.ExecuterId).FirstOrDefaultAsync();
                 //Nếu writer cũ khác writer mới thì gửi email vs noti cho writer đc assign task
-                //if (oldExecuterId != taskInDB.ExecuterId)
-                //{
-                //    string link = $"{notification.Url}&view={notification.Id}";
-                //    await this._emailSender.SendEmailAsync(receiver.Email, taskInDB.Title, $"Xin chào {receiver.UserName}, <br>" +
-                //            $"{admin.UserName} giao cho bạn task <strong>{taskInDB.Title}</strong> với nội dung là:<br>" +
-                //            $"{taskInDB.Content}" +
-                //            $"<br>Deadline: {taskInDB.Deadline.ToString("dd/MM/yyyy HH:mm")}" +
-                //            $"<br>Từ chối hoặc chấp nhận task <a href=\"{link}\">tại đây</a>");
-                //}    
+                if (oldExecuterId != taskInDB.ExecuterId)
+                {
+                    string link = $"{notification.Url}&view={notification.Id}";
+                    await this._emailSender.SendEmailAsync(receiver.Email, taskInDB.Title, $"Xin chào {receiver.UserName}, <br>" +
+                            $"{admin.UserName} giao cho bạn task <strong>{taskInDB.Title}</strong> với nội dung là:<br>" +
+                            $"{taskInDB.Content}" +
+                            $"<br>Deadline: {taskInDB.Deadline.ToString("dd/MM/yyyy HH:mm")}" +
+                            $"<br>Từ chối hoặc chấp nhận task <a href=\"{link}\">tại đây</a>");
+                }
                 SendMessage(new NotificationVM() { Id = notification.Id, Url = notification.Url, CreatedDate = notification.CreatedDate, Message = notification.Message, SenderImage = admin.User.Image, SenderName = admin.UserName }, notification.ReceiverId);
             }    
             return NoContent();
@@ -120,7 +119,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         public async Task<IActionResult> PostTask(Models.Task task)
         {
             task.CreatedDate = DateTime.Now;
-            task.Deadline = task.Deadline.AddHours(7);    // Kiểu date gửi từ backend xuống hour bị giảm đi 7
+            task.Deadline = task.Deadline.AddHours(7);            // Kiểu date gửi từ backend xuống hour bị giảm đi 7
             if (task.ExecuterId != 0 && task.ExecuterId != null)  // Nếu đc assign cho user thì gán lại status là chờ phản hồi và assignTime
             {
                 task.Status = TaskHelper.WaitingT;
@@ -144,12 +143,12 @@ namespace MovieReviewsAndTickets_API.Controllers
                 await _context.SaveChangesAsync();
                 var receiver = await _context.Accounts.Where(a => !a.IsDeleted && a.Id == task.ExecuterId).FirstOrDefaultAsync();
                 //Gửi email vs noti cho writer đc assign task
-                //string link = $"{notification.Url}&view={notification.Id}";
-                //await this._emailSender.SendEmailAsync(receiver.Email, task.Title, $"Xin chào {receiver.UserName}, <br>" +
-                //        $"{admin.UserName} giao cho bạn task <strong>{task.Title}</strong> với nội dung là:<br>" +
-                //        $"{task.Content}" +
-                //        $"<br>Deadline: {task.Deadline.ToString("dd/MM/yyyy HH:mm")}" +
-                //        $"<br>Từ chối hoặc chấp nhận task <a href=\"{link}\">tại đây</a>");
+                string link = $"{notification.Url}&view={notification.Id}";
+                await this._emailSender.SendEmailAsync(receiver.Email, task.Title, $"Xin chào {receiver.UserName}, <br>" +
+                        $"{admin.UserName} giao cho bạn task <strong>{task.Title}</strong> với nội dung là:<br>" +
+                        $"{task.Content}" +
+                        $"<br>Deadline: {task.Deadline.ToString("dd/MM/yyyy HH:mm")}" +
+                        $"<br>Từ chối hoặc chấp nhận task <a href=\"{link}\">tại đây</a>");
                 SendMessage(new NotificationVM() { Id = notification.Id, Url = notification.Url, CreatedDate = notification.CreatedDate, Message = notification.Message, SenderImage = admin.User.Image, SenderName = admin.UserName }, notification.ReceiverId);
             }
             return new JsonResult(task.Id);
@@ -168,10 +167,6 @@ namespace MovieReviewsAndTickets_API.Controllers
             return NoContent();
         }
 
-        private bool TaskExists(int id)
-        {
-            return _context.Tasks.Any(e => e.Id == id);
-        }
         // GET: api/Tasks/User/id - Lấy những task của user -> task-list
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Roles = RolesHelper.Writer)]
@@ -214,9 +209,9 @@ namespace MovieReviewsAndTickets_API.Controllers
             await _context.SaveChangesAsync();
             //Gửi email vs noti cho writer đc assign task
             var receiver = await _context.Accounts.Where(a => !a.IsDeleted && a.Id == task.CreatorId).FirstOrDefaultAsync();
-            //string link = $"{notification.Url}&view={notification.Id}";
-            //await this._emailSender.SendEmailAsync(receiver.Email, $"{task.Title}", $"Xin chào {receiver.UserName},<br>" +
-            //        $"{writer.UserName} đã chấp nhận task mà bạn đã giao. Chi tiết <a href=\"{link}\">tại đây</a>");
+            string link = $"{notification.Url}&view={notification.Id}";
+            await this._emailSender.SendEmailAsync(receiver.Email, $"{task.Title}", $"Xin chào {receiver.UserName},<br>" +
+                    $"{writer.UserName} đã chấp nhận task mà bạn đã giao. Chi tiết <a href=\"{link}\">tại đây</a>");
             SendMessage(new NotificationVM() { Id = notification.Id, Url = notification.Url, CreatedDate = notification.CreatedDate, Message = notification.Message, SenderImage = writer.User.Image, SenderName = writer.UserName }, notification.ReceiverId);
             return NoContent();
         }

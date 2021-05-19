@@ -10,21 +10,21 @@
     <form class="form-horizontal" name="form" #form="ngForm">
         <!-- Title -->
         <div class="form-group">
-            <label>Tên task</label>
+            <label>Tên task (*)</label>
             <textarea maxlength="150" required name="title" #title="ngModel" [(ngModel)]="task.title" class="form-control" type="text" [ngClass]="{'is-invalid': title.invalid && (title.touched || title.dirty)}" [disabled]="notAllowed"></textarea>
             <div class="text-danger" *ngIf="title.errors?.required && (title.touched || title.dirty)"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
         </div>
 
         <!-- Content -->
         <div class="form-group">
-            <label>Nội dung task</label>
+            <label>Nội dung task (*)</label>
             <ckeditor [editor]="Editor" [(ngModel)]="task.content" (focus)="onFocus()" (blur)="onFocus()" name="content" [disabled]="notAllowed"></ckeditor>
             <div class="text-danger" *ngIf="invalidContent"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
         </div>
 
         <!-- Deadline -->
         <div class="form-group">
-            <label>Deadline</label>
+            <label>Deadline (*)</label>
             <!-- Pick date -->
             <input #date="ngModel" required (ngModelChange)="dateChange($event)" [ngClass]="{'is-invalid': date.invalid && (date.touched || date.dirty)}" class="form-control" [(ngModel)]="deadlineDate" placement="bottom" placeholder="Release date" name="dp" ngbDatepicker #d="ngbDatepicker" (click)="d.toggle()" (focus)="focus=true" (blur)="focus=false" [disabled]="notAllowed" />
             <ng-container *ngIf="date.invalid && (date.touched || date.dirty)">
@@ -56,7 +56,7 @@
     </div>
     <!-- Actions -->
     <div class="actions">
-        <button [disabled]="title.invalid || invalidDate || invalidTime || invalidContent || !loaded || notAllowed" type="button" class="btn btn-primary" (click)="saveTask()">Lưu</button>
+        <button *ngIf="!notAllowed" [disabled]="title.invalid || invalidDate || invalidTime || invalidContent || !loaded " type="button" class="btn btn-primary" (click)="saveTask()">Lưu</button>
         <a *ngIf="task.status >= 3" [routerLink]="['/admin/review-post']" [queryParams]="{ id: task.postId }" class="btn btn-dark">Xem bài viết</a>
     </div>
 </div>
