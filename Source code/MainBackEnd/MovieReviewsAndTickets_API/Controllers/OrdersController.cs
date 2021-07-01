@@ -25,9 +25,9 @@ namespace MovieReviewsAndTickets_API.Controllers
     {
         private readonly ApplicationDbContext _context;
         private IEmailSender _emailSender;
-        const string AccountSid = "AC7a609fce48ac89b3c7cce67d9fc40cc7";
-        const string AuthToken = "41affd115486d4e77b721e7604deebd5";
-        const string PhoneNo = "+15623035460";
+        const string AccountSid = "";
+        const string AuthToken = "";
+        const string PhoneNo = "";
         public OrdersController(ApplicationDbContext context, IEmailSender emailSender)
         {
             _context = context;
@@ -178,11 +178,9 @@ namespace MovieReviewsAndTickets_API.Controllers
             {
                 using (var response = await httpClient.PostAsync(ApiHelper.CinemaChainHost + $"/api/Orders/Paypal", new StringContent(jsonString, Encoding.UTF8, "application/json")))
                 {
-                    // Lỗi ghế đã được chọ
-                    if (!response.IsSuccessStatusCode) return NotFound();
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    // Lỗi thẻ không hợp lệ
-                    if (apiResponse == "Invalid card") return new JsonResult(apiResponse);
+                    // Lỗi ghế đã được chọn or thẻ k hợp lệ
+                    if (apiResponse == "Invalid seats" || apiResponse == "Invalid card") return new JsonResult(apiResponse);
                     orderId = Convert.ToInt32(apiResponse);
                 }
             }
@@ -227,19 +225,19 @@ namespace MovieReviewsAndTickets_API.Controllers
             catch (Exception) { }
 
             //Gửi sms cho số điện thoại user
-            //try
-            //{
-            //    TwilioClient.Init(AccountSid, AuthToken);
-            //    var to = new PhoneNumber("+84" + receivedOrder.Phone);
-            //    var message = MessageResource.Create(
-            //        to,
-            //        from: new PhoneNumber(PhoneNo), // From number, must be an SMS-enabled Twilio number ( This will send sms from ur "To" numbers ).  
-            //        body: $"Bạn đã mua vé thành công cho phim {movie.Title}, suất chiếu lúc {receivedOrder.Showtime.ToString("dd/MM/yyyy HH:mm")} tại rạp {receivedOrder.CinemaName}. Mã đơn hàng: {orderId}, thành tiền: {receivedOrder.Total} đ.");
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.Message);
-            //}
+            try
+            {
+                TwilioClient.Init(AccountSid, AuthToken);
+                var to = new PhoneNumber("+84" + paymentRequest.Order.Phone);
+                var message = MessageResource.Create(
+                    to,
+                    from: new PhoneNumber(PhoneNo), // From number, must be an SMS-enabled Twilio number ( This will send sms from ur "To" numbers ).  
+                    body: $"Bạn đã mua vé thành công cho phim {movie.Title}, suất chiếu lúc {paymentRequest.Order.Showtime.ToString("dd/MM/yyyy HH:mm")} tại rạp {paymentRequest.Order.CinemaName}. Mã đơn hàng: {orderId}, thành tiền: {paymentRequest.Order.Total} đ");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
 
             return new JsonResult(orderId);
         }

@@ -110,7 +110,9 @@ const routes: Routes = [
       component: StatisticsComponent,
       canActivate: [RoleGuard], 
       data: { expectedRoles: [Roles.superAdmin, Roles.admin] }
-    }
+    },
+
+    { path: '**', redirectTo: 'not-found' }
 ];
 
 @NgModule({

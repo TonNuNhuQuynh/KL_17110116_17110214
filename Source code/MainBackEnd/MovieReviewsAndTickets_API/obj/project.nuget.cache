@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1kHRAatrLLRx/4X1cuXvZPj1VUyFNQT0B7k/eKRNXqZgiUXrnjJM8Aim/IzUbGd7C/KwJW+KDP8BSVs/PokMrA==",
+  "dgSpecHash": "WDoDLNAnSRV4AwUIYQNjvbl+MXHo7UDAFxti9S0pJFMmRHAHjLVQPPPK27hhWtu3TnESSnIlZlG6rpwfEAormw==",
   "success": true,
-  "projectFilePath": "D:\\2020_2021\\KLTN\\Code\\MainBackEnd\\MovieReviewsAndTickets_API\\MovieReviewsAndTickets_API.csproj",
+  "projectFilePath": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\MainBackEnd\\MovieReviewsAndTickets_API\\MovieReviewsAndTickets_API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LENOVO\\.nuget\\packages\\google.apis\\1.49.0\\google.apis.1.49.0.nupkg.sha512",
     "C:\\Users\\LENOVO\\.nuget\\packages\\google.apis.auth\\1.49.0\\google.apis.auth.1.49.0.nupkg.sha512",

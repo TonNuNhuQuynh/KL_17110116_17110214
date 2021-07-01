@@ -56,7 +56,10 @@
     </div>
     <!-- Actions -->
     <div class="actions">
-        <button *ngIf="!notAllowed" [disabled]="title.invalid || invalidDate || invalidTime || invalidContent || !loaded " type="button" class="btn btn-primary" (click)="saveTask()">Lưu</button>
+        <button *ngIf="!notAllowed" [disabled]="title.invalid || invalidDate || invalidTime || invalidContent || !loaded " type="button" class="btn btn-primary" (click)="saveTask()">
+            <ng-container *ngIf="loaded">Lưu</ng-container>   
+            <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!loaded"></i>
+        </button>
         <a *ngIf="task.status >= 3" [routerLink]="['/admin/review-post']" [queryParams]="{ id: task.postId }" class="btn btn-dark">Xem bài viết</a>
     </div>
 </div>

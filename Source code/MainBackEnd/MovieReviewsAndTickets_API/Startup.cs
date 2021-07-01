@@ -63,7 +63,7 @@ namespace MovieReviewsAndTickets_API
             {
                 builder
                 .AllowAnyOrigin()
-                .WithOrigins(ApiHelper.FrontEndHost_User.Remove(ApiHelper.FrontEndHost_User.Length - 2, 2), ApiHelper.FrontEndHost_Admin.Remove(ApiHelper.FrontEndHost_Admin.Length - 2, 2))
+                .WithOrigins(ApiHelper.FrontEndHost_User, ApiHelper.FrontEndHost_Admin.Remove(ApiHelper.FrontEndHost_Admin.Length - 2, 2))
                 .AllowCredentials()
                 .AllowAnyMethod()
                 .SetIsOriginAllowed((host) => true)

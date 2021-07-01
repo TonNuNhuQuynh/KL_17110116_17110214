@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TQvs4CMuoQkRKqOYUjVzg82EEDeCL6MGm7ZCrc1VsqbjNfT2abRvXGyqTw8rPoludLN+mWQBM06JtDve1NWvxA==",
+  "dgSpecHash": "u7dl3TdbJV5UNHw0Lr4q2DqJi4x5gyt+BS+UwfzcbX2SdpIE4A88nRZbTzQKn0B8nPX663e9kP82oQ8zl+WZTQ==",
   "success": true,
-  "projectFilePath": "D:\\2020_2021\\KLTN\\Code\\CinemaChains_API\\WebAPI\\WebAPI.csproj",
+  "projectFilePath": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\CinemaChains_API\\WebAPI\\WebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.0.0\\microsoft.aspnetcore.jsonpatch.3.0.0.nupkg.sha512",

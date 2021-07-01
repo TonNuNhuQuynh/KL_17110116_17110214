@@ -51,6 +51,11 @@
 <div class="modal-footer">
   <div class="left-side"><button [disabled]="!loaded" type="button" class="btn btn-default btn-link" (click)="closeAlert('Close')">Hủy</button></div>
   <div class="divider"></div>
-  <div class="right-side"><button [disabled]="username.invalid || name.invalid || e.invalid || !loaded" type="button" class="btn btn-danger btn-link" (click)="addAccount()">Thêm tài khoản</button></div>
+  <div class="right-side">
+    <button [disabled]="username.invalid || name.invalid || e.invalid || !loaded" type="button" class="btn btn-danger btn-link" (click)="addAccount()">
+      <ng-container *ngIf="loaded">Thêm tài khoản</ng-container>   
+      <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!loaded"></i>
+    </button>
+  </div>
 </div>
 

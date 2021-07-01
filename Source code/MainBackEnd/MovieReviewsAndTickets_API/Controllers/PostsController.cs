@@ -365,7 +365,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         {
             return await _context.Posts.Where(p => !p.IsDeleted && p.Status == PostsHelper.PublishedP)
                                        .Include(p => p.Account)
-                                       .Include(p => p.PostType).Include(p => p.PostTheme)
+                                       .Include(p => p.PostType)
                                        .OrderByDescending(p => p.PublishedDate).Take(8).ToListAsync();
         }
 

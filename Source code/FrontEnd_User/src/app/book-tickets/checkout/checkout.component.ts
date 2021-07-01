@@ -197,7 +197,8 @@ export class CheckoutComponent implements OnInit, AfterContentChecked, AfterView
         return actions.request.post(_this.apiService.backendHost + '/api/Orders/Paypal', { order: JSON.stringify(_this.createOrder()), payerId: data.payerID, paymentID: data.paymentID }, {headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
         .then(function(res) 
         {
-          if (res == "Invalid card") _this.toast.toastError("Thông tin thẻ không hợp lệ!");
+          if (res == "Invalid seats") _this.openError()
+          else if (res == "Invalid card") _this.toast.toastError("Thông tin thẻ không hợp lệ!")
           else 
           {
             _this.bookingInfo.orderId = Number(res);

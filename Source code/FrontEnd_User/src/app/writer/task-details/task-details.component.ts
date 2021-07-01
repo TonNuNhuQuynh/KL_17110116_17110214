@@ -31,10 +31,11 @@ export class TaskDetailsComponent implements OnInit, AfterViewInit {
     post: null,
     postId: null
   };
-  taskId: number = 0;
-  isError: boolean = false;
-  loaded: boolean = true;
-  notAllowedToResponse: boolean = false;
+  taskId: number = 0
+  isError: boolean = false
+  loaded: boolean = true
+  loaded2: boolean = true
+  notAllowedToResponse: boolean = false
   notificationId: number = 0
 
   async ngOnInit(): Promise<void> 
@@ -77,7 +78,7 @@ export class TaskDetailsComponent implements OnInit, AfterViewInit {
 
   async deny()
   {
-    this.loaded = false
+    this.loaded2 = false
     let url = this.apiService.backendHost + `/api/Tasks/Deny/${this.taskId}/${this.auth.currentAccountValue.id}`;
     try 
     {
@@ -85,7 +86,7 @@ export class TaskDetailsComponent implements OnInit, AfterViewInit {
       this.toast.toastSuccess("Từ chối task thành công!")
       this.notAllowedToResponse = true
     }
-    catch(e) { console.log(e); this.isError = true; this.loaded = true }
+    catch(e) { console.log(e); this.isError = true; this.loaded2 = true }
   }
 
   async viewNotification()

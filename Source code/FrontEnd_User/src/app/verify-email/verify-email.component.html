@@ -12,7 +12,10 @@
                     <div *ngIf="accountId != 0 && code" class="card card-register">
                         <h3 class="title">Nhấn nút bên dưới để xác nhận tài khoản</h3>
                         <span style="text-align: center;"><img src="./assets/img/verify.png" style="height: 110px; width: 110px;"></span>
-                        <button *ngIf="!success" [disabled]="isLoaded" (click)="confirm()" class="btn btn-success btn-block btn-round">Xác nhận</button>
+                        <button *ngIf="!success" [disabled]="isLoaded" (click)="confirm()" class="btn btn-success btn-block btn-round">
+                            <ng-container *ngIf="!isLoaded">Xác nhận</ng-container>   
+                            <i class="fa fa-spinner fa-spin fa-lg" *ngIf="isLoaded"></i>
+                        </button>
                         <a *ngIf="success" [routerLink]="['/home']" class="btn btn-primary btn-block btn-round">Về trang chủ</a>
                     </div>
                 </div>

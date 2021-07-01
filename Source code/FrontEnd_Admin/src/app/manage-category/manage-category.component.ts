@@ -200,6 +200,7 @@ export class ManageCategoryComponent implements OnInit, OnDestroy {
         this.category[this.category.findIndex(c => c.id == this.categoryId)] = result
         this.themes = this.category
       }
+      this.rerender()
       this.toast.toastSuccess(`Cập nhật '${this.modeText}' thành công!`)
       this.cancel()
     }

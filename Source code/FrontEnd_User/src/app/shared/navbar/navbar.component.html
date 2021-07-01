@@ -51,7 +51,7 @@
     
                 <!-- Login -->
                 <div class="nav-item d-lg-none" *ngIf="auth.currentAccountValue == null">
-                    <button (click)="openLoginModal()" type="button" class="btn btn-danger btn-round">Đăng nhập</button>
+                    <button (click)="sidebarClose(); openLoginModal()" type="button" class="btn btn-danger btn-round">Đăng nhập</button>
                 </div>    
             </ul>
         </div>
@@ -96,45 +96,6 @@
             </div>
 
         </div>
-
-        <!-- <div class="row align-items-center ml-auto d-flex">
-            <div class="input-group col align-items-center d-none d-lg-flex" id="searchbox" style="background: transparent !important;">
-                <input (keyup.enter)="search()" class="form-control py-2 rounded-pill mr-1 pr-5 bg-transparent border text-light" placeholder="Tìm kiếm phim ..." type="search" [(ngModel)]="query">
-                <span class="input-group-append">
-                    <button (click)="search()" class="btn btn-link rounded-pill border-0 ml-n5 text-light" type="button"><i style="vertical-align: middle !important;" class="fa fa-search"></i></button>
-                </span>
-            </div>
-            
-            <div class="col-auto ">
-                <ul class="navbar-nav" style="align-items: center !important;">   
-                    <li class="nav-item">
-                        <a class="nav-link" rel="tooltip" title="Star on GitHub" data-placement="bottom" (click)="openLocationModal()" target="_blank">
-                            <i class="fa fa-map-marker-alt"></i>
-                        </a>
-                    </li>
-                    
-                    <li class="nav-item d-none d-lg-flex" *ngIf="auth.currentAccountValue == null">
-                        <button (click)="openLoginModal()" type="button"target="_blank" class="btn btn-danger btn-round">Đăng nhập</button>
-                    </li>
-
-                    <li class="nav-item" *ngIf="auth.currentAccountValue != null">
-                        <div ngbDropdown class="d-inline-block dropdown">
-                            <a class="avatar avatar-sm" id="dropdownBasic1" ngbDropdownToggle style="vertical-align: middle !important;">
-                                <img [src]="auth.currentAccountValue.user.image == null? './assets/img/user-default.png': auth.currentAccountValue.user.image" class="avatar-img img-circle img-no-padding">
-                            </a>
-                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="dropdown-danger dropdown-menu-right">
-                                <a [routerLink]="['/profile']" class="dropdown-item">Quản lý Tài khoản</a>
-                                <a [routerLink]="['/watchlist']" class="dropdown-item">Tủ phim</a>
-                                <hr class="dropdown-divider">
-                                <a href="javascript:void(0)" (click)="logout()" class="dropdown-item">Đăng xuất</a>
-                            </div>
-                        </div>
-                    </li>
-
-                </ul>
-            </div> 
-        </div> -->
-
     </div>
 </nav>
 

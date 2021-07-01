@@ -35,11 +35,14 @@
 
                 <div class="row">
                     <div class="col">
-                        <button (click)="saveReview()" [disabled]="isLoaded" id="movie_rating_save" class="btn btn-dark btn-block pull-left">Đăng</button>
+                        <button (click)="saveReview()" [disabled]="isLoaded" id="movie_rating_save" class="btn btn-dark btn-block pull-left">
+                            <ng-container *ngIf="!isLoaded">Đăng</ng-container>   
+                            <i class="fa fa-spinner fa-spin fa-lg" *ngIf="isLoaded"></i>
+                        </button>
                     </div>
                     <div class="col-auto">
                         <button *ngIf="!rated" [disabled]="isLoaded" (click)="closeModal('Close')" class="btn btn-danger float-right">Hủy</button>
-                        <button *ngIf="rated" [disabled]="isLoaded" (click)="deleteReview('Close')" class="btn btn-danger float-right">Xóa review</button>
+                        <button *ngIf="rated" [disabled]="isLoaded" (click)="deleteReview()" class="btn btn-danger float-right">Xóa review</button>
                     </div>
                 </div>
             </div>

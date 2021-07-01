@@ -5900,11 +5900,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\2020_2021\\KLTN\\Code\\Training\\MovieRecommender\\MovieRecommender.csproj",
+      "projectUniqueName": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\Training\\MovieRecommender\\MovieRecommender.csproj",
       "projectName": "MovieRecommender",
-      "projectPath": "D:\\2020_2021\\KLTN\\Code\\Training\\MovieRecommender\\MovieRecommender.csproj",
+      "projectPath": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\Training\\MovieRecommender\\MovieRecommender.csproj",
       "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-      "outputPath": "D:\\2020_2021\\KLTN\\Code\\Training\\MovieRecommender\\obj\\",
+      "outputPath": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\Training\\MovieRecommender\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -5,13 +5,13 @@
         </div>
         
         <div class="collapse navbar-collapse justify-content-start" id="navigation">
-            <ul class="navbar-nav" *ngIf="!isAdmin">
+            <ul class="navbar-nav" *ngIf="auth.currentAccountValue == null">
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link">Trang quản lý của Admin</a> 
                 </li>
             </ul>
 
-            <ul *ngIf="isAdmin" class="navbar-nav" >
+            <ul *ngIf="auth.currentAccountValue != null" class="navbar-nav" >
                 <!-- Trang chủ -->
                 <li class="nav-item" routerLinkActive="active">
                     <a class="nav-link" [routerLink]="['/admin/home']">Trang chủ</a>
@@ -63,35 +63,37 @@
         
         <div class="navbar-user" *ngIf="auth.currentAccountValue != null">
             <!-- Notification -->
-            <div *ngIf="notifications != null" class="d-flex mr-2 dropdown" ngbDropdown placement="bottom-left" #notiDropdown="ngbDropdown">
-                <a class="nav-link notification text-light" ngbDropdownToggle id="navbarDropdownMenuLink" >
-                    <i class="fas fa-bell"></i>
-                    <span *ngIf="notifications.length > 0" class="badge badge-danger">{{notifications.length}}</span>
-                </a>
-                <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-xl py-0 dropdown-menu-right" style="overflow-y: auto; max-height: 500px;">
-                    <!-- Header -->
-                    <div class="px-3 py-3">
-                        <p class="text-sm text-muted font-weight-bold m-0">Bạn có <strong class="text-danger">{{notifications.length}}</strong> thông báo chưa đọc</p>
-                    </div>
-                    <!-- List notification -->
-                    <div class="list-group list-group-flush">
-                        <a *ngFor="let notification of notifications" href="{{notification.url}}&view={{notification.id}}" class="list-group-item list-group-item-action">
-                        <div class="row align-items-center">
-                            <!-- Sender avatar -->
-                            <div class="col-auto"><img alt="Image placeholder" class="avatar rounded-circle" [src]="notification.senderImage == null? './assets/img/user-default.png': notification.senderImage"></div>
-                            <!-- Content -->
-                            <div class="col ml-2">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div><p class="mb-0 text-sm font-weight-bold">{{notification.senderName}}</p></div>
-                                <div class="text-right text-muted"><small>{{calculateDiff(notification.createdDate)}}</small></div>
-                            </div>
-                            <p class="text-sm mb-0 small">{{notification.message}}</p>
-                            </div>
+            <div *ngIf="notifications != null" class="d-flex mr-2">
+                <div class="d-inline-block dropdown" ngbDropdown placement="bottom-left" #notiDropdown="ngbDropdown" id="noti">
+                    <a class="nav-link notification text-light" ngbDropdownToggle id="navbarDropdownMenuLink" >
+                        <i class="fas fa-bell"></i>
+                        <span *ngIf="notifications.length > 0" class="badge badge-danger">{{notifications.length}}</span>
+                    </a>
+                    <div ngbDropdownMenu aria-labelledby="navbarDropdownMenuLink" class="dropdown-menu dropdown-menu-xl py-0 dropdown-menu-right" style="overflow-y: auto; max-height: 500px;">
+                        <!-- Header -->
+                        <div class="px-3 py-3">
+                            <p class="text-sm text-muted font-weight-bold m-0">Bạn có <strong class="text-danger">{{notifications.length}}</strong> thông báo chưa đọc</p>
                         </div>
-                        </a>
+                        <!-- List notification -->
+                        <div class="list-group list-group-flush">
+                            <a *ngFor="let notification of notifications" href="{{notification.url}}&view={{notification.id}}" class="list-group-item list-group-item-action">
+                            <div class="row align-items-center">
+                                <!-- Sender avatar -->
+                                <div class="d-none d-sm-block col-auto"><img alt="Image placeholder" class="avatar rounded-circle" [src]="notification.senderImage == null? './assets/img/user-default.png': notification.senderImage"></div>
+                                <!-- Content -->
+                                <div class="col ml-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div><p class="mb-0 text-sm font-weight-bold">{{notification.senderName}}</p></div>
+                                    <div class="text-right text-muted"><small>{{calculateDiff(notification.createdDate)}}</small></div>
+                                </div>
+                                <p class="text-sm mb-0 small">{{notification.message}}</p>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                        <!-- Mark as read -->
+                        <a *ngIf="notifications.length > 0" class="dropdown-item view-all text-danger text-center font-weight-bold py-3" (click)="viewAll()" href="javascript:void(0)">Đánh dấu đã đọc</a>
                     </div>
-                    <!-- Mark as read -->
-                    <a *ngIf="notifications.length > 0" class="dropdown-item view-all text-danger text-center font-weight-bold py-3" (click)="viewAll()" href="javascript:void(0)">Đánh dấu đã đọc</a>
                 </div>
             </div>
 
@@ -110,7 +112,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </nav>
 

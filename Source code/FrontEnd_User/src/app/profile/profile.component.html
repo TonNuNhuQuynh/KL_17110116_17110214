@@ -90,7 +90,10 @@
                                         <!-- Save button -->
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-sm-12 col-12 ml-auto mr-auto mb-4">
-                                                <button [disabled]="formatError || phone.errors?.pattern || !isLoaded" (click)="putUser()" class="btn btn-info btn-round"><i class="fa fa-save"></i> Cập nhật</button>
+                                                <button [disabled]="formatError || phone.errors?.pattern || !isLoaded" (click)="putUser()" class="btn btn-info btn-round">
+                                                    <ng-container *ngIf="isLoaded"><i class="fa fa-save"></i> Cập nhật</ng-container>   
+                                                    <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!isLoaded"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -150,7 +153,10 @@
                                             <!-- Save button -->
                                             <div class="row">
                                                 <div class="col-lg-6 col-md-6 col-sm-12 col-12 ml-auto mr-auto mb-4">
-                                                    <button [disabled]="password.invalid || new.invalid || confirm.invalid || newPass != confirmPass || !isLoaded2" (click)="changePassword()" class="btn btn-info btn-round"><i class="fa fa-edit"></i> Đổi mật khẩu</button>
+                                                    <button [disabled]="password.invalid || new.invalid || confirm.invalid || newPass != confirmPass || !isLoaded2" (click)="changePassword()" class="btn btn-info btn-round">
+                                                        <ng-container *ngIf="isLoaded2"><i class="fa fa-edit"></i> Đổi mật khẩu</ng-container>   
+                                                        <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!isLoaded2"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </form>

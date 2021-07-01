@@ -68,6 +68,7 @@
 	width: 3rem;
 	height: 3rem;
 	font-size: 1rem;
+	margin: 15px 0px;
 }
 .avatar-img {
 	width: 100%;
@@ -78,7 +79,7 @@
 
 .navbar-user {
     display: flex;
-    flex-direction: row;
+    flex-direction: row !important;
     align-items: center;
     justify-content: space-around;
 }
@@ -120,8 +121,7 @@
 .notification .badge{
     padding: 3px 5px 2px;
     position: absolute;
-    //top: 8px;
-    right: 5px;
+    margin-left: -3px;
     display: inline-block;
     min-width: 10px;
     font-size: 12px;
@@ -142,4 +142,25 @@
 }
 .dropdown .dropdown-menu .dropdown-item.view-all:hover{
     background-color: white !important; 
+}
+
+@media screen and (max-width: 991px)
+{
+    #noti {
+        position: static;
+    }
+}
+@media screen and (max-width: 575.98px)
+{
+    .dropdown-menu-xl {
+        position: absolute;
+        width: 90% !important;
+        min-width: auto !important;
+        left: 3% !important;
+        right: auto;
+    }
+}
+
+.list-group-item {
+	padding: .5rem 1rem !important;
 }

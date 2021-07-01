@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "N6i+EIxGDpNaPSVsKt4jHJ6XUUqrm7sYLyiO0zvUvBw9c82XpRhH9DXLhXGMBO4UERKyRwuQ82gzJa4s95zj7A==",
+  "dgSpecHash": "cIg2onZ4SBZRUM7dujIhxDB24/yoC9QuJIuKC4d0Z9vsdoRnWaLsOBfde65hW0xCH++5qJI8Kr1vEHw6KFxz6Q==",
   "success": true,
-  "projectFilePath": "D:\\2020_2021\\KLTN\\Code\\Training\\MovieRecommender\\MovieRecommender.csproj",
+  "projectFilePath": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\Training\\MovieRecommender\\MovieRecommender.csproj",
   "expectedPackageFiles": [
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.csharp\\4.3.0\\microsoft.csharp.4.3.0.nupkg.sha512",
     "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.ml\\1.5.5\\microsoft.ml.1.5.5.nupkg.sha512",

@@ -49,8 +49,14 @@
                     <!-- Accept or Deny task -->
                     <div *ngIf="!notAllowedToResponse" class="row">
                         <div class="update ml-auto mr-auto">
-                            <button [disabled]="!loaded" class="btn btn-primary" (click)="accept()">Chấp nhận</button>
-                            <button [disabled]="!loaded" class="btn btn-danger" (click)="deny()">Từ chối task</button>
+                            <button [disabled]="!loaded || !loaded2" class="btn btn-primary" (click)="accept()">
+                                <ng-container *ngIf="loaded">Chấp nhận</ng-container>   
+                                <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!loaded"></i>
+                            </button>
+                            <button [disabled]="!loaded || !loaded2" class="btn btn-danger" (click)="deny()">
+                                <ng-container *ngIf="loaded2">Từ chối</ng-container>   
+                                <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!loaded2"></i>
+                            </button>
                         </div>
                     </div>
                     <!-- View post when post is sent for the task -->

@@ -165,6 +165,9 @@
   </div>
   <div class="divider"></div>
   <div class="right-side">
-      <button [disabled]="original.invalid || title.invalid || plot.invalid || date.invalid || time.invalid || movieInDB.languageId == 0 || movieInDB.movieStatusId == 0 || movieInDB.genres.length == 0 || trailer.invalid || !loaded" type="button" class="btn btn-danger btn-link" (click)="saveMovie()">Lưu</button>
+      <button [disabled]="original.invalid || title.invalid || plot.invalid || date.invalid || time.invalid || movieInDB.languageId == 0 || movieInDB.movieStatusId == 0 || movieInDB.genres.length == 0 || trailer.invalid || !loaded" type="button" class="btn btn-danger btn-link" (click)="saveMovie()">
+        <ng-container *ngIf="loaded">Lưu</ng-container>   
+        <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!loaded"></i>
+      </button>
   </div>
 </div>

@@ -44,7 +44,8 @@ export class ManageAccountsComponent implements OnInit, OnDestroy {
     this.dtOptions = {
       pagingType: 'full_numbers',
       lengthMenu: [10, 15, 20],
-      autoWidth: true
+      autoWidth: true,
+      columnDefs: [ { "orderable": false, "targets": 0 } ],
     };
     
     if (this.auth.currentAccountValue.roleName == RolesService.superAdmin) this.isSuperAdmin = true;

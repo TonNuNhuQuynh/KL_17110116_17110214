@@ -22,7 +22,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     notifySubscription: Subscription
     authSubscription: Subscription
 
-    isAdmin: boolean = false;
+    // isAdmin: boolean = false;
     isSupAdmin: boolean = false;
     query: string = '';
     @ViewChild('notiDropdown') notiDropdown: NgbDropdown;
@@ -40,22 +40,26 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
         this.router.events.filter(event => event instanceof NavigationEnd).subscribe((val: any) => 
         {
-            if (val.url.includes('admin') ) 
-            {
-                this.isAdmin = true
-                this.isSupAdmin = this.auth.currentAccountValue == null ? false: this.auth.currentAccountValue.roleName == RolesService.superAdmin
-            }
-            else this.isAdmin = false
+            // if (val.url.includes('admin') ) 
+            // {
+            //     this.isAdmin = true
+            //     this.isSupAdmin = this.auth.currentAccountValue == null ? false: this.auth.currentAccountValue.roleName == RolesService.superAdmin
+            // }
+            // else this.isAdmin = false
             if (this.notiDropdown?.isOpen()) this.notiDropdown.close()
         })
         this.authSubscription = this.auth.currentAccountSubject.subscribe(async account => {
-            if (account != null && this.notifications == null) await this.getNotifications();
+            if (account != null) 
+            {
+                this.isSupAdmin = this.auth.currentAccountValue == null ? false: this.auth.currentAccountValue.roleName == RolesService.superAdmin
+                if (this.notifications == null) await this.getNotifications()
+            }
         })
 
         this.notifySubscription = this.notify.notifySubject.subscribe(action => {
             if (action.isViewed) this.notifications = this.notifications.filter(n => n.id != action.id)
             else this.notifications.push(action.notification)
-        });
+        })
     }
     sidebarOpen() {
         const toggleButton = this.toggleButton;

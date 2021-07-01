@@ -17,7 +17,10 @@
                                 <div class="text-light" *ngIf="e.errors?.required"><i class="fa fa-exclamation-circle"></i> Không được bỏ trống trường này</div>
                                 <div class="text-light" *ngIf="e.errors?.pattern"><i class="fa fa-exclamation-circle"></i> Email không hợp lệ!</div>
                             </ng-container>
-                            <button (click)="send()" [disabled]="e.invalid || isLoaded" class="btn btn-success btn-block btn-round">Gửi email</button>
+                            <button (click)="send()" [disabled]="e.invalid || isLoaded" class="btn btn-success btn-block btn-round">
+                                <ng-container *ngIf="!isLoaded">Gửi email</ng-container>   
+                                <i class="fa fa-spinner fa-spin fa-lg" *ngIf="isLoaded"></i>
+                            </button>
                         </form>
                     </div>
 

@@ -80,6 +80,9 @@
   </div>
   <div class="divider"></div>
   <div class="right-side">
-      <button [disabled]="name.invalid || addr.invalid || des.invalid || latitude.invalid || longitude.invalid || !loaded" type="button" class="btn btn-danger btn-link" (click)="editCinema()">Cập nhật</button>
+      <button [disabled]="name.invalid || addr.invalid || des.invalid || latitude.invalid || longitude.invalid || !loaded" type="button" class="btn btn-danger btn-link" (click)="editCinema()">
+        <ng-container *ngIf="loaded">Cập nhật</ng-container>   
+        <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!loaded"></i>
+      </button>
   </div>
 </div>

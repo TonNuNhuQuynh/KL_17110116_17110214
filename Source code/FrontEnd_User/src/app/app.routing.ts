@@ -106,18 +106,16 @@ const routes: Routes = [
     { path: 'news/type/:type', component: NewsListComponent },
     { path: 'news/theme/:theme', component: NewsListComponent },
     { path: 'news/tag/:tag', component: NewsListComponent },
-    { path: 'post/:id', component: ViewPostComponent } 
+    { path: 'post/:id', component: ViewPostComponent },
+    { path: '**', redirectTo: 'not-found' }
 ];
 
 @NgModule({
   imports: [
     CommonModule,
     BrowserModule,
-    RouterModule.forRoot(routes,{
-      useHash: true
-    })
+    RouterModule.forRoot(routes, { useHash: false })
   ],
-  exports: [
-  ],
+  exports: [],
 })
 export class AppRoutingModule { }

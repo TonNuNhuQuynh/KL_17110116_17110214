@@ -59,10 +59,10 @@ export class ViewPostComponent implements OnInit, AfterViewChecked{
     else this.router.navigate(['/not-found'])
 
     this.titleService.setTitle(this.post.title)
-    this.metaService.addTags([
-      {name: 'description', content: this.post.summary},
-      {name: 'image', content: this.post.cover}
-    ]);
+    this.metaService.updateTag({property: 'og:image', content: this.post.cover})
+    this.metaService.updateTag({property: 'og:title', content: this.post.title})
+    this.metaService.updateTag({property: 'og:description', content: this.post.summary})
+    this.metaService.updateTag({property: 'og:url', content: this.shareUrl})
 
     this.safeContent = this.sanitizer.bypassSecurityTrustHtml(this.post.content);
 
@@ -111,7 +111,8 @@ export class ViewPostComponent implements OnInit, AfterViewChecked{
   {
     try
     {
-      let url = this.apiService.backendHost + `/api/Posts/UpdateViews?type=${this.post.postTypeId}&theme=${this.post.postThemeId}`
+      let url = this.apiService.backendHost + `/api/Posts/UpdateViews?type=${this.post.postTypeId}`
+      if (this.post.postThemeId) url += `&theme=${this.post.postThemeId}`
       this.http.get(url).toPromise()
     }
     catch(e) {console.log(e)}

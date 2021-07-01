@@ -47,8 +47,14 @@
                                     </div>
                                     <div class="row">
                                         <div class="ml-auto mr-auto">
-                                            <button style="text-transform: none; font-weight: normal" class="btn btn-success" *ngIf="isAdded" [disabled]="title.invalid || ( description == '' && (modeId == 3 || modeId == 4) ) || loading" (click)="add()"><span class="fa fa-plus-circle"></span> Thêm</button>
-                                            <button style="text-transform: none; font-weight: normal" class="btn btn-info" *ngIf="!isAdded" [disabled]="title.invalid || ( description == '' && (modeId == 3 || modeId == 4) ) || loading" (click)="save()">Lưu</button>
+                                            <button style="text-transform: none; font-weight: normal" class="btn btn-success" *ngIf="isAdded" [disabled]="title.invalid || ( description == '' && (modeId == 3 || modeId == 4) ) || loading" (click)="add()">
+                                                <ng-container *ngIf="!loading"><span class="fa fa-plus-circle"></span> Thêm</ng-container>   
+                                                <i class="fa fa-spinner fa-spin fa-lg" *ngIf="loading"></i>
+                                            </button>
+                                            <button style="text-transform: none; font-weight: normal" class="btn btn-info" *ngIf="!isAdded" [disabled]="title.invalid || ( description == '' && (modeId == 3 || modeId == 4) ) || loading" (click)="save()">
+                                                <ng-container *ngIf="!loading">Lưu</ng-container>   
+                                                <i class="fa fa-spinner fa-spin fa-lg" *ngIf="loading"></i>
+                                            </button>
                                             <button style="text-transform: none; font-weight: normal" class="btn btn-link" *ngIf="!isAdded" [disabled]="loading" (click)="cancel()"><i class="fa fa-remove"></i> Hủy</button>
                                         </div>
                                     </div>

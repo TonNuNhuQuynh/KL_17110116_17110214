@@ -8,12 +8,12 @@ export class ApiService {
     public backendHost: string = "https://localhost:44320"
     public cinemaChainHost: string = "https://localhost:44302"
     public frontEndHost_Admin: string = "http://localhost:4200/#"
-    public frontEndHost_User: string = "http://localhost:5000/#"
+    public frontEndHost_User: string = "http://localhost:5000"
 
     // public backendHost: string = "https://tlcn-moviereviews.somee.com"
     // public cinemaChainHost: string = "https://tlcn-cinemachain.somee.com"
     // public frontEndHost_Admin: string = "https://admin-moviefy.web.app/#"
-    // public frontEndHost_User: string = "https://movie-reviews-and-tickets.web.app/#"
+    // public frontEndHost_User: string = "https://movie-reviews-and-tickets.herokuapp.com"
     constructor() {}
 
 }

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "sVgLjOXkTR7j0++71vg5EWPTmcPET0BstBCUemI4gkoh0DPFwz5KiBTEAGyKohFeZnl1M29Lh8CrRTZCq48UDA==",
+  "dgSpecHash": "09U30K0ReuE2Y5/ceZGg05iUdk4CpP0Rh34g9Q9g/TzRKBhZ2KWgu9GnmHujNrP57Pn5e9TEtOvaX4V6v2e/4A==",
   "success": true,
   "projectFilePath": "D:\\2020_2021\\KLTN\\Code\\MainBackEnd\\MovieReviewsAndTickets_API\\MovieReviewsAndTickets_API.csproj",
   "expectedPackageFiles": [
@@ -230,11 +230,8 @@
     "C:\\Users\\LENOVO\\.nuget\\packages\\twilio\\5.52.1\\twilio.5.52.1.nupkg.sha512",
     "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512",
     "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
-    "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\3.0.3\\microsoft.netcore.app.runtime.win-x64.3.0.3.nupkg.sha512",
-    "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\3.0.3\\microsoft.windowsdesktop.app.runtime.win-x64.3.0.3.nupkg.sha512",
-    "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\3.0.3\\microsoft.aspnetcore.app.runtime.win-x64.3.0.3.nupkg.sha512",
-    "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.0.3\\microsoft.netcore.app.host.win-x64.3.0.3.nupkg.sha512",
-    "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512"
+    "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
+    "C:\\Users\\LENOVO\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.0.3\\microsoft.netcore.app.host.win-x64.3.0.3.nupkg.sha512"
   ],
   "logs": []
 }

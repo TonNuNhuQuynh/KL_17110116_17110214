@@ -29,9 +29,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (val.url.includes('post') == false) 
             {
                 this.titleService.setTitle('Moviefy')
-                this.metaService.addTags([
-                    { name: 'description', content: 'Trang tin tức điện ảnh, đánh giá phim và mua vé xem phim' },
-                ])
+                this.metaService.updateTag({ property: 'og:img', content: 'https://movie-reviews-and-tickets.web.app/assets/img/banners/home-banner.png' })
+                this.metaService.updateTag({ property: 'og:description', content: 'Trang tin tức điện ảnh, đánh giá phim và mua vé xem phim' })
             }
         })
     }

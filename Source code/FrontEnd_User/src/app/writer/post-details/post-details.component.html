@@ -128,7 +128,10 @@
                     <div class="row">
                         <div class="update ml-auto mr-auto">
                             <button class="btn btn-success" *ngIf="post.id != 0 && post.status < 1" [disabled]="!isLoaded" (click)="sendPost()">Gửi bài</button>
-                            <button class="btn btn-info"  *ngIf="post.status != 2" [disabled]="title.invalid || invalidTitle || summary.invalid || invalidSummary || invalidContent || post.postTypeId == 0 || (cover.invalid && post.id == 0) || invalidFile || !isLoaded" (click)="savePost()">Lưu</button>
+                            <button class="btn btn-info"  *ngIf="post.status != 2" [disabled]="title.invalid || invalidTitle || summary.invalid || invalidSummary || invalidContent || post.postTypeId == 0 || (cover.invalid && post.id == 0) || invalidFile || !isLoaded" (click)="savePost()">
+                                <ng-container *ngIf="isLoaded">Lưu</ng-container>   
+                                <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!isLoaded"></i>
+                            </button>
                             <button class="btn btn-light" *ngIf="post.id != 0" [disabled]="!isLoaded" (click)="reviewPost()">Xem trước</button>
                         </div>
                     </div>

@@ -9947,11 +9947,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\2020_2021\\KLTN\\Code\\MainBackEnd\\MovieReviewsAndTickets_API\\MovieReviewsAndTickets_API.csproj",
+      "projectUniqueName": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\MainBackEnd\\MovieReviewsAndTickets_API\\MovieReviewsAndTickets_API.csproj",
       "projectName": "MovieReviewsAndTickets_API",
-      "projectPath": "D:\\2020_2021\\KLTN\\Code\\MainBackEnd\\MovieReviewsAndTickets_API\\MovieReviewsAndTickets_API.csproj",
+      "projectPath": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\MainBackEnd\\MovieReviewsAndTickets_API\\MovieReviewsAndTickets_API.csproj",
       "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-      "outputPath": "D:\\2020_2021\\KLTN\\Code\\MainBackEnd\\MovieReviewsAndTickets_API\\obj\\",
+      "outputPath": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\MainBackEnd\\MovieReviewsAndTickets_API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

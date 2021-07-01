@@ -44,8 +44,7 @@
 .notification .badge{
     padding: 3px 5px 2px;
     position: absolute;
-    //top: 8px;
-    right: 5px;
+    margin-left: -3px;
     display: inline-block;
     min-width: 10px;
     font-size: 12px;
@@ -111,13 +110,6 @@
 
 @media screen and (max-width: 575.98px)
 {
-    @media screen and (max-width: 991px)
-    {
-        .navbar .navbar-nav .nav-item:not(:last-child) {
-            position: static;
-        }
-    }
-
     .dropdown-menu-xl {
         position: absolute;
         width: 90% !important;
@@ -126,7 +118,12 @@
         right: auto;
     }
 }
-
+@media screen and (max-width: 991px)
+{
+    .navbar .navbar-nav .nav-item:not(:last-child) {
+        position: static;
+    }
+}
 .dropdown-menu-xl p 
 {
     font-size: 15px;

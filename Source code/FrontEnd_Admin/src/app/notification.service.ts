@@ -33,8 +33,7 @@ export class NotificationService {
             this.notifySubject.next({isViewed: false, notification: noti, id: 0})
         });
 
-        this.connection.on('ReadMessage', (id: number) => {
-            console.log(id);  
+        this.connection.on('ReadMessage', (id: number) => {  
             this.notifySubject.next({isViewed: true, notification: null, id: id})
         });
 

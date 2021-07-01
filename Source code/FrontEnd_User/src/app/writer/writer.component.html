@@ -59,7 +59,7 @@
                     <img [src]="auth.currentAccountValue.user.image == null? './assets/img/user-default.png': auth.currentAccountValue.user.image" class="avatar-img img-circle img-no-padding">
                   </div>
                 </a>
-                <a href="https://www.creative-tim.com" class="simple-text logo-normal">{{auth.currentAccountValue.username}}</a>
+                <a [routerLink]="['/writer/home']" class="simple-text logo-normal">{{auth.currentAccountValue.username}}</a>
             </div>
             <ul class="nav">
                 <li routerLinkActive="active">

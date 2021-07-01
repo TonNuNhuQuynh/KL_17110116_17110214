@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\2020_2021\\KLTN\\Code\\CinemaChains_API\\WebAPI\\WebAPI.csproj": {}
+    "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\CinemaChains_API\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
-    "D:\\2020_2021\\KLTN\\Code\\CinemaChains_API\\WebAPI\\WebAPI.csproj": {
+    "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\CinemaChains_API\\WebAPI\\WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\2020_2021\\KLTN\\Code\\CinemaChains_API\\WebAPI\\WebAPI.csproj",
+        "projectUniqueName": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\CinemaChains_API\\WebAPI\\WebAPI.csproj",
         "projectName": "WebAPI",
-        "projectPath": "D:\\2020_2021\\KLTN\\Code\\CinemaChains_API\\WebAPI\\WebAPI.csproj",
+        "projectPath": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\CinemaChains_API\\WebAPI\\WebAPI.csproj",
         "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-        "outputPath": "D:\\2020_2021\\KLTN\\Code\\CinemaChains_API\\WebAPI\\obj\\",
+        "outputPath": "D:\\2020_2021\\KLTN\\Repo\\KL_17110116_17110214\\Source code\\CinemaChains_API\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

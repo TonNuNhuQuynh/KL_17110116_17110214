@@ -59,25 +59,27 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
       order: [[5, 'desc']]
     };
 
-    this.movies = [];
-    this.filterMovies = [];
-    this.genres = [];
-    this.languages = [];
-    this.statuses = [];
+    this.movies = []
+    this.filterMovies = []
+    this.genres = []
+    this.languages = []
+    this.statuses = []
 
-    this.url = this.apiService.backendHost + "/api/Movies";
-    await this.getMovies();
-    this.filterMovies = this.movies;
-    this.chRef.detectChanges();
-    this.dtTrigger.next();
+    this.url = this.apiService.backendHost + "/api/Movies"
+    await this.getMovies()
+    this.filterMovies = this.movies
+    this.chRef.detectChanges()
+    this.dtTrigger.next()
 
-    await this.getGenres();
-    await this.getLanguages();
-    await this.getStatuses();
+    await this.getGenres()
+    await this.getLanguages()
+    await this.getStatuses()
 
-    this.genreId = this.lastGId + 1;
-    this.languageId = this.lastLId + 1;
-    this.statusId = this.lastSId + 1;
+    this.genreId = this.lastGId + 1
+    this.languageId = this.lastLId + 1
+    this.statusId = this.lastSId + 1
+
+    this.getRatings()
   }
 
   async getMovies()
@@ -176,7 +178,7 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
       if (typeof(result) == 'object') 
       {
         movie.movie = result
-        this.filter();
+        this.filter()
         this.toast.toastSuccess('Cập nhật phim thành công!')
       }
     }, (reason: any) => {})
@@ -188,8 +190,8 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.movieId = id;
 
     modalRef.result.then(async (result: any) => {
-      if (result == 'Success') this.toast.toastSuccess('Cập nhật phim thành công!');
-      else if (result == 'Error') this.toast.toastError('Cập nhật không thành công!');
+      if (result == 'Success') this.toast.toastSuccess('Cập nhật phim thành công!')
+      else if (result == 'Error') this.toast.toastError('Cập nhật không thành công!')
     }, (reason: any) => {});
 
   }
@@ -202,19 +204,33 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
     {
       try
       {
-        let result = await this.http.delete(this.url + `/${id}`).toPromise();
+        let result = await this.http.delete(this.url + `/${id}`).toPromise()
         if (result) 
         {
-          this.movies = this.movies.filter(m => m.movie.id != id);
-          this.filter();
-          this.toast.toastSuccess('Xóa phim thành công!');
+          this.movies = this.movies.filter(m => m.movie.id != id)
+          this.filter()
+          this.toast.toastSuccess('Xóa phim thành công!')
         }
-      } catch(e) 
+      } 
+      catch(e) 
       {
-        console.log(e);
-        this.toast.toastError('Xóa phim không thành công');
+        console.log(e)
+        this.toast.toastError('Xóa phim không thành công')
       }
     }
   }
 
+  async getRatings()
+  {
+    try
+    {
+      let lstRatings = await this.http.get<any[]>(this.url + "/AvgRatings").toPromise()
+      this.movies.forEach(movie => {
+        let rating = lstRatings.find(r => r.id == movie.movie.id)
+        if (rating) movie.ratings = rating.ratings
+      })
+      this.filter()
+    }
+    catch(e) { console.log(e) }
+  }
 }

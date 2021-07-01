@@ -89,7 +89,7 @@ export class HomeComponent implements OnInit {
     var diffDays = Math.floor(diffMs / 86400000); // days
     var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-    if (diffDays > 30) return this.datePipe.transform(d1, 'dd/MM/yyyy')
+    if (diffDays > 30) return this.datePipe.transform(d1, 'dd/MM/yy')
     if (diffDays >= 1 && diffDays <= 30) return diffDays + (diffDays > 1? " days": " day")
     if (diffHrs >= 1) return diffHrs + (diffHrs > 1? " hrs": " hr")
     if (diffMins >= 1) return diffMins + (diffMins > 1? " mins": " min")

@@ -33,13 +33,30 @@ namespace MovieReviewsAndTickets_API.Controllers
         public async Task<ActionResult<IEnumerable<MovieVM>>> GetMovies()
         {
             var movies = await _context.Movies.Where(m => m.IsDeleted == false).Include(m => m.Language).ToListAsync();
-            var reviews = await _context.Reviews.ToListAsync();
+            //var reviews = await _context.Reviews.ToListAsync();
             List<MovieVM> lstMovies = new List<MovieVM>();
             foreach (var m in movies)
             {
-                float avgRatings = AvgRatingsAsync(reviews.Where(r => r.MovieId == m.Id && r.IsDeleted == false).ToList());
+                //float avgRatings = AvgRatingsAsync(reviews.Where(r => r.MovieId == m.Id && r.IsDeleted == false).ToList());
                 m.Reviews = null;
-                lstMovies.Add(new MovieVM() { Movie = m, Ratings = avgRatings });
+                lstMovies.Add(new MovieVM() { Movie = m, Ratings = 0 });
+            }
+            return lstMovies;
+        }
+
+        // GET: api/Movies/AvgRatings - Lấy avg ratings của từng phim -> manage-movies
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = RolesHelper.SuperAdmin + "," + RolesHelper.Admin)]
+        [HttpGet("AvgRatings")]
+        public async Task<ActionResult<IEnumerable<object>>> GetAvgRatings()
+        {
+            var movies = await _context.Movies.Where(m => m.IsDeleted == false).ToListAsync();
+            var reviews = await _context.Reviews.Where(r => r.IsDeleted == false).ToListAsync();
+            List<object> lstMovies = new List<object>();
+            foreach (var m in movies)
+            {
+                float avgRatings = AvgRatingsAsync(reviews.Where(r => r.MovieId == m.Id).ToList());
+                lstMovies.Add(new { Id = m.Id, Ratings = avgRatings });
             }
             return lstMovies;
         }

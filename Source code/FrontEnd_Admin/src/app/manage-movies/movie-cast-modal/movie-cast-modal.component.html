@@ -90,5 +90,10 @@
 <div class="modal-footer">
   <div class="left-side"><button [disabled]="!loaded" type="button" class="btn btn-default btn-link" (click)="closeAlert()">Hủy</button></div>
   <div class="divider"></div>
-  <div class="right-side"><button [disabled]="!loaded" type="button" class="btn btn-danger btn-link" (click)="saveChanges()">Lưu</button></div>
+  <div class="right-side">
+    <button [disabled]="!loaded" type="button" class="btn btn-danger btn-link" (click)="saveChanges()">
+      <ng-container *ngIf="loaded">Lưu</ng-container>   
+      <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!loaded"></i>
+    </button>
+  </div>
 </div>

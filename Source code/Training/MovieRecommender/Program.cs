@@ -41,8 +41,8 @@ namespace MovieRecommender
             Console.WriteLine("\n-----------------------Evaluate Improved model-------------------");
             EvaluateModel(mlContext, testDataView, improvedModel);
             // 8: Save improved model & load model
-            //Console.WriteLine("\n------------------------Saving the model to a file --------------------------");
-            //SaveModel(mlContext, trainingDataView.Schema, improvedModel);
+            Console.WriteLine("\n------------------------Saving the model to a file --------------------------");
+            SaveModel(mlContext, trainingDataView.Schema, improvedModel);
             //DataViewSchema modelSchema;
             //ITransformer savedModel = mlContext.Model.Load(GetAbsolutePath(ModelRelativePath), out modelSchema);
             //UseModelForSinglePrediction(mlContext, savedModel);
@@ -50,7 +50,7 @@ namespace MovieRecommender
         public static IDataView LoadData(MLContext mlContext)
         {
             DatabaseLoader loader = mlContext.Data.CreateDatabaseLoader<MovieRating>();
-            string connectionString = @"Data Source=(Local);Database=MovieReviews;Integrated Security=True;Connect Timeout=30";
+            string connectionString = @"Data Source=(Local);Database=MovieReviews;Integrated Security=True;Connect Timeout=30";     //Data Source=(Local);Database=MovieReviews;Integrated Security=True;Connect Timeout=30
             string sqlCommand = "SELECT AccountId as userId, MovieId as movieId, CAST(Ratings as REAL) as Label FROM dbo.Reviews";
             DatabaseSource dbSource = new DatabaseSource(SqlClientFactory.Instance, connectionString, sqlCommand);
             return loader.Load(dbSource);

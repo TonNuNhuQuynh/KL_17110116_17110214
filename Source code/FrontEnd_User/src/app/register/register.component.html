@@ -52,7 +52,10 @@
                             <div class="text-light" *ngIf="confirmPass != '' && confirmPass != account.password"><i class="fa fa-exclamation-circle"></i> Mật khẩu không trùng khớp!</div>
                         </ng-container>
 
-                        <button (click)="register()" [disabled]="username.invalid || e.invalid || pass.invalid || confirm.invalid || account.password != confirmPass || !isLoaded" class="btn btn-danger btn-block btn-round">Đăng ký</button>
+                        <button (click)="register()" [disabled]="username.invalid || e.invalid || pass.invalid || confirm.invalid || account.password != confirmPass || !isLoaded" class="btn btn-danger btn-block btn-round">
+                            <ng-container *ngIf="isLoaded">Đăng ký</ng-container>   
+                            <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!isLoaded"></i>
+                        </button>
                         </form>
 
                         <div class="forgot">
