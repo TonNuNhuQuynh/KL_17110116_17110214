@@ -46,8 +46,8 @@ export class TaskModalComponent implements OnInit {
   localFields: Object = { text: 'userName', value: 'id' };
   writers: any[] = []
 
-  showAlert: boolean;
-  alertMessage: string;
+  showAlert: boolean = false
+  alertMessage: string
 
   constructor(private router: Router, public activeModal: NgbActiveModal, private http: HttpClient, private apiService: ApiService, public auth: AuthenticationService) { }
 

@@ -8,7 +8,7 @@
 <div class="modal-body" style="overflow-y: auto; max-height: 400px;"> 
 
   <div class="container mb-2" id="div">
-    <ngb-alert id="success" *ngIf="showAlert" type="danger" [dismissible]="true">
+    <ngb-alert id="success" *ngIf="showAlert" type="danger" [dismissible]="true" (close)="showAlert=false">
       <div class="container"><i class="nc-bell-55 nc-icon"></i>  {{ alertMessage }}</div>
     </ngb-alert>
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { DatePipe, Location} from '@angular/common';
 import { AuthenticationService } from 'app/authentication/authentication.service';
@@ -16,7 +16,7 @@ import { NgbDropdown } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['navbar-writer.component.scss'],
 })
 
-export class NavbarWriterComponent implements OnInit, AfterViewInit, OnDestroy{
+export class NavbarWriterComponent implements OnInit, OnDestroy{
   location: Location;
   private nativeElement: Node;
   private toggleButton;
@@ -41,20 +41,8 @@ export class NavbarWriterComponent implements OnInit, AfterViewInit, OnDestroy{
     if (this.notifySubscription) this.notifySubscription.unsubscribe();
   }
 
-  
-  async ngAfterViewInit(): Promise<void>
-  {
-    await this.getNotifications();
-    //this.notify.connect(this.apiService, this.auth.currentAccountValue.id);  
-    this.notifySubscription = this.notify.notifySubject.subscribe(action => {
-      // Nếu notification đc đọc rồi thì xóa đi
-      if (action.isViewed) this.notifications = this.notifications.filter(n => n.id != action.id)
-      // Nếu có notification mới thì thêm vào
-      else this.notifications.push(action.notification)
-    });
-  }
 
-  ngOnInit()
+  async ngOnInit()
   {      
     var navbar : HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0]
@@ -62,6 +50,13 @@ export class NavbarWriterComponent implements OnInit, AfterViewInit, OnDestroy{
       this.sidebarClose()
       if (this.notiDropdown?.isOpen()) this.notiDropdown.close()
     })
+    await this.getNotifications();
+    this.notifySubscription = this.notify.notifySubject.subscribe(action => {
+      // Nếu notification đc đọc rồi thì xóa đi
+      if (action.isViewed) this.notifications = this.notifications.filter(n => n.id != action.id)
+      // Nếu có notification mới thì thêm vào
+      else this.notifications.push(action.notification)
+    });
   }
 
   async getNotifications()

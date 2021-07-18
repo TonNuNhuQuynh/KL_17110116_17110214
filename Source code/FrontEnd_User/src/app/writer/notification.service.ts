@@ -9,9 +9,12 @@ type NotifyAction = {isViewed: boolean, notification: Notification, id: number};
 @Injectable({ providedIn: 'root'})
 export class NotificationService {
 
-    private connection: signalR.HubConnection;
-    public notiCount: number = 0;
-    public notifySubject = new Subject<NotifyAction>();
+    private connection: signalR.HubConnection
+    public notiCount: number = 0
+    public notifySubject = new Subject<NotifyAction>()
+    
+    public connected: boolean = false
+    public connectedSubject = new Subject<boolean>()
 
     constructor(private apiService: ApiService) {}
 
@@ -26,9 +29,12 @@ export class NotificationService {
                                 .configureLogging(signalR.LogLevel.Debug)
                                 .build();
         }
+        let _this = this
         this.connection.start().then(function () {  
+            _this.connected = true
+            _this.connectedSubject.next(true)
             console.log('SignalR Connected!');  
-        }).catch(function (err) {  return console.error(err.toString()); });  
+        }).catch(function (err) {  return console.error(err.toString()); })  
       
         this.connection.on('ReceiveMessage', (noti: Notification) => {
             this.notifySubject.next({isViewed: false, notification: noti, id: 0})

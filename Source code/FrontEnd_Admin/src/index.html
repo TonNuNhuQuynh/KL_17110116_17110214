@@ -55,9 +55,11 @@
         
             if (scroll >= 200) {
                 $(".navbar-user .notification").removeClass('text-light').css('color', '#66615B')
+                $(".navbar-user .avatar").removeClass('text-light').css('color', '#66615B')
 
             } else {
                 $(".navbar-user .notification").addClass('text-light')
+                $(".navbar-user .avatar").removeClass('text-danger').addClass('text-light')
             }
         });
     </script>

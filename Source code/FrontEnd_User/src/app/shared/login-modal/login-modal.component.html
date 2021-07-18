@@ -58,11 +58,11 @@
       </button>
       <!-- Quên pass -->
       <div class="text-center">
-        <small class="text-light"><a (click)="closeModal('Close')" href="#/forgot-password">Quên mật khẩu</a>?</small>
+        <small class="text-light"><a (click)="closeModal('Close')" [routerLink]="['/forgot-password']">Quên mật khẩu</a>?</small>
       </div>
       <!-- Register -->
       <div class="text-center">
-        <small class="text-light">Chưa có tài khoản? <a href="#/register" (click)="closeModal('Close')">Đăng ký ngay</a>!</small>
+        <small class="text-light">Chưa có tài khoản? <a [routerLink]="['/register']" (click)="closeModal('Close')">Đăng ký ngay</a>!</small>
       </div>
     </form>
 

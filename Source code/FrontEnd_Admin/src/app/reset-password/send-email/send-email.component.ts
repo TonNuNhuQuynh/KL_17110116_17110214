@@ -23,7 +23,7 @@ export class SendEmailComponent implements OnInit {
   async send()
   {
     this.isLoaded = true;
-    let url = this.apiService.backendHost + `/api/Accounts/SendEmailResetPassword?email=${this.email}`;
+    let url = this.apiService.backendHost + `/api/Accounts/AdminSendEmailResetPassword?email=${this.email}`;
     try 
     {
       let result = await this.http.get<any>(url).toPromise() as any;

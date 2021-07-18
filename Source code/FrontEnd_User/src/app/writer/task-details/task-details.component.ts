@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewChecked, AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'app/api.service';
 import { AuthenticationService } from 'app/authentication/authentication.service';
 import { ToastService } from 'app/toast/toast.service';
+import { Subscription } from 'rxjs';
+import { NotificationService } from '../notification.service';
 import { Task } from '../task-list/model';
 import { TaskService } from '../task-list/task.service';
 
@@ -14,7 +16,7 @@ import { TaskService } from '../task-list/task.service';
 })
 export class TaskDetailsComponent implements OnInit, AfterViewInit {
 
-  constructor(private toast: ToastService, private route: ActivatedRoute, private http: HttpClient, private apiService: ApiService, public auth: AuthenticationService) { }
+  constructor(private notify: NotificationService, private toast: ToastService, private route: ActivatedRoute, private http: HttpClient, private apiService: ApiService, public auth: AuthenticationService) { }
 
   
   task: Task = {
@@ -37,6 +39,8 @@ export class TaskDetailsComponent implements OnInit, AfterViewInit {
   loaded2: boolean = true
   notAllowedToResponse: boolean = false
   notificationId: number = 0
+
+  connectSubscription: Subscription
 
   async ngOnInit(): Promise<void> 
   {
@@ -96,7 +100,13 @@ export class TaskDetailsComponent implements OnInit, AfterViewInit {
   }
 
   async ngAfterViewInit(): Promise<void> {
-    if (this.notificationId != 0) await this.viewNotification();
+    if (this.notificationId != 0) 
+    {
+      if (this.notify.connected) await this.viewNotification();
+      else this.connectSubscription = this.notify.connectedSubject.subscribe(async connected => {
+        if (connected) await this.viewNotification()
+      })
+    }
   }
   reviewPost()
   {
