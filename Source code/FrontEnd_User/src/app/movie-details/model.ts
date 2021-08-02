@@ -18,6 +18,7 @@ export class Movie {
     poster: string;
     backdrop: string;
     trailer: string;
+    imdb: number;
     languageId: number;
     movieStatusId: number;
     genres: number[];

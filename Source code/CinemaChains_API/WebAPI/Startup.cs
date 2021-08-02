@@ -15,9 +15,6 @@ namespace WebAPI
         string frontEndOrigin_User = "http://localhost:5000";
         string mainBEOrigin = "https://localhost:44320";
 
-        //string frontEndOrigin_Admin = "https://admin-moviefy.web.app";
-        //string frontEndOrigin_User = "https://movie-reviews-and-tickets.herokuapp.com";
-        //string mainBEOrigin = "https://tlcn-moviereviews.somee.com";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;

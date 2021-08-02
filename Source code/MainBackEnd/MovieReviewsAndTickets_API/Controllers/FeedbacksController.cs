@@ -48,10 +48,10 @@ namespace MovieReviewsAndTickets_API.Controllers
         [HttpPost]
         public async Task<ActionResult<Feedback>> PostFeedback(FeedbackVM feedbackVM)
         {
-            feedbackVM.Feedback.CreatedDate = DateTime.Now;
+            feedbackVM.Feedback.CreatedDate = HostingTimeZone.Now;
             _context.Feedbacks.Add(feedbackVM.Feedback);
             var sender = await _context.Accounts.Where(a => a.Id == feedbackVM.Feedback.AccountId).Include(a => a.User).FirstOrDefaultAsync();
-            Notification notification = new Notification() { ReceiverId = feedbackVM.ReceiverId, CreatedDate = DateTime.Now, SenderId = feedbackVM.Feedback.AccountId };
+            Notification notification = new Notification() { ReceiverId = feedbackVM.ReceiverId, CreatedDate = HostingTimeZone.Now, SenderId = feedbackVM.Feedback.AccountId };
             (notification.Message, notification.Url) = NotificationHelper.FeedbackPostNoti(sender.UserName, feedbackVM.Feedback.PostId);
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();

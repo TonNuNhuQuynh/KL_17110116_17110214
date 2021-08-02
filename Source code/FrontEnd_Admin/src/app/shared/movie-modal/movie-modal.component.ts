@@ -58,6 +58,7 @@ export class MovieModalComponent implements OnInit{
       poster: this.movie.poster,
       backdrop: this.movie.backdrop,
       trailer: this.movie.trailer,
+      imdb: this.movie.imdb,
       languageId: this.movie.languageId,
       movieStatusId: this.movie.movieStatusId,
       genres: [],

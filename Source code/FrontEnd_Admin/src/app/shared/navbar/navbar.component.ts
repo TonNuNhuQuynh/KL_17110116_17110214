@@ -51,7 +51,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.authSubscription = this.auth.currentAccountSubject.subscribe(async account => {
             if (account != null) 
             {
-                this.isSupAdmin = this.auth.currentAccountValue == null ? false: this.auth.currentAccountValue.roleName == RolesService.superAdmin
+                this.isSupAdmin = this.auth.currentAccountValue.roleName == RolesService.superAdmin
                 if (this.notifications == null) await this.getNotifications()
             }
         })

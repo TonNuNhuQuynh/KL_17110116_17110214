@@ -111,6 +111,15 @@
         <div class="text-danger" *ngIf="trailer.errors?.pattern && (trailer.touched || trailer.dirty)"><i class="fa fa-exclamation-circle"></i> Url bắt đầu với https://youtube.com/embed/</div>
     </div>
 
+    <!-- Imdb ratings -->
+    <div class="col-auto mb-2">
+      <div class="input-group" [ngClass]="{'error': imdb.invalid && (imdb.touched || imdb.dirty)}">
+        <div class="input-group-prepend"><div class="input-group-text">Điểm Imdb</div></div>
+        <input type="number" #imdb="ngModel" required [ngClass]="{'is-invalid': imdb.invalid && (imdb.touched || imdb.dirty)}" class="form-control" name="imdb" [(ngModel)]="movieInDB.imdb" placeholder="Imdb rating">
+      </div>
+      <div class="text-danger" *ngIf="imdb.invalid && (imdb.touched || imdb.dirty)"><i class="fa fa-exclamation-circle"></i> Giá trị không hợp lệ!</div>
+    </div>
+
     <!-- Language -->
     <div class="col-auto mb-2">
       <div class="input-group" [ngClass]="{'error': movieInDB.languageId == 0 && (language.touched || language.dirty)}">
@@ -162,7 +171,7 @@
   </div>
   <div class="divider"></div>
   <div class="right-side">
-      <button [disabled]="original.invalid || title.invalid || plot.invalid || date.invalid || time.invalid || movieInDB.languageId == 0 || movieInDB.movieStatusId == 0 || movieInDB.genres.length == 0 || trailer.invalid || !loaded" type="button" class="btn btn-danger btn-link" (click)="saveMovie()">
+      <button [disabled]="original.invalid || title.invalid || plot.invalid || date.invalid || time.invalid || imdb.invalid || movieInDB.languageId == 0 || movieInDB.movieStatusId == 0 || movieInDB.genres.length == 0 || trailer.invalid || !loaded" type="button" class="btn btn-danger btn-link" (click)="saveMovie()">
         <ng-container *ngIf="loaded">Lưu</ng-container>   
         <i class="fa fa-spinner fa-spin fa-lg" *ngIf="!loaded"></i>
       </button>

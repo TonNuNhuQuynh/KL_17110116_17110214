@@ -370,15 +370,35 @@ namespace MovieReviewsAndTickets_API.Controllers
             return WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
         }
 
-        //Gửi email reset password -> send-email
+        //User gửi email reset password -> send-email (user)
         [HttpGet("SendEmailResetPassword")]
         public async Task<ActionResult> SendEmailResetPassword([FromQuery(Name="email")] string email)
         {
             var accountInDb = await _context.Accounts.Where(a => a.Email.ToLower() == email.ToLower() && a.IsDeleted == false).FirstOrDefaultAsync();
-            if (accountInDb == null) return NoContent();
-            string token = await this._userManager.GeneratePasswordResetTokenAsync(accountInDb);
+            if (accountInDb == null) return NoContent(); //Kiểm tra account có tồn tại
+            //Nếu có xét role
             string role = _userManager.GetRolesAsync(accountInDb).Result.ToList()[0];
-            var callbackUrl = $"{(role == RolesHelper.Admin || role == RolesHelper.SuperAdmin ? ApiHelper.FrontEndHost_Admin : ApiHelper.FrontEndHost_User)}/reset?userId={accountInDb.Id}&code={Base64Token(token)}";
+            if (role != RolesHelper.User && role != RolesHelper.Writer) return NoContent(); //Ko phải user lẫn cả writer
+            //Nếu thỏa tạo token
+            string token = await this._userManager.GeneratePasswordResetTokenAsync(accountInDb);
+            var callbackUrl = $"{ApiHelper.FrontEndHost_User}/reset?userId={accountInDb.Id}&code={Base64Token(token)}";
+            await this._emailSender.SendEmailAsync(accountInDb.Email, "Đặt lại mật khẩu", $"Xin chào {accountInDb.UserName}, <br>" +
+                $"Bạn có thể đặt lại mật khẩu cho tài khoản của mình bằng cách nhấn vào đường dẫn sau <a href={callbackUrl}>here</a>");
+            accountInDb.LockoutEnabled = true;
+            await _context.SaveChangesAsync();
+            return new JsonResult(accountInDb.Id.ToString());
+        }
+
+        //Admin gửi email reset password -> send-email (admin)
+        [HttpGet("AdminSendEmailResetPassword")]
+        public async Task<ActionResult> AdminSendEmailResetPassword([FromQuery(Name = "email")] string email)
+        {
+            var accountInDb = await _context.Accounts.Where(a => a.Email.ToLower() == email.ToLower() && a.IsDeleted == false).FirstOrDefaultAsync();
+            if (accountInDb == null) return NoContent();
+            string role = _userManager.GetRolesAsync(accountInDb).Result.ToList()[0];
+            if (role != RolesHelper.Admin && role != RolesHelper.SuperAdmin) return NoContent();
+            string token = await this._userManager.GeneratePasswordResetTokenAsync(accountInDb);   
+            var callbackUrl = $"{ApiHelper.FrontEndHost_Admin}/reset?userId={accountInDb.Id}&code={Base64Token(token)}";
             await this._emailSender.SendEmailAsync(accountInDb.Email, "Đặt lại mật khẩu", $"Xin chào {accountInDb.UserName}, <br>" +
                 $"Bạn có thể đặt lại mật khẩu cho tài khoản của mình bằng cách nhấn vào đường dẫn sau <a href={callbackUrl}>here</a>");
             accountInDb.LockoutEnabled = true;

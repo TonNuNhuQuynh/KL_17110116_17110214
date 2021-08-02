@@ -48,7 +48,12 @@
                         <br><span>{{movie.movie.runtime}} phút</span>
                       </div>
 
-                      <div class="col text-center text-sm-left"></div>
+                      <div class="col text-center text-sm-left">
+                        <ng-container *ngIf="movie.movie.imdb > 0">
+                          <strong><i class="fab fa-imdb fa-lg"></i><span class="d-none d-sm-inline-block">Imdb</span></strong>
+                          <br><span>{{movie.movie.imdb}}/10</span>
+                        </ng-container>
+                      </div>
                     </div>
                   </div>
 

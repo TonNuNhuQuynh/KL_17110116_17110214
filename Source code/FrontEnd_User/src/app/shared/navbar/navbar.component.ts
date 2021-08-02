@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LoginModalComponent } from 'app/shared/login-modal/login-modal.component';
@@ -10,13 +10,14 @@ import { RolesService } from 'app/authentication/roles.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from 'app/api.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit, AfterViewInit {
+export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     private toggleButton: any;
     private sidebarVisible: boolean;
     
@@ -26,14 +27,18 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
     }
     
-    query: string = '';
-    isWriter: boolean = false;
+    
+    query: string = ''
+    isWriter: boolean = false
     types: any[] = []
     themes: any[] = []
+    authSubscription: Subscription
 
     ngOnInit() 
     {
-        this.isWriter = this.auth.currentAccountValue != null && this.auth.currentAccountValue.roleName == RolesService.writer? true: false
+        this.authSubscription = this.auth.currentAccountSubject.subscribe(async account => {
+            if (account != null) this.isWriter = this.auth.currentAccountValue.roleName == RolesService.writer
+        })
         const navbar: HTMLElement = this.element.nativeElement
         this.toggleButton = navbar.getElementsByClassName('navbar-toggler')[0]
         this.router.events.subscribe((event) => { this.sidebarClose() })
@@ -129,5 +134,9 @@ export class NavbarComponent implements OnInit, AfterViewInit {
         let result = await this.http.get<any>(this.apiService.backendHost + '/api/Posts/GetCategories').toPromise()
         this.types = result.types
         this.themes = result.themes
+    }
+    ngOnDestroy(): void 
+    {
+        if (this.authSubscription) this.authSubscription.unsubscribe()
     }
 }

@@ -102,7 +102,11 @@ const routes: Routes = [
         { path: 'task-details', component: TaskDetailsComponent },
       ] 
     },
-    { path: 'review', component: PostReviewComponent },
+    { path: 'review', 
+      component: PostReviewComponent, 
+      canActivate: [RoleGuard], 
+      data: { expectedRoles: [Roles.writer] } 
+    },
     { path: 'news/type/:type', component: NewsListComponent },
     { path: 'news/theme/:theme', component: NewsListComponent },
     { path: 'news/tag/:tag', component: NewsListComponent },

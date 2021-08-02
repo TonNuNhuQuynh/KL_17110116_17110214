@@ -24,6 +24,7 @@ namespace MovieReviewsAndTickets_API.Models
         public string Poster { get; set; }
         public string Backdrop { get; set; }
         public string Trailer { get; set; }
+        public float Imdb { get; set; }
         public Language Language { get; set; }
         public int LanguageId { get; set; }
         public MovieStatus MovieStatus { get; set; }

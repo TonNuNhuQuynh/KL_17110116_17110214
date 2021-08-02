@@ -60,6 +60,7 @@ export class MovieDetailsComponent implements OnInit {
       poster: '',
       backdrop: '',
       trailer: '',
+      imdb: 0,
       languageId: 0,
       movieStatusId: 0,
       genres: [],

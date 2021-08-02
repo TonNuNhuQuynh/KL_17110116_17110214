@@ -53,7 +53,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         {
             var task = await _context.Tasks.Where(t => t.Id == id && !t.IsDeleted).Include(t => t.Executer).Include(t => t.Creator).FirstOrDefaultAsync();
             if (task == null) return NotFound();
-            if (task.Executer != null) task.Executer = new Account() { UserName = task.Executer.UserName, Id = task.Executer.Id, Email = "", EmailConfirmed = false, LockoutEnabled = false, IsDeleted = false, CreatedDate = DateTime.Now, SecurityStamp = Guid.NewGuid().ToString() };
+            if (task.Executer != null) task.Executer = new Account() { UserName = task.Executer.UserName, Id = task.Executer.Id, Email = "", EmailConfirmed = false, LockoutEnabled = false, IsDeleted = false, CreatedDate = HostingTimeZone.Now, SecurityStamp = Guid.NewGuid().ToString() };
             task.Creator = new Account() { UserName = task.Creator.UserName, Id = task.Creator.Id };
             return task;
         }
@@ -67,6 +67,9 @@ namespace MovieReviewsAndTickets_API.Controllers
             if (id != task.Id) return BadRequest();
             var taskInDB = await _context.Tasks.Where(t => !t.IsDeleted && t.Id == id).FirstOrDefaultAsync();
             if (taskInDB == null) return NotFound();
+            // Kiểm tra xem task có đang ở trạng thái processing và còn deadline thì ko cho edit
+            if (taskInDB.Status == TaskHelper.ProcessingT && taskInDB.Deadline > HostingTimeZone.Now) return NotFound();
+            // Nếu user vẫn chưa accept hay task chưa assign
             taskInDB.Title = task.Title;
             taskInDB.Content = task.Content;
             taskInDB.Deadline = task.Deadline.AddHours(7);
@@ -77,10 +80,10 @@ namespace MovieReviewsAndTickets_API.Controllers
             if (task.ExecuterId != null)
             {
                 taskInDB.Status = task.ExecuterId != taskInDB.ExecuterId? TaskHelper.WaitingT: taskInDB.Status;
-                taskInDB.AssignTime = task.ExecuterId != taskInDB.ExecuterId ? DateTime.Now: taskInDB.AssignTime;
+                taskInDB.AssignTime = task.ExecuterId != taskInDB.ExecuterId ? HostingTimeZone.Now: taskInDB.AssignTime;
                 // Tạo notification mới gửi đến user đc assign
                 admin = await _context.Accounts.Where(a => !a.IsDeleted && a.Id == task.CreatorId).Include(a => a.User).FirstOrDefaultAsync();
-                notification = new Notification() { ReceiverId = (int)task.ExecuterId, CreatedDate = DateTime.Now, SenderId = task.CreatorId };
+                notification = new Notification() { ReceiverId = (int)task.ExecuterId, CreatedDate = HostingTimeZone.Now, SenderId = task.CreatorId };
                 (notification.Message, notification.Url) = task.ExecuterId != taskInDB.ExecuterId? NotificationHelper.AssignTaskNoti(admin.UserName, id): NotificationHelper.UpdateTaskNoti(admin.UserName, task.Title, id);
                 _context.Notifications.Add(notification);
                 taskInDB.ExecuterId = task.ExecuterId;
@@ -118,12 +121,12 @@ namespace MovieReviewsAndTickets_API.Controllers
         [HttpPost]
         public async Task<IActionResult> PostTask(Models.Task task)
         {
-            task.CreatedDate = DateTime.Now;
+            task.CreatedDate = HostingTimeZone.Now;
             task.Deadline = task.Deadline.AddHours(7);            // Kiểu date gửi từ backend xuống hour bị giảm đi 7
             if (task.ExecuterId != 0 && task.ExecuterId != null)  // Nếu đc assign cho user thì gán lại status là chờ phản hồi và assignTime
             {
                 task.Status = TaskHelper.WaitingT;
-                task.AssignTime = DateTime.Now;
+                task.AssignTime = HostingTimeZone.Now;
             }
             else
             {
@@ -137,7 +140,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             {
                 // Tạo notification mới gửi đến user đc assign
                 var admin = await _context.Accounts.Where(a => !a.IsDeleted && a.Id == task.CreatorId).Include(a => a.User).FirstOrDefaultAsync();
-                var notification = new Notification() { ReceiverId = (int)task.ExecuterId, CreatedDate = DateTime.Now, SenderId = task.CreatorId };
+                var notification = new Notification() { ReceiverId = (int)task.ExecuterId, CreatedDate = HostingTimeZone.Now, SenderId = task.CreatorId };
                 (notification.Message, notification.Url) = NotificationHelper.AssignTaskNoti(admin.UserName, task.Id);
                 _context.Notifications.Add(notification);
                 await _context.SaveChangesAsync();
@@ -203,7 +206,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             await _context.SaveChangesAsync();
             // Tạo notification mới gửi đến chủ task
             var writer = await _context.Accounts.Where(a => !a.IsDeleted && a.Id == userId).Include(a => a.User).FirstOrDefaultAsync();
-            var notification = new Notification() { ReceiverId = task.CreatorId, CreatedDate = DateTime.Now, SenderId = (int)task.ExecuterId };
+            var notification = new Notification() { ReceiverId = task.CreatorId, CreatedDate = HostingTimeZone.Now, SenderId = (int)task.ExecuterId };
             (notification.Message, notification.Url) = NotificationHelper.AcceptTaskNoti(writer.UserName, task.Id);
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
@@ -231,7 +234,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             await _context.SaveChangesAsync();
             // Tạo notification mới gửi đến chủ task
             var writer = await _context.Accounts.Where(a => !a.IsDeleted && a.Id == userId).Include(a => a.User).FirstOrDefaultAsync();
-            var notification = new Notification() { ReceiverId = task.CreatorId, CreatedDate = DateTime.Now, SenderId = userId };
+            var notification = new Notification() { ReceiverId = task.CreatorId, CreatedDate = HostingTimeZone.Now, SenderId = userId };
             (notification.Message, notification.Url) = NotificationHelper.DenyTaskNoti(writer.UserName, task.Id);
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
@@ -250,7 +253,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         [HttpGet("Pendings/{userId}")]
         public async Task<ActionResult<IEnumerable<object>>> GetPendingTasksOfUser(int userId)
         {
-            return await _context.Tasks.Where(t => !t.IsDeleted && t.ExecuterId == userId && t.Status == TaskHelper.ProcessingT && t.Deadline > DateTime.Now)
+            return await _context.Tasks.Where(t => !t.IsDeleted && t.ExecuterId == userId && t.Status == TaskHelper.ProcessingT && t.Deadline > HostingTimeZone.Now)
                                        .Include(t => t.Creator)
                                        .Select(t => new { Title = t.Title, Id = t.Id, Creator = t.Creator.UserName, Deadline = t.Deadline })
                                        .ToListAsync();

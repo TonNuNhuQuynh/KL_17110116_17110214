@@ -51,11 +51,12 @@ export class RegisterComponent implements OnInit {
     let url = this.apiService.backendHost + `/api/Accounts`;
     try 
     {
-      let result = await this.http.post<string>(url, this.account, this.createHeader()).toPromise() as any;
-      if (result == 'username') this.toast.toastError("Username đã được sử dụng!");
-      else if (result == 'email') this.toast.toastError("Email đã được sử dụng!");
-      else if (result == 'username,email') this.toast.toastError("Username và Email đã được sử dụng!");
-      else this.router.navigate(['/verify']);
+      let result = await this.http.post<string>(url, this.account, this.createHeader()).toPromise() as any
+      if (result == 'username') this.toast.toastError("Username đã được sử dụng!")
+      else if (result == 'email') this.toast.toastError("Email đã được sử dụng!")
+      else if (result == 'username,email') this.toast.toastError("Username và Email đã được sử dụng!")
+      else this.router.navigate(['/verify'])
+      this.isLoaded = true
     } 
     catch(e) 
     {

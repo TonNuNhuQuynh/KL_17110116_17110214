@@ -204,6 +204,7 @@ export class AddMovieComponent implements OnInit {
       poster: movie.poster_path == null? '': "https://image.tmdb.org/t/p/original" + movie.poster_path,
       backdrop: movie.backdrop_path == null? '': "https://image.tmdb.org/t/p/original" + movie.backdrop_path,
       trailer: '',
+      imdb: 0,
       languageId: 0,
       movieStatusId: 0,
       genres: [],

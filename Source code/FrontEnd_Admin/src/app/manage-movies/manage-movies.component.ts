@@ -158,6 +158,7 @@ export class ManageMoviesComponent implements OnInit, OnDestroy {
       poster: movie.poster,
       backdrop: movie.backdrop,
       trailer: movie.trailer,
+      imdb: movie.imdb,
       languageId: movie.languageId,
       movieStatusId: movie.movieStatusId,
       genres: movie.genres,

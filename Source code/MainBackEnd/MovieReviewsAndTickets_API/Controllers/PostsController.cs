@@ -89,7 +89,7 @@ namespace MovieReviewsAndTickets_API.Controllers
                 var task = await _context.Tasks.Where(t => t.PostId == post.Id && !t.IsDeleted).FirstOrDefaultAsync();
                 if (task != null)
                 {
-                    notification = new Notification() { ReceiverId = task.CreatorId, CreatedDate = DateTime.Now, SenderId = (int)task.ExecuterId };
+                    notification = new Notification() { ReceiverId = task.CreatorId, CreatedDate = HostingTimeZone.Now, SenderId = (int)task.ExecuterId };
                     (notification.Message, notification.Url) = NotificationHelper.UpdatePostNoti(task.Executer.UserName, post.Id);
                     _context.Notifications.Add(notification);
                 }     
@@ -146,7 +146,7 @@ namespace MovieReviewsAndTickets_API.Controllers
         [HttpGet("Send/{postId}/{taskId}")]
         public async Task<ActionResult<object>> SendPost(int postId, int taskId)
         {
-            var task = await _context.Tasks.Where(t => !t.IsDeleted && t.Id == taskId && t.Deadline > DateTime.Now)
+            var task = await _context.Tasks.Where(t => !t.IsDeleted && t.Id == taskId && t.Deadline > HostingTimeZone.Now)
                                            .Include(t => t.Executer).ThenInclude(a => a.User)
                                            .Include(t => t.Creator)
                                            .FirstOrDefaultAsync();
@@ -157,7 +157,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             if (post == null) return NotFound();
             post.Status = PostsHelper.SentP;
             // Tạo notification gửi cho admin
-            Notification notification = new Notification() { ReceiverId = task.CreatorId, CreatedDate = DateTime.Now, SenderId = (int)task.ExecuterId };
+            Notification notification = new Notification() { ReceiverId = task.CreatorId, CreatedDate = HostingTimeZone.Now, SenderId = (int)task.ExecuterId };
             (notification.Message, notification.Url) = NotificationHelper.SendPostNoti(task.Executer.UserName, task.Title, postId);
             _context.Notifications.Add(notification);
             await _context.SaveChangesAsync();
@@ -194,7 +194,7 @@ namespace MovieReviewsAndTickets_API.Controllers
             if (post == null) return NotFound();
             // Chỉnh status của post thành publish
             post.Status = PostsHelper.PublishedP;
-            post.PublishedDate = DateTime.Now;
+            post.PublishedDate = HostingTimeZone.Now;
             // Chỉnh status của task thành finish
             var task = await _context.Tasks.Where(t => t.Id == taskId).FirstOrDefaultAsync();
             task.Status = TaskHelper.ApprovedT;
